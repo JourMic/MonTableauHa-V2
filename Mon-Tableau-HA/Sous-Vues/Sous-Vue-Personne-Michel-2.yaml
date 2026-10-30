@@ -1,0 +1,20 @@
+title: Personne Michel 2
+path: Sous-Vue-Personne-Michel-2
+icon: mdi:account
+subview: true
+type: sections
+max_columns: 2
+cards: []
+section:
+
+  - type: grid
+    cards:
+
+      - type: custom:decluttering-card-plus
+        template: personnes
+
+  - type: grid
+    cards:
+
+      - type: custom:decluttering-card-plus
+        template: personnes-carte

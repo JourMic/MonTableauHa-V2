@@ -1,0 +1,91 @@
+template:
+  - sensor:
+      - name: "Temperature Extérieure Sans Units"
+        unique_id: "temperature_exterieure_sans_units"
+        state: "{{ states('sensor.st_00032986_temperature') | round(1) }}"
+        icon: mdi:thermometer
+
+      - name: "Temperature Intérieure Sans Units"
+        unique_id: "temperature_interieure_sans_units"
+        state:  >
+          {% set tem = states('sensor.maison_temperature') %} 
+          {% if tem == 'unavailable' %}
+            IND
+          {% else %} 
+            {{ states('sensor.maison_temperature') }}
+          {% endif %}
+        icon: mdi:thermometer
+
+      - name: "Vitesse du vent Sans Units"
+        unique_id: "vitesse_du_vent_sans_units"
+        state: >
+             {% set vent = states('sensor.st_00032986_vitesse_du_vent') | round(1) %}
+             {% if vent > 0 %}
+                {{ states('sensor.st_00032986_vitesse_du_vent') | round(1) }}
+             {% else %} 
+                {{ states('sensor.weatherflow_direction_moyenne_du_vent') }}
+             {% endif %}
+        icon: mdi:weather-windy
+
+      - name: "Heure Sans Units"
+        unique_id: "heure_sans_units"
+        state: "{{ now().strftime('%H:%M') }}"
+        icon: mdi:calendar-month-outline
+        
+      - name: "Index UV Sans Units"
+        unique_id: "index_uv_sans_units"
+        state: > 
+          {% set iuv = states('sensor.st_00032986_index_uv') | float(0)
+          %} {% if iuv > 0 %}
+             {{ states('sensor.st_00032986_index_uv') | round(2) }}
+          {% else %} 
+             {{ states('sensor.maison_bruit') | int(0) }}
+          {% endif %}
+        icon: mdi:sun-wireless-outline
+
+      - name: "IQA Sans Units"
+        unique_id: "iqa_sans_units"
+        state: > 
+          {% set iqa = states('sensor.mauricie_quebec_canada_indice_de_qualite_de_l_air') %} 
+          {% if iqa == 'unavailable' %}
+            IND
+          {% else %} 
+            {{ states('sensor.mauricie_quebec_canada_indice_de_qualite_de_l_air') }}
+          {% endif %}
+        icon: mdi:weather-windy
+        
+      - name: "CO2 Pluie Sans Units"
+        unique_id: "co2_pluie_sans_units"
+        state: > 
+           {% set pluie = states('sensor.shawinigan_sud_sensors_precipitation_today') | float(0) %}
+           {% if pluie < 1 %}
+              {{ states('sensor.maison_dioxyde_de_carbone') | int(0) }}
+           {% else %} 
+              {{ states('sensor.shawinigan_sud_sensors_precipitation_today') | round(1) }}
+           {% endif %}
+        icon: mdi:molecule-co2
+        
+      - name: "Humidite intensite de pluie Sans Units"
+        unique_id: "humidite_intenssite_de_pluie_sans_units"
+        state: > 
+           {% set taux = states('sensor.st_00032986_intensite_des_precipitations') | float(0) %}
+           {% if taux > 0 %}
+              {{ states('sensor.st_00032986_intensite_des_precipitations') | round(1) }}
+           {% else %} 
+              {{ states('sensor.st_00032986_humidite') | round(1) }}
+           {% endif %}
+        icon: mdi:water-percent
+
+      - name: "Pression Éclairs Sans Units"
+        unique_id: "pression_eclaire_sans_units"
+        state: > 
+           {% set eclairs = states('sensor.shawinigan_sud_sensors_lightning_strikes_last_3_hours') | int %} 
+           {% if eclairs > 0 %}
+              {{ states('sensor.shawinigan_sud_sensors_lightning_strikes_last_3_hours') }}
+           {% else %} 
+              {{ states('sensor.shawinigan_sud_sensors_sea_level_pressure') | round(0) }}
+           {% endif %}
+        icon: mdi:gauge
+
+ 
+

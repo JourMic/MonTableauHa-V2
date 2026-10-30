@@ -1,0 +1,12 @@
+template:
+
+  - sensor:
+ 
+      - name: "Date du jour"
+        unique_id: "date_du_jour"
+        state: >
+          {% set months = ["janvier", "février", "mars", "avril", "mai", "juin", "juillet", "août", "septembre", "octobre", "novembre", "décembre"] %}
+          {% set days = ["Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi", "Dimanche"] %}
+          {% set month = months[now().strftime('%m') | int -1] %}  
+          {% set day = days[now().strftime('%w') | int -1] %}  
+          {{ day + ' ' + now().strftime('%d') + ' ' + month }}

@@ -1,0 +1,553 @@
+title: Conditions
+path: Vue-Conditions
+icon: mdi:home-analytics
+subview: false
+type: sections
+max_columns: 2
+cards: []
+sections:
+  - type: grid
+    cards:
+      - type: heading
+        heading: Salon
+        heading_style: title
+        icon: mdi:home-search
+        grid_options:
+          columns: 12
+          rows: 0.7
+
+      - type: custom:netatmo-card
+        module_type: indoor
+        entity: sensor.maison_temperature
+        name: Salon
+        humidity_entity: sensor.maison_humidite
+        co2_entity: sensor.maison_dioxyde_de_carbone
+        noise_entity: sensor.maison_bruit
+        pressure_entity: sensor.maison_pression_atmospherique
+        trend_entity: sensor.maison_tendance_de_la_temperature
+        connectivity_entity: binary_sensor.maison_connectivite
+        grid_options:
+          rows: auto
+          columns: 12
+        card_mod:
+          style: |
+            ha-card {
+              box-shadow: var(--couleur_ombre);
+            }
+
+      - type: heading
+        heading: Bureau
+        heading_style: title
+        icon: mdi:home-search
+        grid_options:
+          columns: 6
+          rows: 0.3
+        visibility:
+          - condition: screen
+            media_query: "(min-width: 768px)"
+
+      - type: heading
+        heading: Sous-Sol
+        heading_style: title
+        icon: mdi:home-search
+        grid_options:
+          columns: 6
+          rows: 0.3
+        visibility:
+          - condition: screen
+            media_query: "(min-width: 768px)"
+
+      - type: custom:netatmo-card
+        module_type: indoor_extra
+        entity: sensor.maison_bureau_temperature
+        name: Bureau
+        humidity_entity: sensor.maison_bureau_humidite
+        co2_entity: sensor.maison_bureau_dioxyde_de_carbone
+        trend_entity: sensor.maison_bureau_tendance_de_la_temperature
+        battery_entity: sensor.maison_bureau_batterie
+        connectivity_entity: binary_sensor.maison_bureau_connectivite
+        grid_options:
+          rows: 2.5
+          columns: 6
+        card_mod:
+          style: |
+            ha-card {
+              box-shadow: var(--couleur_ombre);
+            }
+        visibility:
+          - condition: screen
+            media_query: "(min-width: 768px)"
+
+      - type: custom:netatmo-card
+        module_type: indoor_extra
+        entity: sensor.maison_sous_sol_temperature
+        name: Sous-Sol
+        humidity_entity: sensor.maison_sous_sol_humidite
+        co2_entity: sensor.maison_sous_sol_dioxyde_de_carbone
+        trend_entity: sensor.maison_sous_sol_tendance_de_la_temperature
+        battery_entity: sensor.maison_sous_sol_batterie
+        connectivity_entity: binary_sensor.maison_sous_sol_connectivite
+        grid_options:
+          rows: 2.5
+          columns: 6
+        card_mod:
+          style: |
+            ha-card {
+              box-shadow: var(--couleur_ombre);
+            }
+        visibility:
+          - condition: screen
+            media_query: "(min-width: 768px)"
+
+      - type: heading
+        heading: Chambre Des Maîtres
+        heading_style: title
+        icon: mdi:home-search
+        grid_options:
+          columns: 6
+          rows: 0.3
+        visibility:
+          - condition: screen
+            media_query: "(min-width: 768px)"
+
+      - type: heading
+        heading_style: title
+        icon: mdi:home-search
+        grid_options:
+          columns: 6
+          rows: 0.3
+        heading: Thermopompe
+        visibility:
+          - condition: screen
+            media_query: "(min-width: 768px)"
+
+      - type: custom:netatmo-card
+        module_type: indoor_extra
+        entity: sensor.maison_chambre_des_maitres_temperature
+        name: Chambre Maîtres
+        humidity_entity: sensor.maison_chambre_des_maitres_humidite
+        co2_entity: sensor.maison_chambre_des_maitres_dioxyde_de_carbone
+        trend_entity: sensor.maison_chambre_des_maitres_tendance_de_la_temperature
+        battery_entity: sensor.maison_chambre_des_maitres_batterie
+        connectivity_entity: binary_sensor.maison_chambre_des_maitres_connectivite
+        grid_options:
+          rows: 2.5
+          columns: 6
+        card_mod:
+          style: |
+            ha-card {
+              box-shadow: var(--couleur_ombre);
+            }
+        visibility:
+          - condition: screen
+            media_query: "(min-width: 768px)"
+
+      - type: custom:netatmo-card
+        module_type: outdoor
+        entity: sensor.maison_thermopompe_temperature
+        name: Thermopompe
+        color_temperature: true
+        temp_cold: 0
+        temp_hot: 28
+        humidity_entity: sensor.maison_thermopompe_humidite
+        trend_entity: sensor.maison_thermopompe_tendance_de_la_temperature
+        battery_entity: sensor.maison_thermopompe_batterie
+        connectivity_entity: binary_sensor.maison_thermopompe_connectivite
+        grid_options:
+          rows: 0.7
+          columns: 6
+        card_mod:
+          style: |
+            ha-card {
+              box-shadow: var(--couleur_ombre);
+            }
+        visibility:
+          - condition: screen
+            media_query: "(min-width: 768px)"
+
+      # Début de l'afficahge pour le téléphone
+
+      - type: heading
+        heading: Bureau
+        heading_style: title
+        icon: mdi:home-search
+        grid_options:
+          columns: 12
+          rows: 0.3
+        visibility:
+          - condition: screen
+            media_query: "(min-width: 0px) and (max-width: 767px)"
+
+      - type: custom:netatmo-card
+        module_type: indoor_extra
+        entity: sensor.maison_bureau_temperature
+        name: Bureau
+        humidity_entity: sensor.maison_bureau_humidite
+        co2_entity: sensor.maison_bureau_dioxyde_de_carbone
+        trend_entity: sensor.maison_bureau_tendance_de_la_temperature
+        battery_entity: sensor.maison_bureau_batterie
+        connectivity_entity: binary_sensor.maison_bureau_connectivite
+        grid_options:
+          rows: auto
+          columns: 12
+        card_mod:
+          style: |
+            ha-card {
+              box-shadow: var(--couleur_ombre);
+            }
+        visibility:
+          - condition: screen
+            media_query: "(min-width: 0px) and (max-width: 767px)"
+
+      - type: heading
+        heading: Sous-Sol
+        heading_style: title
+        icon: mdi:home-search
+        grid_options:
+          columns: 12
+          rows: 0.3
+        visibility:
+          - condition: screen
+            media_query: "(min-width: 0px) and (max-width: 767px)"
+
+      - type: custom:netatmo-card
+        module_type: indoor_extra
+        entity: sensor.maison_sous_sol_temperature
+        name: Sous-Sol
+        humidity_entity: sensor.maison_sous_sol_humidite
+        co2_entity: sensor.maison_sous_sol_dioxyde_de_carbone
+        trend_entity: sensor.maison_sous_sol_tendance_de_la_temperature
+        battery_entity: sensor.maison_sous_sol_batterie
+        connectivity_entity: binary_sensor.maison_sous_sol_connectivite
+        grid_options:
+          rows: auto
+          columns: 12
+        card_mod:
+          style: |
+            ha-card {
+              box-shadow: var(--couleur_ombre);
+            }
+        visibility:
+          - condition: screen
+            media_query: "(min-width: 0px) and (max-width: 767px)"
+
+      - type: heading
+        heading: Chambre Des Maîtres
+        heading_style: title
+        icon: mdi:home-search
+        grid_options:
+          columns: 12
+          rows: 0.3
+        visibility:
+          - condition: screen
+            media_query: "(min-width: 0px) and (max-width: 767px)"
+
+      - type: custom:netatmo-card
+        module_type: indoor_extra
+        entity: sensor.maison_chambre_des_maitres_temperature
+        name: Chambre Maîtres
+        humidity_entity: sensor.maison_chambre_des_maitres_humidite
+        co2_entity: sensor.maison_chambre_des_maitres_dioxyde_de_carbone
+        trend_entity: sensor.maison_chambre_des_maitres_tendance_de_la_temperature
+        battery_entity: sensor.maison_chambre_des_maitres_batterie
+        connectivity_entity: binary_sensor.maison_chambre_des_maitres_connectivite
+        grid_options:
+          rows: auto
+          columns: 12
+        card_mod:
+          style: |
+            ha-card {
+              box-shadow: var(--couleur_ombre);
+            }
+        visibility:
+          - condition: screen
+            media_query: "(min-width: 0px) and (max-width: 767px)"
+
+      - type: heading
+        heading_style: title
+        icon: mdi:home-search
+        grid_options:
+          columns: 12
+          rows: 0.3
+        heading: Thermopompe
+        visibility:
+          - condition: screen
+            media_query: "(min-width: 0px) and (max-width: 767px)"
+
+      - type: custom:netatmo-card
+        module_type: outdoor
+        entity: sensor.maison_thermopompe_temperature
+        name: Thermopompe
+        color_temperature: true
+        temp_cold: 0
+        temp_hot: 28
+        humidity_entity: sensor.maison_thermopompe_humidite
+        trend_entity: sensor.maison_thermopompe_tendance_de_la_temperature
+        battery_entity: sensor.maison_thermopompe_batterie
+        connectivity_entity: binary_sensor.maison_thermopompe_connectivite
+        grid_options:
+          rows: auto
+          columns: 12
+        card_mod:
+          style: |
+            ha-card {
+              box-shadow: var(--couleur_ombre);
+            }
+        visibility:
+          - condition: screen
+            media_query: "(min-width: 0px) and (max-width: 767px)"
+
+  # Fin de l'afficahge pour le téléphone
+
+  - type: grid
+    cards:
+      - type: heading
+        heading_style: title
+        grid_options:
+          columns: 6
+          rows: 0.7
+        heading: Cuisine
+
+      - type: heading
+        heading: Salle à manger
+        heading_style: title
+        grid_options:
+          columns: 6
+          rows: 0.7
+        badges:
+          - type: entity
+            show_state: true
+            show_icon: true
+            entity: sensor.govee_salle_a_manger_battery
+
+      - type: custom:decluttering-card-plus
+        template: tuiles_5
+        variables:
+          - tuile5_entity: "sensor.sensibo_temperature_courante_cuisine"
+          - tuile5_name: "Température"
+          - tuile5_icon: "mdi:thermometer"
+        grid_options:
+          columns: 3
+          rows: auto
+
+      - type: custom:decluttering-card-plus
+        template: tuiles_5
+        variables:
+          - tuile5_entity: "sensor.sensibo_humiditee_courante_cuisine"
+          - tuile5_name: "Humidité"
+          - tuile5_icon: "mdi:water-percent"
+        grid_options:
+          columns: 3
+          rows: auto
+
+      - type: custom:decluttering-card-plus
+        template: tuiles_5
+        variables:
+          - tuile5_entity: "sensor.govee_salle_a_manger_temperature"
+          - tuile5_name: "Température"
+          - tuile5_icon: "mdi:thermometer"
+        grid_options:
+          columns: 3
+          rows: auto
+
+      - type: custom:decluttering-card-plus
+        template: tuiles_5
+        variables:
+          - tuile5_entity: "sensor.govee_salle_a_manger_humidity"
+          - tuile5_name: "Humidité"
+          - tuile5_icon: "mdi:water-percent"
+        grid_options:
+          columns: 3
+          rows: auto
+
+      - type: heading
+        heading_style: title
+        grid_options:
+          columns: 6
+          rows: 0.7
+        heading: Salle d’eau
+        badges:
+          - type: entity
+            show_state: true
+            show_icon: true
+            entity: sensor.govee_salle_deau_battery
+
+      - type: heading
+        heading_style: title
+        grid_options:
+          columns: 6
+          rows: 0.7
+        heading: Tempest
+        badges:
+          - type: entity
+            show_state: true
+            show_icon: true
+            entity: sensor.st_00032986_batterie
+
+      - type: custom:decluttering-card-plus
+        template: tuiles_5
+        variables:
+          - tuile5_entity: "sensor.govee_salle_deau_temperature"
+          - tuile5_name: "Température"
+          - tuile5_icon: "mdi:thermometer"
+        grid_options:
+          columns: 3
+          rows: auto
+
+      - type: custom:decluttering-card-plus
+        template: tuiles_5
+        variables:
+          - tuile5_entity: "sensor.govee_salle_deau_humidity"
+          - tuile5_name: "Humidité"
+          - tuile5_icon: "mdi:water-percent"
+        grid_options:
+          columns: 3
+          rows: auto
+
+      - type: custom:decluttering-card-plus
+        template: tuiles_5
+        variables:
+          - tuile5_entity: "sensor.st_00032986_temperature"
+          - tuile5_name: "Température"
+          - tuile5_icon: "mdi:thermometer"
+        grid_options:
+          columns: 3
+          rows: auto
+
+      - type: custom:decluttering-card-plus
+        template: tuiles_5
+        variables:
+          - tuile5_entity: "sensor.st_00032986_humidite"
+          - tuile5_name: "Humidité"
+          - tuile5_icon: "mdi:water-percent"
+        grid_options:
+          columns: 3
+          rows: auto
+
+      - type: heading
+        heading_style: title
+        grid_options:
+          columns: 6
+          rows: 0.7
+        heading: Salle de bain
+        badges:
+          - type: entity
+            show_state: true
+            show_icon: true
+            entity: sensor.govee_salle_de_bain_battery
+
+      - type: heading
+        heading_style: title
+        grid_options:
+          columns: 6
+          rows: 0.7
+        heading: Salle de repos
+        badges:
+          - type: entity
+            show_state: true
+            show_icon: true
+            entity: sensor.boudoirte_batterie
+
+      - type: custom:decluttering-card-plus
+        template: tuiles_5
+        variables:
+          - tuile5_entity: "sensor.govee_salle_de_bain_temperature"
+          - tuile5_name: "Température"
+          - tuile5_icon: "mdi:thermometer"
+        grid_options:
+          columns: 3
+          rows: auto
+
+      - type: custom:decluttering-card-plus
+        template: tuiles_5
+        variables:
+          - tuile5_entity: "sensor.govee_salle_de_bain_humidity"
+          - tuile5_name: "Humidité"
+          - tuile5_icon: "mdi:water-percent"
+        grid_options:
+          columns: 3
+          rows: auto
+
+      - type: custom:decluttering-card-plus
+        template: tuiles_5
+        variables:
+          - tuile5_entity: "sensor.sensibo_temperature_courante_salle_de_repos"
+          - tuile5_name: "Température"
+          - tuile5_icon: "mdi:thermometer"
+        grid_options:
+          columns: 3
+          rows: auto
+
+      - type: custom:decluttering-card-plus
+        template: tuiles_5
+        variables:
+          - tuile5_entity: "sensor.sensibo_humiditee_courante_salle_de_repos"
+          - tuile5_name: "Humidité"
+          - tuile5_icon: "mdi:water-percent"
+        grid_options:
+          columns: 3
+          rows: auto
+
+      - type: heading
+        heading_style: title
+        grid_options:
+          columns: 6
+          rows: 0.7
+        heading: Chambre des invités
+        badges:
+          - type: entity
+            show_state: true
+            show_icon: true
+            entity: sensor.govee_chambre_invites_battery
+
+      - type: heading
+        heading_style: title
+        grid_options:
+          columns: 6
+          rows: 0.7
+        heading: Atelier
+        badges:
+          - type: entity
+            show_state: true
+            show_icon: true
+            entity: sensor.govee_atelier_battery
+
+      - type: custom:decluttering-card-plus
+        template: tuiles_5
+        variables:
+          - tuile5_entity: "sensor.govee_chambre_invites_temperature"
+          - tuile5_name: "Température"
+          - tuile5_icon: "mdi:thermometer"
+        grid_options:
+          columns: 3
+          rows: auto
+
+      - type: custom:decluttering-card-plus
+        template: tuiles_5
+        variables:
+          - tuile5_entity: "sensor.govee_chambre_invites_humidity"
+          - tuile5_name: "Humidité"
+          - tuile5_icon: "mdi:water-percent"
+        grid_options:
+          columns: 3
+          rows: auto
+
+      - type: custom:decluttering-card-plus
+        template: tuiles_5
+        variables:
+          - tuile5_entity: "sensor.govee_atelier_temperature"
+          - tuile5_name: "Température"
+          - tuile5_icon: "mdi:thermometer"
+        grid_options:
+          columns: 3
+          rows: auto
+
+      - type: custom:decluttering-card-plus
+        template: tuiles_5
+        variables:
+          - tuile5_entity: "sensor.govee_atelier_humidity"
+          - tuile5_name: "Humidité"
+          - tuile5_icon: "mdi:water-percent"
+        grid_options:
+          columns: 3
+          rows: auto

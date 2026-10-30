@@ -1,0 +1,505 @@
+title: Éclairages
+path: Vue-Eclairages
+icon: mdi:lamps-outline
+subview: false
+type: sections
+max_columns: 2
+cards: []
+sections:
+  - type: grid
+    cards:
+      - type: heading
+        heading_style: title
+        heading: Éclairages
+        grid_options:
+          columns: full
+          rows: 0.5
+        card_mod:
+          style: |
+            .content.title {
+              font-size: 25px;
+            }
+
+      - type: heading
+        icon: mdi:sofa
+        heading_style: title
+        grid_options:
+          columns: full
+          rows: 0.4
+        heading: Salon
+
+      - type: custom:decluttering-card-plus
+        template: tuiles_3
+        variables:
+          - tuile3_entity: "light.salon"
+          - tuile3_name: "Lampes"
+          - tuile3_icon: "mdi:lamps"
+        grid_options:
+          columns: 3
+          rows: auto
+
+      - type: custom:decluttering-card-plus
+        template: tuiles_3
+        variables:
+          - tuile3_entity: "light.lecture"
+          - tuile3_name: "Lecture"
+          - tuile3_icon: "mdi:desk-lamp"
+        grid_options:
+          columns: 3
+          rows: auto
+
+      - type: custom:decluttering-card-plus
+        template: tuiles_3
+        variables:
+          - tuile3_entity: "switch.huche_salon"
+          - tuile3_name: "Huche"
+          - tuile3_icon: "hue:bulb-group-recessed-ceiling"
+        grid_options:
+          columns: 3
+          rows: auto
+
+      - type: custom:decluttering-card-plus
+        template: tuiles_3
+        variables:
+          - tuile3_entity: "light.govee_tele"
+          - tuile3_name: "Govee"
+          - tuile3_icon: "mdi:television-ambient-light"
+        grid_options:
+          columns: 3
+          rows: auto
+
+      - type: heading
+        icon: mdi:table-chair
+        heading_style: title
+        grid_options:
+          columns: 6
+          rows: 0.4
+        heading: Salle à manger
+
+      - type: heading
+        icon: mdi:tree
+        heading_style: title
+        grid_options:
+          columns: 6
+          rows: 0.4
+        heading: Extérieure
+
+      - type: custom:decluttering-card-plus
+        template: tuiles_3
+        variables:
+          - tuile3_entity: "light.salle_a_diner_table"
+          - tuile3_name: "Table"
+          - tuile3_icon: "hue:ensis"
+        grid_options:
+          columns: 3
+          rows: auto
+
+      - type: custom:decluttering-card-plus
+        template: tuiles_3
+        variables:
+          - tuile3_entity: "switch.vestibule_avant"
+          - tuile3_name: "Vestibule"
+          - tuile3_icon: "hue:ceiling-fugato-three-alt"
+        grid_options:
+          columns: 3
+          rows: auto
+
+      - type: custom:decluttering-card-plus
+        template: tuiles_3
+        variables:
+          - tuile3_entity: "light.exterieure_avant"
+          - tuile3_name: "Avant"
+          - tuile3_icon: "hue:floor-lantern-group"
+        grid_options:
+          columns: 3
+          rows: auto
+
+      - type: custom:decluttering-card-plus
+        template: tuiles_3
+        variables:
+          - tuile3_entity: "light.neviweb130_lumiere_exterieurs_arriere"
+          - tuile3_name: "Arrière"
+          - tuile3_icon: "hue:ceiling-fugato-two-alt"
+        grid_options:
+          columns: 3
+          rows: auto
+
+      - type: heading
+        icon: mdi:desk
+        heading_style: title
+        grid_options:
+          columns: 6
+          rows: 0.4
+        heading: Bureau
+
+      - type: heading
+        icon: mdi:chair-rolling
+        heading_style: title
+        grid_options:
+          columns: 3
+          rows: 0.4
+        heading: Boudoire
+
+      - type: heading
+        icon: mdi:tools
+        heading_style: title
+        grid_options:
+          columns: 3
+          rows: 0.4
+        heading: Atlier
+
+      - type: custom:decluttering-card-plus
+        template: tuiles_3
+        variables:
+          - tuile3_entity: "light.neviweb130_light_bureau"
+          - tuile3_name: "Plafond"
+          - tuile3_icon: "hue:ceiling-fugato-four-alt"
+        grid_options:
+          columns: 3
+          rows: auto
+
+      - type: custom:decluttering-card-plus
+        template: tuiles_3
+        variables:
+          - tuile3_entity: "light.neviweb130_light_garde_robes_bureau"
+          - tuile3_name: "Placard"
+          - tuile3_icon: "hue:ceiling-fair-semiflush"
+        grid_options:
+          columns: 3
+          rows: auto
+
+      - type: custom:decluttering-card-plus
+        template: tuiles_3
+        variables:
+          - tuile3_entity: "switch.salle_repos_boudoire"
+          - tuile3_name: "Plafond"
+          - tuile3_icon: "hue:ceiling-fugato-four-alt"
+        grid_options:
+          columns: 3
+          rows: auto
+
+      - type: custom:decluttering-card-plus
+        template: tuiles_3
+        variables:
+          - tuile3_entity: "light.neviweb130_light_lumiere_atelier"
+          - tuile3_name: "Plafond"
+          - tuile3_icon: "hue:ceiling-adore"
+        grid_options:
+          columns: 3
+          rows: auto
+
+      - type: heading
+        heading_style: title
+        grid_options:
+          columns: full
+          rows: 0.8
+        heading: Prises
+        card_mod:
+          style: |
+            .content.title {
+              font-size: 25px;
+            }
+
+      - type: heading
+        icon: mdi:sofa
+        heading_style: title
+        grid_options:
+          columns: 6
+          rows: 0.4
+        heading: Salon
+
+      - type: heading
+        icon: mdi:stove
+        heading_style: title
+        grid_options:
+          columns: 5
+          rows: 0.4
+        heading: Cuisine
+        entities:
+          - show_state: true
+            show_icon: true
+            entity: sensor.ipad_de_michel_battery_level
+
+      - type: custom:decluttering-card-plus
+        template: tuiles_3
+        variables:
+          - tuile3_entity: "switch.neviweb130_switch_prise_lampes_salon"
+          - tuile3_name: "Lampes"
+          - tuile3_icon: "mdi:power-socket-us"
+        grid_options:
+          columns: 3
+          rows: auto
+
+      - type: custom:decluttering-card-plus
+        template: tuiles_3
+        variables:
+          - tuile3_entity: "switch.neviweb130_switch_prise_huche_salon"
+          - tuile3_name: "Huche"
+          - tuile3_icon: "mdi:power-socket-us"
+        grid_options:
+          columns: 3
+          rows: auto
+
+      - type: custom:decluttering-card-plus
+        template: tuiles_3
+        variables:
+          - tuile3_entity: "switch.neviweb130_switch_prise_ipad_ha"
+          - tuile3_name: "iPad HA"
+          - tuile3_icon: "mdi:power-socket-us"
+        grid_options:
+          columns: 3
+          rows: auto
+
+  - type: grid
+    cards:
+      - type: heading
+        heading_style: title
+        grid_options:
+          columns: full
+          rows: 0.5
+        heading: Éclairages
+        card_mod:
+          style: |
+            .content.title {
+              font-size: 25px;
+            }
+
+      - type: heading
+        icon: mdi:stove
+        heading_style: title
+        grid_options:
+          columns: full
+          rows: 0.4
+        heading: Cuisine
+
+      - type: custom:decluttering-card-plus
+        template: tuiles_3
+        variables:
+          - tuile3_entity: "light.neviweb130_light_comptoir_cuisine"
+          - tuile3_name: "Évier"
+          - tuile3_icon: "hue:ceiling-fugato-two"
+        grid_options:
+          columns: 3
+          rows: auto
+
+      - type: custom:decluttering-card-plus
+        template: tuiles_3
+        variables:
+          - tuile3_entity: "light.neviweb130_light_lumiere_huche_cuisine"
+          - tuile3_name: "Huche"
+          - tuile3_icon: "hue:single-spot"
+        grid_options:
+          columns: 3
+          rows: auto
+
+      - type: custom:decluttering-card-plus
+        template: tuiles_3
+        variables:
+          - tuile3_entity: "light.neviweb130_lumiere_vestibule_arriere"
+          - tuile3_name: "Vestibule"
+          - tuile3_icon: "hue:ceiling-buratto-four"
+        grid_options:
+          columns: 3
+          rows: auto
+
+      - type: custom:decluttering-card-plus
+        template: tuiles_3
+        variables:
+          - tuile3_entity: "light.neviweb130_light_garde_robes_cuisine"
+          - tuile3_name: "Placard"
+          - tuile3_icon: "mdi:ceiling-light-outline"
+        grid_options:
+          columns: 3
+          rows: auto
+
+      - type: heading
+        icon: mdi:bed-king
+        heading_style: title
+        grid_options:
+          columns: 9
+          rows: 0.4
+        heading: Chambre des maîtres
+
+      - type: heading
+        icon: mdi:bathtub
+        heading_style: title
+        grid_options:
+          columns: 3
+          rows: 0.4
+        heading: Bain
+
+      - type: custom:decluttering-card-plus
+        template: tuiles_3
+        variables:
+          - tuile3_entity: "light.chambre_des_maitres_plafond"
+          - tuile3_name: "Plafond"
+          - tuile3_icon: "hue:pendant-cher"
+        grid_options:
+          columns: 3
+          rows: auto
+
+      - type: custom:decluttering-card-plus
+        template: tuiles_3
+        variables:
+          - tuile3_entity: "light.chevets"
+          - tuile3_name: "Chevets"
+          - tuile3_icon: "hue:beyond-solid-group"
+        grid_options:
+          columns: 3
+          rows: auto
+
+      - type: custom:decluttering-card-plus
+        template: tuiles_3
+        variables:
+          - tuile3_entity: "switch.garde_robes_chambre_des_maitres"
+          - tuile3_name: "Placard"
+        grid_options:
+          columns: 3
+          rows: auto
+
+      - type: custom:decluttering-card-plus
+        template: tuiles_3
+        variables:
+          - tuile3_entity: "light.salle_de_bain"
+          - tuile3_name: "Lavabo"
+          - tuile3_icon: "hue:ceiling-adore"
+        grid_options:
+          columns: 3
+          rows: auto
+
+      - type: heading
+        icon: mdi:sofa
+        heading_style: title
+        grid_options:
+          columns: 6
+          rows: 0.4
+        heading: "Familiale"
+
+      - type: heading
+        icon: mdi:toilet
+        heading_style: title
+        grid_options:
+          columns: 3
+          rows: 0.4
+        heading: Salle eau
+
+      - type: heading
+        icon: mdi:bed-double
+        heading_style: title
+        grid_options:
+          columns: 3
+          rows: 0.4
+        heading: Invités
+
+      - type: custom:decluttering-card-plus
+        template: tuiles_3
+        variables:
+          - tuile3_entity: "light.salle_familiale_groupe_de_lumieres"
+          - tuile3_name: "Plafond"
+          - tuile3_icon: "hue:ceiling-square"
+        grid_options:
+          columns: 3
+          rows: auto
+
+      - type: custom:decluttering-card-plus
+        template: tuiles_3
+        variables:
+          - tuile3_entity: "light.echangeur_air"
+          - tuile3_name: "Air"
+          - tuile3_icon: "hue:bulb-sultan"
+        grid_options:
+          columns: 3
+          rows: auto
+
+      - type: custom:decluttering-card-plus
+        template: tuiles_3
+        variables:
+          - tuile3_entity: "light.neviweb130_light_lumiere_salle_deau"
+          - tuile3_name: "Huche"
+          - tuile3_icon: "hue:ceiling-adore"
+        grid_options:
+          columns: 3
+          rows: auto
+
+      - type: custom:decluttering-card-plus
+        template: tuiles_3
+        variables:
+          - tuile3_entity: "light.neviweb130_light_lumiere_chambre_invites"
+          - tuile3_name: "Plafond"
+          - tuile3_icon: "hue:ceiling-fugato-three-alt"
+        grid_options:
+          columns: 3
+          rows: auto
+
+      - type: heading
+        heading_style: title
+        grid_options:
+          columns: 6
+          rows: 0.8
+        heading: Prises
+        card_mod:
+          style: |
+            .content.title {
+              font-size: 25px;
+            }
+
+      - type: heading
+        heading_style: title
+        grid_options:
+          columns: 6
+          rows: 0.8
+        heading: Interrupteurs
+        card_mod:
+          style: |
+            .content.title {
+              font-size: 25px;
+            }
+
+      - type: heading
+        icon: mdi:home-floor-0
+        heading_style: title
+        grid_options:
+          columns: 6
+          rows: 0.4
+        heading: Sous-Sol
+        entities:
+          - show_state: true
+            show_icon: true
+            entity: sensor.chauffe_eau_temperature
+
+      - type: heading
+        heading_style: title
+        icon: hue:room-front-door
+        grid_options:
+          columns: 6
+          rows: 0.4
+        heading: Gal Avant
+
+      - type: custom:decluttering-card-plus
+        template: tuiles_3
+        variables:
+          - tuile3_entity: "switch.neviweb130_switch_prise_echangeur_dair"
+          - tuile3_name: "Air"
+          - tuile3_icon: "mdi:power-socket-us"
+        grid_options:
+          columns: 3
+          rows: auto
+
+      - type: custom:decluttering-card-plus
+        template: tuiles_3
+        variables:
+          - tuile3_entity: "switch.chauffe_eau"
+          - tuile3_name: "Chauffe eau"
+          - tuile3_icon: "mdi:water-boiler"
+        grid_options:
+          columns: 3
+          rows: auto
+
+      - type: custom:decluttering-card-plus
+        template: tuiles_3
+        variables:
+          - tuile3_entity: "switch.lumieres_galerie_avant"
+          - tuile3_name: "Galerie Avant"
+        grid_options:
+          columns: 3
+          rows: auto

@@ -1,0 +1,410 @@
+# decluttering_templates:
+
+# Badges
+badge-conditions:
+    badge:
+      type: entity
+      entity: '[[conditions_entity]]'
+      icon: '[[conditions_icon]]'
+      color: red
+      visibility:
+        - condition: state
+          entity: '[[conditions_entity]]'
+          state_not: "0"
+      default:
+        - conditions_entity: ''
+        - conditions_icon: ''
+      tap_action:
+        action: none
+
+badge-collectes:
+    badge:
+      type: entity
+      show_name: false
+      show_state: false
+      show_icon: true
+      entity: '[[collectes_entity]]'
+      show_entity_picture: true
+      visibility:
+        - condition: or
+          conditions:
+            - condition: state
+              entity: '[[collectes_entity]]'
+              state: '0'
+            - condition: state
+              entity: '[[collectes_entity]]'
+              state: '1'
+      default:
+        - collectes_entity: ''
+      tap_action:
+        action: none
+
+# Cartes
+
+alertes:
+  default:
+    - alertes_entity: ""
+    - alertes_name: ""
+  card:
+   type: alert
+   entity: "[[alertes_entity]]"
+   vertical: true
+   clear_color: green
+   alert_color: red
+   pulse: true
+   name: "[[alertes_name]]"
+   hide_state: false
+   tap_action:
+     action: none
+   card_mod:
+     style: |
+       ha-card {
+         box-shadow: var(--couleur_ombre);
+       }
+
+statistques:
+  default:
+    - statistques_entity: ""
+    - statistques_color: ""
+    - statistques_row: ""
+  card:
+    type: statistics-graph
+    grid_options:
+      rows: "[[statistques_row]]"
+    entities:
+      - entity: "[[statistques_entity]]"
+        color: "[[statistques_color]]"
+    days_to_show: 1
+    period: hour
+    chart_type: line
+    stat_types:
+      - mean
+    hide_legend: true
+    card_mod:
+      style: |
+        ha-card {
+          box-shadow: var(--couleur_ombre);
+        }
+        
+tuiles_1:
+  default:
+    - tuile1_name: "Chauffage"
+    - tuile1_entity: ""
+  card:
+    type: tile
+    features:
+      - type: target-temperature
+    entity: "[[tuile1_entity]]"
+    name: "[[tuile1_name]]"
+    state_content:
+      - current_temperature
+      - hvac_action
+    vertical: false
+    card_mod:
+      style: |
+        ha-card {
+          box-shadow: var(--couleur_ombre);
+        }
+
+tuiles_2:
+  default:
+    - tuile2_name: ""
+    - tuile2_entity: ""
+  card:
+    type: tile
+    name: "[[tuile2_name]]"
+    entity: "[[tuile2_entity]]"
+    hide_state: true
+    vertical: false
+    features:
+      - type: target-temperature
+      - type: climate-hvac-modes
+        hvac_modes:
+          - heat
+          - cool
+          - "off"
+    card_mod:
+      style: |
+        ha-card {
+          box-shadow: var(--couleur_ombre);
+        }
+
+tuiles_3:
+  default:
+    - tuile3_name: ""
+    - tuile3_entity: ""
+    - tuile3_icon: ""
+  card:
+    type: tile
+    entity: "[[tuile3_entity]]"
+    name: "[[tuile3_name]]"
+    icon: "[[tuile3_icon]]"
+    vertical: true
+    tap_action:
+      action: toggle
+    icon_tap_action:
+      action: more-info
+    card_mod:
+      style: |
+        ha-card
+          {
+            box-shadow: var(--couleur_ombre);
+          }
+
+tuiles_4:
+  default:
+    - tuile4_entity: ""
+    - tuile4_name: ""
+  card:
+    type: tile
+    entity: "[[tuile4_entity]]"
+    name: "[[tuile4_name]]"
+    icon: mdi:cctv
+    vertical: true
+    hide_state: true
+    tap_action:
+      action: none
+    icon_tap_action:
+      action: none
+    features:
+      - type: alarm-modes
+    features_position: inline
+    card_mod:
+      style: |
+        ha-card {
+          box-shadow: var(--couleur_ombre);
+        }
+
+tuiles_5:
+  default:
+    - tuile5_name: "fuites"
+    - tuile5_entity: ""
+    - tuile5_icon: ""
+    - tuile5_color: ""
+  card:
+    type: tile
+    entity: "[[tuile5_entity]]"
+    name: "[[tuile5_name]]"
+    icon: "[[tuile5_icon]]"
+    color: "[[tuile5_color]]"
+    vertical: true
+    tap_action:
+      action: none
+    icon_tap_action:
+      action: none
+    card_mod:
+      style: |
+        ha-card
+          {
+            box-shadow: var(--couleur_ombre);
+          }
+
+personne_1:
+  default:
+    - personne1_personne: ""
+    - personne1_navigation_path: ""
+  card:
+        type: tile
+        entity: "[[personne1_personne]]"
+        show_entity_picture: true
+        vertical: true
+        tap_action:
+           action: navigate
+           navigation_path: "[[personne1_navigation_path]]"
+        card_mod:
+          style: |
+            ha-card {
+              box-shadow: var(--couleur_ombre) !important;
+            }
+
+piles:
+  default:
+    - piles_columns: "8"
+  card:
+    type: custom:auto-entities
+    card:
+      type: grid
+      columns: "[[piles_columns]]"
+    card_param: cards
+    filter:
+      include:
+        - options:
+            type: gauge
+            min: 0
+            max: 100
+            severity:
+              green: 66
+              yellow: 33
+              red: 0
+            card_mod:
+              style: |
+                ha-card {
+                  box-shadow: var(--couleur_ombre);
+                }
+          attributes:
+            device_class: battery
+          domain: sensor
+      exclude:
+        - entity_id: sensor.st_00032986_tension_de_la_batterie
+    sort:
+      method: state
+      numeric: true
+    show_empty: false
+
+defi_hilo_card:
+  card:
+    type: conditional
+    conditions:
+      - condition: numeric_state
+        entity: sensor.defi_hilo_count
+        above: "[[id]]"
+    card:
+      type: custom:stack-in-card
+      mode: vertical
+      card_mod:
+        style: |
+          ha-card {
+            border-radius:0px;
+            border-style: solid none none none;
+          }
+      cards:
+        - type: markdown
+          content: >
+            {% set defi = state_attr('sensor.defi_hilo','next_events')[[[id]]]
+            %}
+
+            {% set date =
+            as_timestamp(defi.phases.preheat_start)|timestamp_custom("%d")|int
+            %} {% set weekday =
+            as_timestamp(defi.phases.preheat_start)|timestamp_custom("%w") %}
+            {% set jour = ['Dimanche', 'Lundi', 'Mardi', 'Mercredi', 'Jeudi',
+            'Vendredi', 'Samedi'][int(weekday)] %} {% set dateToday =
+            as_timestamp(now())|timestamp_custom("%d")|int %}
+
+            {% if dateToday == date %}
+              {% set descriptif = "Aujourd'hui" %}
+            {% elif date - dateToday == 1 %}
+              {% set descriptif = "Demain" %}
+            {% else %}
+              {% set descriptif = jour + " " + date %}
+            {% endif %}
+
+            ## {{descriptif}} {{defi.period.upper()}}
+          card_mod:
+            style: |
+              ha-card {
+                border-radius:0px;
+                border-style: none;
+              }
+        - type: custom:stack-in-card
+          mode: horizontal
+          card_mod:
+            style: |
+              ha-card {
+                border-radius:0px;
+                border-style: none;
+              }
+          cards:
+            - type: custom:decluttering-card
+              template: defi_hilo_phase_card
+              variables:
+                - id: "[[id]]"
+                - phase_state_name: appreciation
+                - phase_attributes_name: appreciation
+                - primary: Ancrage
+                - icon: mdi:lightning-bolt
+            - type: custom:decluttering-card
+              template: defi_hilo_phase_card
+              variables:
+                - id: "[[id]]"
+                - phase_state_name: pre_heat
+                - phase_attributes_name: preheat
+                - primary: Préchauffage
+                - icon: mdi:timer-sand
+            - type: custom:decluttering-card
+              template: defi_hilo_phase_card
+              variables:
+                - id: "[[id]]"
+                - phase_state_name: reduction
+                - phase_attributes_name: reduction
+                - primary: Réduction
+                - icon: mdi:power-plug-off
+            - type: custom:decluttering-card
+              template: defi_hilo_phase_card
+              variables:
+                - id: "[[id]]"
+                - phase_state_name: recovery
+                - phase_attributes_name: recovery
+                - primary: Reprise
+                - icon: mdi:restart
+
+defi_hilo_phase_card:
+  default:
+    - id: 0
+    - phase_state_name: appreciation
+    - phase_attributes_name: appreciation
+    - primary: Ancrage
+    - icon: mdi:anchor
+    - entity: sensor.defi_hilo
+  card:
+    type: custom:mushroom-template-card
+    entity: "[[entity]]"
+    icon: "[[icon]]"
+    primary: "[[primary]]"
+    multiline_secondary: true
+    layout: vertical
+    tap_action:
+      action: more-info
+    card_mod:
+      style:
+        .: |
+          ha-card {
+            border-radius:0px;
+            border-style: none;
+          }
+          mushroom-shape-icon {
+            {% if is_state('[[entity]]', '[[phase_state_name]]') %}
+            animation: dropshadow-change 2s linear infinite;
+            {% endif %}
+            test: '[[phase_state_name]]';
+            test2: '[[entity]]';
+          }
+          @keyframes dropshadow-change {
+            0% { filter: drop-shadow(0px 0px 2px rgba(0, 0, 0, 0)); }
+            50% { filter: drop-shadow(0px 0px 8px green); }
+            100% { filter: drop-shadow(0px 0px 2px rgba(0, 0, 0, 0)); }
+          }
+    secondary: >-
+      {%- set phaseStart =
+      as_timestamp(state_attr(entity,'next_events')[[[id]]]['phases']['[[phase_attributes_name]]_start'])
+      -%} {%- set phaseEnd =
+      as_timestamp(state_attr(entity,'next_events')[[[id]]]['phases']['[[phase_attributes_name]]_end'])
+      -%} {%- set remainingTime = phaseStart - as_timestamp(now()) -%}
+
+      {%- if remainingTime > 0 %} {{ phaseStart | timestamp_custom("%-Hh") }}
+      à {{ phaseEnd | timestamp_custom("%-Hh") }}
+
+      ⏱︎ {{ (phaseStart - as_timestamp(now())) | timestamp_custom("%-Hh%M",
+      false) }} {%- elif is_state(entity, '[[phase_state_name]]') %} {{
+      phaseStart | timestamp_custom("%-Hh") }} à {{ phaseEnd |
+      timestamp_custom("%-Hh") }}
+
+      ⏱︎ {{ (phaseEnd - as_timestamp(now())) | timestamp_custom("%-Hh%M",
+      false) }} {%- else %} Complété! {%- endif -%}
+    icon_color: >-
+      {%- set phaseStart =
+      as_timestamp(state_attr(entity,'next_events')[[[id]]]['phases']['[[phase_attributes_name]]_start'])
+      -%} {%- set remainingTime = phaseStart - as_timestamp(now()) -%}
+
+      {%- if is_state(entity, '[[phase_state_name]]') and (remainingTime <= 0)
+      -%}
+        green
+      {%- endif -%}
+    badge_icon: >-
+      {% if
+      as_timestamp(state_attr(entity,'next_events')[[[id]]]['phases']['[[phase_attributes_name]]_end'])
+      - as_timestamp(now()) <= 0 %}
+        mdi:check-bold
+      {% endif %}
+    badge_color: green
+

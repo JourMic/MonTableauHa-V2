@@ -1,0 +1,23 @@
+itle: Phase Lune et Soleil
+path: Sous-Vue-Phase-Lune-Soleil
+icon: mdi:update
+subview: true
+type: sections
+max_columns: 1
+cards: []
+sections:
+
+  - type: grid
+    cards:
+
+      - type: custom:meteo-astro-card
+        show_meteors: false
+        show_pollens: false
+        moon_image: /local/images/Pleine_Lune.PNG
+        earth_image: /local/images/Terre.PNG
+        grid_options:
+          columns: 24
+          rows: 8
+          
+    column_span: 1
+

@@ -1,0 +1,40 @@
+# Templates
+
+decluttering_templates: !include Templates/decluttering-templates.yaml
+
+# Tableau de bord
+
+title: Mon Tableau HA
+
+views:
+  # Vues principales
+
+  - !include Vues-Pincipales/Vue-Principale.yaml
+  - !include Vues-Pincipales/Vue-Eclairages.yaml
+  - !include Vues-Pincipales/Vue-Chauffage.yaml
+  - !include Vues-Pincipales/Vue-Securite.yaml
+  - !include Vues-Pincipales/Vue-Conditions.yaml
+
+  # Vues
+
+  - !include Vues/Vue-Hydro-Quebec-Maison.yaml
+  - !include Vues/Vue-Meteo.yaml
+  - !include Vues/Vue-Piles.yaml
+  - !include Vues/Vue-Formule-1.yaml
+  - !include Vues/Vue-Statut.yaml
+
+  # Sous Vues
+
+  - !include Sous-Vues/Sous-Vue-Defis.yaml
+  - !include Sous-Vues/Sous-Vue-Hydro-Quebec.yaml
+  - !include Sous-Vues/Sous-Vue-Consommation-Maison.yaml
+  - !include Sous-Vues/Sous-Vue-Pluie.yaml
+  - !include Sous-Vues/Sous-Vue-Pannes-En-Cours.yaml
+  - !include Sous-Vues/Sous-Vue-Prix-Essence.yaml
+  - !include Sous-Vues/Sous-Vue-Personne-Brigitte.yaml
+  - !include Sous-Vues/Sous-Vue-Personne-Claude.yaml
+  - !include Sous-Vues/Sous-Vue-Personne-Valerie.yaml
+  - !include Sous-Vues/Sous-Vue-Personne-Michel.yaml
+  - !include Sous-Vues/Sous-Vue-Mise-A-jour.yaml
+  - !include Sous-Vues/Sous-Vue-Statut-RPI.yaml
+

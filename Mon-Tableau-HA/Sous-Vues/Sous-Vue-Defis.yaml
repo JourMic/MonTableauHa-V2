@@ -1,0 +1,483 @@
+title: Hilo défis
+path: Sous-Vue-Defis
+icon: mdi:gauge-full
+subview: true
+type: sections
+max_columns: 2
+cards: []
+sections:  
+  - type: grid
+    cards:
+      - type: heading
+        heading: Défis prévus
+        heading_style: title
+        icon: mdi:page-next
+        entities:
+          - show_state: true
+            show_icon: true
+            entity: sensor.defi_hilo_nb_defi_planifies
+            color: red
+        grid_options:
+          columns: full
+          rows: 0.4
+
+      - type: custom:vertical-stack-in-card
+        cards:
+          - type: custom:mushroom-title-card
+            title: Défis Hilo
+            title_tap_action:
+              action: none
+            subtitle_tap_action:
+              action: none
+            subtitle: ""
+
+          - type: horizontal-stack
+            cards:
+              - type: conditional
+                conditions:
+                  - condition: or
+                    conditions:
+                      - condition: state
+                        entity: sensor.defi_hilo
+                        state: "off"
+                      - condition: state
+                        entity: sensor.defi_hilo
+                        state: completed
+                card:
+                  type: custom:mushroom-entity-card
+                  entity: sensor.defi_hilo
+                  fill_container: false
+                  name: Status Defi Hilo
+                  tap_action:
+                    action: more-info
+                  hold_action:
+                    action: none
+                  double_tap_action:
+                    action: none
+                  icon_color: primary
+                  icon: mdi:flash
+              - type: conditional
+                conditions:
+                  - condition: state
+                    entity: sensor.defi_hilo
+                    state: scheduled
+                card:
+                  type: custom:mushroom-entity-card
+                  entity: sensor.defi_hilo
+                  fill_container: false
+                  name: Status Defi Hilo
+                  tap_action:
+                    action: more-info
+                  hold_action:
+                    action: none
+                  double_tap_action:
+                    action: none
+                  icon_color: yellow
+                  icon: mdi:flash-red-eye
+              - type: conditional
+                conditions:
+                  - condition: state
+                    entity: sensor.defi_hilo
+                    state: appreciation
+                card:
+                  type: custom:mushroom-entity-card
+                  entity: sensor.defi_hilo
+                  fill_container: false
+                  name: Status Defi Hilo
+                  tap_action:
+                    action: more-info
+                  hold_action:
+                    action: none
+                  double_tap_action:
+                    action: none
+                  icon_color: accent
+                  icon: mdi:flash-alert
+              - type: conditional
+                conditions:
+                  - condition: state
+                    entity: sensor.defi_hilo
+                    state: pre_heat
+                card:
+                  type: custom:mushroom-entity-card
+                  entity: sensor.defi_hilo
+                  fill_container: false
+                  name: Status Defi Hilo
+                  tap_action:
+                    action: more-info
+                  hold_action:
+                    action: none
+                  double_tap_action:
+                    action: none
+                  icon_color: deep-orange
+                  icon: mdi:flash-auto
+              - type: conditional
+                conditions:
+                  - condition: state
+                    entity: sensor.defi_hilo
+                    state: reduction
+                card:
+                  type: custom:mushroom-entity-card
+                  entity: sensor.defi_hilo
+                  fill_container: false
+                  name: Status Defi Hilo
+                  tap_action:
+                    action: more-info
+                  hold_action:
+                    action: none
+                  double_tap_action:
+                    action: none
+                  icon_color: red
+                  icon: mdi:flash-off
+              - type: conditional
+                conditions:
+                  - condition: state
+                    entity: sensor.defi_hilo
+                    state: recovery
+                card:
+                  type: custom:mushroom-entity-card
+                  entity: sensor.defi_hilo
+                  fill_container: false
+                  name: Status Defi Hilo
+                  tap_action:
+                    action: more-info
+                  hold_action:
+                    action: none
+                  double_tap_action:
+                    action: none
+                  icon_color: green
+                  icon: mdi:flash-outline
+
+          - type: horizontal-stack
+            cards:
+              - type: conditional
+                conditions:
+                  - condition: or
+                    conditions:
+                      - condition: state
+                        entity: sensor.defi_hilo
+                        state_not: "off"
+                card:
+                  graph: line
+                  type: sensor
+                  entity: sensor.defi_hilo_used_kwh
+                  detail: 1
+              - type: conditional
+                conditions:
+                  - condition: or
+                    conditions:
+                      - condition: state
+                        entity: sensor.defi_hilo
+                        state_not: "off"
+                card:
+                  graph: line
+                  type: sensor
+                  entity: sensor.defi_hilo_allowed_kwh
+                  detail: 1
+
+          - type: horizontal-stack
+            cards:
+              - type: custom:mushroom-template-card
+                primary: Ancrage
+                secondary: >-
+                  {{
+                  (as_timestamp(state_attr('sensor.defi_hilo','next_events')[0]['phases']['appreciation_start']
+                  ) - as_timestamp(now())) | timestamp_custom("%Hh%Mm", false) }}
+                icon: mdi:anchor
+                icon_color: blue
+                entity: sensor.defi_hilo
+                tap_action:
+                  action: more-info
+              - type: custom:mushroom-template-card
+                primary: Préchauffage
+                secondary: >-
+                  {{
+                  (as_timestamp(state_attr('sensor.defi_hilo','next_events')[0]['phases']['preheat_start']
+                  ) - as_timestamp(now())) | timestamp_custom("%Hh%Mm", false) }}
+                icon: mdi:radiator
+                icon_color: blue
+                entity: sensor.defi_hilo
+                tap_action:
+                  action: more-info
+
+          - type: horizontal-stack
+            cards:
+              - type: custom:mushroom-template-card
+                primary: Réduction
+                secondary: >-
+                  {{
+                   (as_timestamp(state_attr('sensor.defi_hilo','next_events')[0]['phases']['reduction_start']
+                  ) - as_timestamp(now())) | timestamp_custom("%Hh%Mm", false) }}
+                icon: mdi:radiator-off
+                icon_color: blue
+                entity: sensor.defi_hilo
+                tap_action:
+                  action: more-info
+              - type: custom:mushroom-template-card
+                primary: Reprise
+                secondary: >-
+                  {{
+                  (as_timestamp(state_attr('sensor.defi_hilo','next_events')[0]['phases']['recovery_start']
+                  ) - as_timestamp(now())) | timestamp_custom("%Hh%Mm", false) }}
+                icon: mdi:radiator-disabled
+                icon_color: blue
+                entity: sensor.defi_hilo
+                tap_action:
+                  action: more-info
+
+          - type: horizontal-stack
+            cards:
+              - type: custom:mushroom-entity-card
+                fill_container: false
+                tap_action:
+                  action: more-info
+                hold_action:
+                  action: none
+                double_tap_action:
+                  action: none
+                entity: sensor.hydro_quebec_maison_balance
+                name: Solde
+              - type: custom:mushroom-entity-card
+                fill_container: false
+                tap_action:
+                  action: more-info
+                hold_action:
+                  action: none
+                double_tap_action:
+                  action: none
+                entity: sensor.recompenses_hilo
+                name: Récompenses Hilo
+                icon_color: green
+
+          - type: history-graph
+            entities:
+              - entity: sensor.defi_hilo
+            logarithmic_scale: false
+            hours_to_show: 24
+
+          - type: markdown
+            content: |-
+              {% 
+
+              set data = state_attr('sensor.defi_hilo','next_events') %}
+
+              {% if states('sensor.defi_hilo_nb_defi_planifies') > '0' %}
+                {%- for ndefi in data -%}
+                    <b>{{as_timestamp(ndefi.phases.preheat_start)|timestamp_custom("%d-%m-%Y")}} - {{ndefi.state}}</b> 
+
+                 <ul>
+                   <li>Ancrage: {{as_timestamp(ndefi.phases.appreciation_start)|timestamp_custom("%H:%M")+ " à " + as_timestamp(ndefi.phases.appreciation_end)|timestamp_custom("%H:%M") }}   
+                   <li>PréChauffage:  {{as_timestamp(ndefi.phases.preheat_start)|timestamp_custom("%H:%M")+ " à " + as_timestamp(ndefi.phases.preheat_end)|timestamp_custom("%H:%M") }}
+                   <li>Defi:  {{as_timestamp(ndefi.phases.reduction_start)|timestamp_custom("%H:%M") + " à " + as_timestamp(ndefi.phases.reduction_end)|timestamp_custom("%H:%M") }}
+                 </ul>
+                {%- endfor -%}
+
+              {% else %}
+                ## Aucun
+              {% endif %}
+            title: Prochains événements Hilo
+
+          - type: custom:apexcharts-card
+            header:
+              show: true
+              title: Probabilités de Pointe Critique
+            graph_span: 6d
+            span:
+              start: day
+              offset: +1d
+            color_list:
+              - teal
+              - cyan
+              - yellow
+            apex_config:
+              legend:
+                onItemClick:
+                  toggleDataSeries: false
+                onItemHover:
+                  highlightDataSeries: false
+              markers:
+                size: 0
+              tooltip:
+                enabled: false
+              chart:
+                height: auto
+              dataLabels:
+                dropShadow:
+                  enabled: true
+                  opacity: 0.8
+              plotOptions:
+                bar:
+                  columnWidth: 100%
+                  colors:
+                    ranges:
+                      - from: 70
+                        to: 100
+                        color: lightgreen
+              stroke:
+                width: 2
+              xaxis:
+                type: numeric
+                tickAmount: 6
+                tooltip:
+                  enabled: false
+                axisTicks:
+                  show: true
+                  offsetY: 0
+                  offsetX: -1
+                  height: 7
+                labels:
+                  show: true
+                  trim: true
+                  rotate: -45
+                  rotateAlways: false
+                  offsetX: 8
+                  offsetY: -4
+                  style:
+                    fontSize: 10px
+                  formatter: |
+                    EVAL:function(value, timestamp) {
+                      var daysOfWeek = ['Dim', 'Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam'];
+                      var date = new Date(timestamp);
+
+                      var diff = date - Date.now();
+                      let diffDays = Math.floor(diff / (1000 * 3600 * 24));
+
+                      return diffDays >= 6 ? '' : `${daysOfWeek[date.getDay()]} ${date.getDate()}`;
+                    }
+            yaxis:
+              - id: first
+                min: 0
+                max: ~80
+                decimals: 0
+                apex_config:
+                  title:
+                    text: "%"
+                    rotate: 0
+              - id: second
+                min: ~-20
+                max: ~-10
+                opposite: true
+                decimals: 0
+                apex_config:
+                  title:
+                    text: °C
+                    rotate: 0
+            series:
+              - entity: sensor.hydro_peak_probability
+                name: Matin
+                type: column
+                unit: "%"
+                yaxis_id: first
+                show:
+                  legend_value: false
+                  datalabels: false
+                time_delta: +4h
+                data_generator: |
+                  const data = [];
+                  for(let i = 0; i < 12; i++) {
+                    if (entity.attributes.predictions[i].peak != 'AM')
+                      continue;
+
+                    var date = new Date(entity.attributes.predictions[i].datetime);
+                    data.push([date, entity.attributes.predictions[i].critical])
+                  }
+                  return data;
+              - entity: sensor.hydro_peak_probability
+                name: Soir
+                type: column
+                unit: "%"
+                yaxis_id: first
+                show:
+                  legend_value: false
+                  datalabels: false
+                time_delta: "-3h"
+                data_generator: |
+                  const data = [];
+                  for(let i = 0; i < 12; i++) {
+                    if (entity.attributes.predictions[i].peak != 'PM')
+                      continue;
+
+                    var date = new Date(entity.attributes.predictions[i].datetime);
+                    data.push([date, entity.attributes.predictions[i].critical])
+                  }
+                  return data;
+              - entity: sensor.hydro_peak_probability
+                name: Température
+                type: line
+                unit: °C
+                opacity: 1
+                yaxis_id: second
+                show:
+                  legend_value: false
+                  datalabels: false
+                data_generator: |
+                  const data = [];
+                  for(let i = 0; i < 12; i++) {
+
+                  var date = new Date(entity.attributes.predictions[i].datetime);
+                  data.push([date, entity.attributes.predictions[i].temp])
+                  }
+                  return data;
+        card_mod:
+          style: |
+            ha-card {
+              box-shadow: rgba(30, 196, 229, 0.5) 1px 13px 27px 0px, rgba(212, 244, 250, 0.5) 0px 8px 16px -8px;
+            }
+
+  - type: grid
+    cards:
+      - type: heading
+        heading: Défis réalisés
+        heading_style: title
+        icon: mdi:check-circle
+        grid_options:
+          columns: full
+          rows: 0.4
+
+      - type: custom:vertical-stack-in-card
+        cards:
+          - type: entities
+            entities:
+              - entity: input_select.historique_hilo
+                name: Choisir la saison
+                icon: mdi:history
+            show_header_toggle: false
+            state_color: false
+            title: Saison
+          - type: markdown
+            content: |
+              {%
+                set data = state_attr('sensor.recompenses_hilo','history')[state_attr('input_select.historique_hilo', 'options').index(states('input_select.historique_hilo'))] 
+              %}
+
+              <h2><center>Saison  {{data.season}}-{{data.season + 1}}</center></h2>  
+              <ha-alert alert-type="success"><h3>
+                Nb de défis: {{data.events | count}}<br>
+                Récompense totale: {{"%.2f" | format(data.totalReward) }}$<br>
+                Récompense moyenne: {{"%.2f" | format(data.totalReward /(data.events | count)) }}$
+              </h3></ha-alert>      
+              <br>
+              <table width=100%>
+                <tr>
+                  <th>#</th>
+                  <th>Date</th>
+                  <th>Plage</th>
+                  <th>Alloué</th>
+                  <th>Utilisé</th>
+                  <th>Prime</th>
+                </tr>  
+                {%- for event in data.events | sort(attribute='phases.reduction_start') -%}    
+                  <tr>
+                  <td align=center>{{ "%.0f"|format(loop.index) }}</td>
+                  <td align=center>{{ event.phases.reduction_start.timestamp() | timestamp_custom('%d/%m/%Y') }}</td>
+                  <td align=center>{{ "Matin" if (event.period == "am" or event.period == "AM") else "Soir" }}</td>
+                  <td align=center>{{ "%.2f"|format(event.allowed_kWh) }}</td> 
+                  <td align=center>{{ "%.2f"|format(event.used_kWh) }}</td>
+                  <td align=center>{{ "%.2f"|format([0, (event.allowed_kWh - event.used_kWh)] | max * 0.56786) }}$</td>
+                  </tr>
+                {%- endfor -%}
+              </table>
+        card_mod:
+          style: |
+            ha-card {
+              box-shadow: rgba(30, 196, 229, 0.5) 1px 13px 27px 0px, rgba(212, 244, 250, 0.5) 0px 8px 16px -8px;
+            }

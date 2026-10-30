@@ -1,0 +1,190 @@
+title: Personne Claude
+path: Sous-Vue-Personne-Claude
+icon: mdi:account
+subview: true
+type: sections
+max_columns: 2
+cards: []
+sections:
+  - type: grid
+    cards:
+      - type: heading
+        icon: mdi:account-settings
+        heading: Personne
+        heading_style: title
+        grid_options:
+          rows: 0.5
+          columns: 6
+      - type: heading
+        icon: mdi:battery
+        heading_style: title
+        grid_options:
+          rows: 0.5
+          columns: 6
+        heading: Niveau de la pile
+      - type: picture
+        image:
+          media_content_id: /local/Personnes/Claude_r.jpg
+        grid_options:
+          rows: auto
+          columns: 6
+      - type: gauge
+        entity: sensor.life360_pile_tel_claude
+        needle: true
+        severity:
+          green: 70
+          yellow: 30
+          red: 0
+        grid_options:
+          rows: auto
+          columns: 6
+        name: Pile
+      - type: heading
+        icon: mdi:map-marker-check
+        heading_style: title
+        grid_options:
+          rows: 0.5
+          columns: 6
+        heading: Endroit
+      - type: heading
+        icon: mdi:battery
+        heading_style: title
+        grid_options:
+          rows: 0.5
+          columns: 6
+        heading: Pile en charge?
+      - type: tile
+        grid_options:
+          columns: 6
+          rows: 2
+        entity: device_tracker.life360_claude
+        color: primary
+        show_entity_picture: false
+        state_content:
+          - state
+        vertical: true
+        tap_action:
+          action: none
+        icon_tap_action:
+          action: none
+        features_position: bottom
+        card_mod:
+          style:
+            ha-tile-info$: |
+              .primary {
+                display: none !important;
+              }
+              .info {
+                text-align: center !important;
+              }     
+              .secondary {
+                font-size: 40px !important;
+                font-weight: bold !important;
+                content: 'km/h'
+              }
+            .: |
+              ha-tile-icon {
+                display: none !important;
+              }
+      - type: tile
+        grid_options:
+          columns: 6
+          rows: 2
+        entity: sensor.life360_pile_tel_en_charge_claude
+        vertical: true
+        card_mod:
+          style:
+            ha-tile-info$: |
+              .primary {
+                display: none !important;
+              }
+              .info {
+                text-align: center !important;
+              }     
+              .secondary {
+                font-size: 40px !important;
+                font-weight: bold !important;
+              }
+            .: |
+              ha-tile-icon {
+                display: none !important;
+              }
+      - type: heading
+        icon: mdi:car
+        heading_style: title
+        grid_options:
+          rows: 0.5
+          columns: 6
+        heading: Vitesse lors de déplacement
+      - type: heading
+        icon: mdi:wifi
+        heading_style: title
+        grid_options:
+          rows: 0.5
+          columns: 6
+        heading: Wifi Actif?
+      - type: tile
+        grid_options:
+          columns: 6
+          rows: 2
+        entity: sensor.life360_vitesse_claude
+        show_entity_picture: fals
+        vertical: true
+        features_position: bottom
+        card_mod:
+          style:
+            ha-tile-info$: |
+              .primary {
+                display: none !important;
+              }
+              .info {
+                text-align: center !important;
+              }     
+              .secondary {
+                font-size: 40px !important;
+                font-weight: bold !important;
+              }
+              .secondary:after {
+               content: 'km/h'
+                  }
+            .: |
+              ha-tile-icon {
+                display: none !important;
+              }
+      - type: tile
+        grid_options:
+          columns: 6
+          rows: 2
+        entity: sensor.life360_wifi_claude
+        vertical: true
+        features_position: bottom
+        card_mod:
+          style:
+            ha-tile-info$: |
+              .primary {
+                display: none !important;
+              }
+              .info {
+                text-align: center !important;
+              }     
+              .secondary {
+                font-size: 40px !important;
+                font-weight: bold !important;
+              }
+            .: |
+              ha-tile-icon {
+                display: none !important;
+              }
+  - type: grid
+    cards:
+      - type: heading
+        heading_style: title
+        heading: Carte
+        icon: mdi:map
+      - type: map
+        entities:
+          - entity: device_tracker.life360_claude
+        theme_mode: auto
+        grid_options:
+          columns: 12
+          rows: 10

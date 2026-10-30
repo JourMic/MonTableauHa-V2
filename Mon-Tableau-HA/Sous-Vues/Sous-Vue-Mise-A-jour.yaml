@@ -1,0 +1,29 @@
+title: Mise à jours
+path: Sous-Vue-Mise-A-Jour
+icon: mdi:update
+subview: true
+type: sections
+max_columns: 2
+cards: []
+sections:
+
+  - type: grid
+    cards:
+
+      - type: custom:serveur-ha-maj-card
+        title: Home Assistant
+        subtitle: Serveur domotique
+        ssl_warn: 30
+        ssl_alert: 20
+        include_hacs: true
+        include_devices: true
+        updates_first: true
+        show_system: true
+        show_info: true
+        show_apps: true
+        theme: v2
+
+        grid_options:
+          columns: 24
+          rows: 8
+    column_span: 2

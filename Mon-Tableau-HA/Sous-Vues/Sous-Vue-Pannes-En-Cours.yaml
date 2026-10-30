@@ -1,0 +1,196 @@
+title: Pannes En cours
+path: Sous-Vue-Pannes-En-Cours
+icon: mdi:home-lightning-bolt-outline
+subview: true
+type: sections
+max_columns: 3
+cards: []
+sections:
+  - type: grid
+    cards:
+      - type: entities
+        entities:
+          - type: custom:vertical-stack-in-card
+            cards:
+              - type: heading
+                icon: mdi:transmission-tower-off
+                heading_style: title
+                heading: Pannes au Québec
+              - type: custom:mini-graph-card
+                entities:
+                  - entity: sensor.hq_pannes_nombre_de_client_touche_quebec
+                    unit: clients affectés
+                    show_graph: true
+                    show_state: true
+                  - entity: sensor.hq_pannes_nombre_de_pannes_quebec
+                    name: Interruptions
+                    unit: pannes
+                    show_graph: false
+                    show_state: true
+                  - entity: sensor.hq_pannes_nombre_de_client_raccorde_quebec
+                    name: Clients
+                    unit: Clients
+                    show_graph: false
+                    show_state: true
+                  - entity: sun.sun
+                    show_line: false
+                    show_points: false
+                    show_legend: false
+                    color: gray
+                    y_axis: secondary
+                state_map:
+                  - value: below_horizon
+                    label: Nuit
+                  - value: above_horizon
+                    label: Jour
+                hours_to_show: 24
+                points_per_hour: 4
+                animate: true
+                line_width: 3
+                show:
+                  name: false
+                  icon: false
+                  extrema: true
+                  fill: fade
+                hour24: true
+              - type: markdown
+                content: "---"
+              - type: heading
+                icon: mdi:transmission-tower-off
+                heading_style: title
+                heading: Pannes en Mauricie
+              - type: horizontal-stack
+                cards:
+                  - type: custom:mushroom-template-card
+                    primary: Nombres de clients
+                    secondary: >-
+                      {{states('sensor.hq_pannes_nombre_de_client_raccorde_mauricie')}}
+                    icon: mdi:account-group
+                    icon_color: lightblue
+                    fill_container: true
+                    layout: vertical
+                    tap_action:
+                      action: none
+                    hold_action:
+                      action: none
+                    double_tap_action:
+                      action: none
+                    card_mod:
+                      style:
+                        ha-tile-info$: |
+                          .secondary {
+                             font-size: 18px !important;
+                          }
+                  - type: custom:mushroom-template-card
+                    primary: Nombres de pannes
+                    secondary: >-
+                      {{states('sensor.hq_pannes_nombre_de_pannes_mauricie')}}
+                    icon: mdi:transmission-tower-off
+                    icon_color: red
+                    fill_container: true
+                    layout: vertical
+                    tap_action:
+                      action: none
+                    hold_action:
+                      action: none
+                    double_tap_action:
+                      action: none
+                    card_mod:
+                      style:
+                        ha-tile-info$: |
+                          .secondary {
+                             font-size: 18px !important;
+                          }
+                  - type: custom:mushroom-template-card
+                    primary: Clients affectés
+                    secondary: >-
+                      {{states('sensor.hq_pannes_nombre_de_client_touche_mauricie')}}
+                    icon: mdi:home-account
+                    icon_color: yellow
+                    fill_container: true
+                    layout: vertical
+                    tap_action:
+                      action: none
+                    hold_action:
+                      action: none
+                    double_tap_action:
+                      action: none
+                    card_mod:
+                      style:
+                        ha-tile-info$: |
+                          .secondary {
+                             font-size: 18px !important;
+                          }
+              - type: markdown
+                content: "---"
+              - type: heading
+                icon: mdi:transmission-tower-off
+                heading_style: title
+                heading: Pannes pour la ville de Shawinigan-sud
+              - type: horizontal-stack
+                cards:
+                  - type: custom:mushroom-template-card
+                    primary: Nombres de clients
+                    secondary: >-
+                      {{states('sensor.hq_pannes_nombre_de_client_raccorde_shawinigan_sud')}}
+                    icon: mdi:account-group
+                    icon_color: lightblue
+                    fill_container: true
+                    layout: vertical
+                    tap_action:
+                      action: none
+                    hold_action:
+                      action: none
+                    double_tap_action:
+                      action: none
+                    card_mod:
+                      style:
+                        ha-tile-info$: |
+                          .secondary {
+                             font-size: 18px !important;
+                          }
+                  - type: custom:mushroom-template-card
+                    primary: Nombres de pannes
+                    secondary: >-
+                      {{states('sensor.hq_pannes_nombre_de_pannes_shawinigan_sud')}}
+                    icon: mdi:transmission-tower-off
+                    icon_color: red
+                    fill_container: true
+                    layout: vertical
+                    tap_action:
+                      action: none
+                    hold_action:
+                      action: none
+                    double_tap_action:
+                      action: none
+                    card_mod:
+                      style:
+                        ha-tile-info$: |
+                          .secondary {
+                             font-size: 18px !important;
+                          }
+                  - type: custom:mushroom-template-card
+                    primary: Clients affectés
+                    secondary: >-
+                      {{states('sensor.hq_pannes_nombre_de_client_touche_shawinigan_sud')}}
+                    icon: mdi:home-account
+                    icon_color: yellow
+                    fill_container: true
+                    layout: vertical
+                    tap_action:
+                      action: none
+                    hold_action:
+                      action: none
+                    double_tap_action:
+                      action: none
+                    card_mod:
+                      style:
+                        ha-tile-info$: |
+                          .secondary {
+                             font-size: 18px !important;
+                          }
+            card_mod:
+              style: |
+                ha-card {
+                  box-shadow: 0 0 0 2px gray;
+                }

@@ -1,0 +1,121 @@
+# Une liste en règle générale les "id" correspondent à ceux disponibles ici: https://www.quebec.ca/gouvernement/portrait-quebec/repertoire-municipalites
+# L'id "HQ" correspond à l'ensemble des clients Hydro-Québec
+# La liste complète des ID spécifique à HQ est aussi disponible ici: https://infopannes.solutions.hydroquebec.com/assets/data/bilan-par-region.json
+
+rest:
+  - resource: https://services-bs.solutions.hydroquebec.com/pan/web/api/v1/bis
+    sensor:
+      - name: "HQ Pannes - Québec"
+        unique_id: hq-pannes-quebec
+        icon: mdi:transmission-tower-off
+        unit_of_measurement: "clients"
+        value_template: |-
+          {% set region = value_json | selectattr('id', 'equalto', 'HQ') | list %}
+          {% if region %}
+            {{ region[0].nbClientInterrompu }}
+          {% else %}
+            0
+          {% endif %}
+        json_attributes_path: "$[?(@.id=='HQ')]"
+        json_attributes:
+          - "id"
+          - "nbClientRaccorde"
+          - "nbClientInterrompu" 
+          - "nbPanne"
+      
+      - name: "HQ Pannes - Mauricie"
+        unique_id: hq-pannes-mauricie
+        icon: mdi:transmission-tower-off
+        unit_of_measurement: "clients"
+        value_template: |-
+          {% set region = value_json | selectattr('id', 'equalto', '04') | list %}
+          {% if region %}
+            {{ region[0].nbClientInterrompu }}
+          {% else %}
+            0
+          {% endif %}
+        json_attributes_path: "$[?(@.id=='04')]"
+        json_attributes:
+          - "id"
+          - "nbClientRaccorde"
+          - "nbClientInterrompu" 
+          - "nbPanne"
+          
+      - name: "HQ Pannes - Shawinigan-Sud"
+        unique_id: hq-pannes-shawinigan-sud
+        icon: mdi:transmission-tower-off
+        unit_of_measurement: "clients"
+        value_template: |-
+          {% set region = value_json | selectattr('id', 'equalto', '5736') | list %}
+          {% if region %}
+            {{ region[0].nbClientInterrompu }}
+          {% else %}
+            0
+          {% endif %}
+        json_attributes_path: "$[?(@.id=='5736')]"
+        json_attributes:
+          - "id"
+          - "nbClientRaccorde"
+          - "nbClientInterrompu" 
+          - "nbPanne"
+
+template:
+  - sensor:
+
+      - name: "HQ pannes - Nombre de client touché Québec"
+        unique_id: "hq_pannes_nombre_de_client_touche_quebec"
+        icon: mdi:transmission-tower-off
+        state: "{{ state_attr('sensor.hq_pannes_quebec', 'nbClientInterrompu') | int(0) }}"
+
+      - name: "HQ pannes - Nombre de client touché Mauricie"
+        unique_id: "hq_pannes_nombre_de_client_touche_mauricie"
+        icon: mdi:transmission-tower-off
+        state: "{{ state_attr('sensor.hq_pannes_mauricie', 'nbClientInterrompu') | int(0) }}"
+
+      - name: "HQ pannes - Nombre de client touché Shawinigan-Sud"
+        unique_id: "hq_pannes_nombre_de_client_touche_shawinigan_sud"
+        icon: mdi:transmission-tower-off
+        state: "{{ state_attr('sensor.hq_pannes_shawinigan_sud', 'nbClientInterrompu') | int(0) }}"
+
+
+      - name: "HQ pannes - Nombre de client raccordé Québec"
+        unique_id: "hq_pannes_nombre_de_client_raccorde_quebec"
+        icon: mdi:transmission-tower-off
+        state: "{{ state_attr('sensor.hq_pannes_quebec', 'nbClientRaccorde') | int(0) }}"
+
+      - name: "HQ pannes - Nombre de client raccordé Mauricie"
+        unique_id: "hq_pannes_nombre_de_client_raccorde_mauricie"
+        icon: mdi:transmission-tower-off
+        state: "{{ state_attr('sensor.hq_pannes_mauricie', 'nbClientRaccorde') | int(0) }}"
+
+      - name: "HQ pannes - Nombre de client raccordé Shawinigan-Sud"
+        unique_id: "hq_pannes_nombre_de_client_raccorde_shawinigan_sud"
+        icon: mdi:transmission-tower-off
+        state: "{{ state_attr('sensor.hq_pannes_shawinigan_sud', 'nbClientRaccorde') | int(0) }}"
+
+
+      - name: "HQ pannes - Nombre de pannes Québec"
+        unique_id: "hq_pannes_nombre_de_pannes_quebec"
+        icon: mdi:transmission-tower-off
+        state: "{{ state_attr('sensor.hq_pannes_quebec', 'nbPanne') | int(0) }}"
+
+      - name: "HQ pannes - Nombre de pannes Mauricie"
+        unique_id: "hq_pannes_nombre_de_pannes_mauricie"
+        icon: mdi:transmission-tower-off
+        state: "{{ state_attr('sensor.hq_pannes_mauricie', 'nbPanne') | int(0) }}"
+
+      - name: "HQ pannes - Nombre de pannes Shawinigan-Sud"
+        unique_id: "hq_pannes_nombre_de_pannes_shawinigan_sud"
+        icon: mdi:transmission-tower-off
+        state: "{{ state_attr('sensor.hq_pannes_shawinigan_sud', 'nbPanne') | int(0) }}"
+
+
+
+
+
+
+
+
+
+
+

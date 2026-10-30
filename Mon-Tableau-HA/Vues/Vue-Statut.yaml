@@ -1,0 +1,147 @@
+title: Statut
+path: Vue-Statuts
+icon: mdi:list-status
+subview: false
+type: sections
+max_columns: 2
+cards: []
+sections:
+  - type: grid
+    cards:
+      - type: heading
+        heading_style: title
+        icon: mdi:speedometer
+        heading: Internet
+        grid_options:
+          columns: full
+          rows: 0.4
+        badges:
+          - type: entity
+            show_state: true
+            show_icon: true
+            entity: sensor.speedtest_download
+            icon: mdi:arrow-down
+          - type: entity
+            show_state: true
+            show_icon: true
+            entity: sensor.speedtest_upload
+            icon: mdi:arrow-up
+
+      - type: statistics-graph
+        entities:
+          - entity: sensor.speedtest_download
+            name: Téléchargement
+            color: red
+          - entity: sensor.speedtest_upload
+            name: Téléversement
+            color: green
+        days_to_show: 1
+        period: hour
+        chart_type: line
+        stat_types:
+          - mean
+          - min
+          - max
+        min_y_axis: -50
+        max_y_axis: 150
+        card_mod:
+          style: |
+            ha-card {
+              box-shadow: var(--couleur_ombre) !important;
+            }
+        grid_options:
+          columns: 12
+          rows: 4.8
+          
+      - type: heading
+        heading_style: title
+        icon: mdi:flower
+        heading: Plante Lis de la paix
+        badges:
+          - type: entity
+            show_state: true
+            show_icon: true
+            entity: sensor.lis_de_la_paix_jeton_restant
+            icon: mdi:arrow-collapse-up
+        grid_options:
+          columns: full
+          rows: 0.4
+
+      - type: custom:better-miflora-card
+        image: images/Lis_de_la_paix.png
+        min_moisture: 15
+        max_moisture: 60
+        min_temperature: 12
+        entities:
+          - entity: sensor.lis_de_la_paix_humidite
+            type: Humidité
+          - entity: sensor.lis_de_la_paix_luminosite
+            type: Éclairage
+          - entity: sensor.lis_de_la_paix_temperature
+            type: Température
+          - entity: sensor.lis_de_la_paix_batterie
+            type: Pile
+        grid_options:
+          columns: full
+          rows: auto
+        card_mod:
+          style: |
+            ha-card {
+                box-shadow: var(--couleur_ombre) !important;
+            }
+
+  - type: grid
+    cards:
+    
+      - type: heading
+        heading: Imprimante Canon Pro-100
+        heading_style: title
+        icon: mdi:printer
+        grid_options:
+          columns: full
+          rows: 0.4
+    
+      - type: custom:printers-office-card
+        title: Canon Pro-100
+        icon: mdi:printer
+        icon_color: Cyan
+        low_level: 15
+        show_supplies: true
+        show_parts: false
+        show_counters: false
+        show_device: false
+        theme: ha
+        card_mod:
+          style: |
+            ha-card {
+                box-shadow: var(--couleur_ombre) !important;
+            }
+
+badges:
+  - type: entity
+    show_name: true
+    show_state: true
+    show_icon: true
+    entity: sensor.caa_prix_essence_shawinigan_aujourd_hui
+    name: Essence
+    tap_action:
+      action: navigate
+      navigation_path: /tableau-ha/Sous-Vue-Prix-Essence
+
+  - type: entity
+    show_name: true
+    show_state: true
+    show_icon: true
+    entity: sensor.shawinigan_sud_sensors_voltage
+    name: Pile Tempest
+    tap_action: none
+
+  - type: entity
+    show_name: true
+    show_state: true
+    show_icon: true
+    entity: binary_sensor.rpi_power_status
+    name: RPI
+    tap_action:
+      action: navigate
+      navigation_path: /tableau-ha/Sous-Vue-Statut-RPI

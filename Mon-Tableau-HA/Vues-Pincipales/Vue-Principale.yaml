@@ -1,0 +1,317 @@
+title: Principale
+path: Vue-principale
+icon: mdi:home-account
+subview: false
+type: sections
+max_columns: 2
+cards: []
+sections:
+
+  - type: grid
+    cards:
+      - type: heading
+        heading: "Météo"
+        icon: mdi:weather-partly-rainy
+        grid_options:
+          columns: full
+          rows: 0.3
+
+      - type: custom:meteo-card
+        show_details: false
+        show_alert: false
+        show_forecast: false
+        layout: warc0zes
+        theme: ha
+        entity: weather.forecast_shawinigan_sud
+        title: Shawinigan
+        moon_image: /local/images/Pleine_Lune.PNG
+        card_mod:
+          style: |
+            ha-card {
+              box-shadow: var(--couleur_ombre) !important;
+             }
+
+      - type: heading
+        heading: Personnes
+        icon: mdi:account
+        grid_options:
+          columns: full
+          rows: 0.5
+
+      - type: custom:decluttering-card-plus
+        template: personne_1
+        variables:
+          - personne1_personne: "person.brigitte"
+          - personne1_navigation_path: "/tableau-ha/Sous-Vue-Personne-Brigitte"
+        grid_options:
+           columns: 3
+           rows: auto
+
+      - type: custom:decluttering-card-plus
+        template: personne_1
+        variables:
+          - personne1_personne: "person.valerie"
+          - personne1_navigation_path: "/tableau-ha/Sous-Vue-Personne-Valerie"
+        grid_options:
+           columns: 3
+           rows: auto
+           
+      - type: custom:decluttering-card-plus
+        template: personne_1
+        variables:
+          - personne1_personne: "person.claude"
+          - personne1_navigation_path: "/tableau-ha/Sous-Vue-Personne-Claude"
+        grid_options:
+           columns: 3
+           rows: auto
+
+      - type: custom:decluttering-card-plus
+        template: personne_1
+        variables:
+          - personne1_personne: "person.nasdemichel"
+          - personne1_navigation_path: "/tableau-ha/Sous-Vue-Personne-Michel"
+        grid_options:
+           columns: 3
+           rows: auto
+
+      - type: heading
+        icon: mdi:lightbulb
+        heading: Éclairages
+        grid_options:
+          columns: full
+          rows: 0.5
+
+      - type: custom:decluttering-card-plus
+        template: tuiles_3
+        variables:
+          - tuile3_entity: "light.salon"
+          - tuile3_name: "Lampes"
+          - tuile3_icon: "mdi:lamps"
+        grid_options:
+          columns: 3
+          rows: auto
+
+      - type: custom:decluttering-card-plus
+        template: tuiles_3
+        variables:
+          - tuile3_entity: "light.govee_tele"
+          - tuile3_name: "Govee"
+          - tuile3_icon: "mdi:television-ambient-light"
+        grid_options:
+          columns: 3
+          rows: auto
+
+      - type: custom:decluttering-card-plus
+        template: tuiles_3
+        variables:
+          - tuile3_entity: "light.exterieure_avant"
+          - tuile3_name: "Avant"
+          - tuile3_icon: "hue:floor-lantern-group"
+        grid_options:
+          columns: 3
+          rows: auto
+
+      - type: custom:decluttering-card-plus
+        template: tuiles_3
+        variables:
+          - tuile3_entity: "light.neviweb130_lumiere_exterieurs_arriere"
+          - tuile3_name: "Arrière"
+          - tuile3_icon: "hue:ceiling-fugato-two-alt"
+        grid_options:
+          columns: 3
+          rows: auto
+
+  - type: grid
+    cards:
+
+      - type: heading
+        icon: mdi:cctv
+        heading: Caméras
+        grid_options:
+          columns: full
+          rows: 0.3
+
+      - type: custom:decluttering-card-plus
+        template: tuiles_4
+        variables:
+          - tuile4_entity: "alarm_control_panel.blink_ca_exterieures"
+          - tuile4_name: "Exterieures"
+        grid_options:
+          columns: 6
+          rows: auto
+
+      - type: custom:decluttering-card-plus
+        template: tuiles_4
+        variables:
+          - tuile4_entity: "alarm_control_panel.blink_ca_interieures"
+          - tuile4_name: "Interieures"
+        grid_options:
+          columns: 6
+          rows: auto
+
+      - type: heading
+        icon: mdi:heat-wave
+        heading: Chauffage
+        entities:
+          - show_state: true
+            show_icon: true
+            entity: sensor.thermopompe_temperature
+        grid_options:
+          columns: full
+          rows: 0.3
+
+      - type: custom:decluttering-card-plus
+        template: tuiles_2
+        variables:
+          - tuile2_entity: "climate.sensibo_cuisine"
+          - tuile2_name: "Cuisine"
+        grid_options:
+          columns: 6
+          rows: auto
+
+      - type: custom:decluttering-card-plus
+        template: tuiles_2
+        variables:
+          - tuile2_entity: "climate.sensibo_salle_de_repos"
+          - tuile2_name: "Salle de repos"
+        grid_options:
+          columns: 6
+          rows: auto
+
+      - type: heading
+        heading: Calendrier
+        icon: mdi:calendar-month-outline
+        grid_options:
+          columns: full
+          rows: 0.3
+
+      - type: custom:calendar-tasks-card
+        calendars:
+          - calendar.agenda_de_michel
+          - calendar.sports_de_michel
+          - calendar.anniversaires_de_michel
+          - calendar.anniversaires
+          - calendar.jours_feries_de_michel
+        todos:
+          - todo.mes_taches
+        title: Agenda de Michel
+        event_progress: line
+        show_current_date: true
+        show_view_switch: true
+        show_add_event: false
+        show_collapse_button: false
+        days: 30
+        allow_complete: true
+        limit_events_visible: true
+        max_events_visible: 2
+        compact_mode: true
+        grid_options:
+          columns: full
+          rows: auto
+        card_mod:
+          style: |
+            ha-card {
+              box-shadow: var(--couleur_ombre) !important;
+             }
+
+
+badges:
+  - type: entity
+    entity: sensor.st_00032986_vitesse_du_vent
+    name: Vent
+    display_type: complete
+    tap_action: none
+
+  - type: entity
+    entity: sensor.shawinigan_sud_sensors_precipitation_today
+    name: Pluie
+    display_type: complete
+    tap_action:
+      action: navigate
+      navigation_path: /tableau-ha/Sous-Vue-Pluie
+
+  - type: entity
+    show_name: true
+    show_state: false
+    show_icon: true
+    entity: sensor.defi_hilo_in_progress
+    icon: mdi:progress-alert
+    name: Défi en cour
+    color: red
+    visibility:
+      - condition: state
+        entity: sensor.defi_hilo_in_progress
+        state: "True"
+    show_entity_picture: true
+    display_type: minimal
+    tap_action: none
+    
+  - type: custom:decluttering-card-plus
+    template: badge-conditions
+    variables:
+      - conditions_entity: "sensor.nombre_de_lumieres_allumees"
+      - conditions_icon: "mdi:lightbulb"
+
+  - type: entity
+    entity: sensor.nombre_de_mise_a_jour_total
+    show_name: false
+    show_state: true
+    show_icon: true
+    icon: mdi:update
+    color: red
+    visibility:
+      - condition: state
+        entity: sensor.nombre_de_mise_a_jour_total
+        state_not: "0"
+    tap_action:
+      action: navigate
+      navigation_path: /tableau-ha/Sous-Vue-Mise-A-Jour
+
+  - type: custom:decluttering-card-plus
+    template: badge-conditions
+    variables:
+      - conditions_entity: "sensor.defi_hilo_nb_defi_planifies"
+      - conditions_icon: "mdi:progress-alert"
+
+  - type: entity
+    show_name: true
+    show_state: false
+    show_icon: true
+    entity: sensor.shawinigan_resume
+    name: Alerte
+    icon: mdi:alert
+    color: red
+    visibility:
+      - condition: or
+        conditions:
+          - condition: state
+            entity: sensor.shawinigan_avis
+            state_not: "0"
+          - condition: state
+            entity: sensor.shawinigan_terminaisons
+            state_not: "0"
+          - condition: state
+            entity: sensor.shawinigan_bulletins
+            state_not: "0"
+          - condition: state
+            entity: sensor.shawinigan_veilles
+            state_not: "0"
+          - condition: state
+            entity: sensor.shawinigan_alertes
+            state_not: "0"
+    tap_action: none
+
+  - type: custom:decluttering-card-plus
+    template: badge-collectes
+    variables:
+      - collectes_entity: "sensor.collecte_shawinigan_ordures_date"
+
+  - type: custom:decluttering-card-plus
+    template: badge-collectes
+    variables:
+      - collectes_entity: "sensor.collecte_shawinigan_matieres_recyclables_date"
+
+  - type: custom:decluttering-card-plus
+    template: badge-collectes
+    variables:
+      - collectes_entity: "sensor.collecte_shawinigan_matieres_compostables_date"

@@ -1,0 +1,48 @@
+MonTableau:
+
+# Enlever les lignes dans markdown
+
+  markdown-table-border-width: 0px
+ 
+# Couleur
+
+  couleur_blanc: 'rgba(255,255,255)'
+  couleur_noir: 'rgba(0,0,0)'
+  couleur_lila: 'rgba(200, 162, 200)'
+  couleur_bleu: 'rgba(49, 140, 231)'
+  couleur_bleu_fonce: 'rgba(25, 25, 112)'
+  couleur_vert: 'rgba(0, 255, 19)'
+  couleur_jaune: 'rgba(255, 237, 82)'
+  couleur_orange: 'rgba(255, 140, 0)'
+  couleur_rouge: 'rgba(255, 44, 44)'
+ 
+# Ombre 
+
+  couleur_ombre_bleu: '5px 10px 10px -3px rgba(30, 196, 229, 0.3)'
+  couleur_ombre_rouge: '5px 10px 10px -3px rgba(255, 0, 0, 0.3)'
+  couleur_ombre_grise: '5px 10px 10px -3px rgba(211, 211, 211, 0.3)'
+  couleur_ombre_blanche: '5px 10px 10px -3px rgba(255, 255, 255, 0.3)'
+  couleur_ombre_noir: '5px 10px 10px -3px rgba(0, 0, 0, 0.3)'
+  couleur_ombre_blanche_1: '0 4px 20px rgba(255, 255, 255, 0.3)'
+  couleur_ombre_bleu_1: '0 8px 30px rgba(59, 130, 246, 0.3)'
+
+  
+  modes:
+  
+    light: 
+    
+      lovelace-background: 'center / cover no-repeat url("/local/background/Image_Foret.jpg")  fixed'
+      couleur_ombre: var(--couleur_ombre_noir)
+      couleur_texte: var(--couleur_noir)
+      couleur_fond: var(--couleur_noir)
+      couleur_icon: var(--couleur_noir)
+
+    dark: 
+    
+      lovelace-background: 'center / cover no-repeat url("/local/background/dark.jpg") fixed'
+      couleur_ombre: var(--couleur_ombre_blanche)
+      couleur_texte: var(--couleur_blanc)
+      couleur_fond: var(--couleur_bleu_fonce)
+      couleur_icon: var(--couleur_blanc)
+      
+      

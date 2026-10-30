@@ -1,0 +1,95 @@
+# power_par_heure
+
+template:
+
+  - sensor:
+
+      - name: "Somme de KWh par heure (cumul)"
+        unique_id: somme_de_kwh_par_heure_cumul
+        unit_of_measurement: kWh
+        device_class: energy
+        state_class: total_increasing
+        state: "{{ states('sensor.somme_de_kwh_par_heure')|float(0)(0) }}"
+        availability: >
+          {{ states('sensor.somme_de_kwh_par_heure') not in ['unknown','unavailable','none'] }}
+
+      - name: "KWh par jour (total)"
+        unique_id: kwh_par_jour_total
+        unit_of_measurement: kWh
+        device_class: energy
+        state_class: total_increasing
+        state: >
+           {% set low = states('sensor.hilo_energy_total_low')  | float(0) %}
+           {% set medium = states('sensor.hilo_energy_total_medium') | float(0) %}
+           {{ ((low + medium)) }}
+
+      - name: "KWh par heures chauffage sous sol"
+        unique_id: kwh_par_heures_chauffage_sous_sol
+        unit_of_measurement: kWh
+        device_class: energy
+        state_class: total_increasing
+        state: >
+           {% set a0 = state_attr('climate.neviweb130_climate_atelier', 'hourly_kwh') | float(0) %}
+           {% set b0 = state_attr('climate.neviweb130_climate_ch_invites', 'hourly_kwh') | float(0) %}
+           {% set c0 = state_attr('climate.neviweb130_climate_salle_familiale', 'hourly_kwh') | float(0) %}
+           {{ (a0 + b0 + c0) }}
+
+      - name: "KWh par heures chauffage 1er"
+        unique_id: kwh_par_heures_chauffage_1er
+        unit_of_measurement: kWh
+        device_class: energy
+        state_class: total_increasing
+        state: >
+           {% set a1 = state_attr('climate.neviweb130_climate_cuisine', 'hourly_kwh') | float(0) %}
+           {% set b1 = state_attr('climate.neviweb130_climate_salle_eau', 'hourly_kwh') | float(0) %}
+           {% set c1 = state_attr('climate.neviweb130_climate_salon', 'hourly_kwh') | float(0) %}
+           {{ (a1 + b1 + c1) }}
+
+      - name: "KWh par heures chauffage 2ieme"
+        unique_id: kwh_par_heures_chauffage_2ieme
+        unit_of_measurement: kWh
+        device_class: energy
+        state_class: total_increasing
+        state: >
+           {% set a2 = state_attr('climate.neviweb130_climate_ch_maitres', 'hourly_kwh') | float(0) %}
+           {% set b2 = state_attr('climate.neviweb130_climate_bureau', 'hourly_kwh') | float(0) %}
+           {% set c2 = state_attr('climate.neviweb130_climate_salle_bain', 'hourly_kwh') | float(0) %}
+           {% set d2 = state_attr('climate.neviweb130_climate_salle_repos', 'hourly_kwh') | float(0) %}
+           {{ (a2 + b2 + c2 + d2) }}
+           
+      - name: "KWh par heures éclairage"
+        unique_id: kwh_par_heures_eclairage
+        unit_of_measurement: kWh
+        device_class: energy
+        state_class: total_increasing
+        state: >
+           {% set l1 = state_attr('light.neviweb130_light_comptoir_cuisine', 'hourly_kwh') | float(0) %}
+           {% set l2 = state_attr('light.neviweb130_lumiere_exterieurs_arriere', 'hourly_kwh') | float(0) %}
+           {% set l3 = state_attr('light.neviweb130_light_bureau', 'hourly_kwh') | float(0) %}
+           {% set l4 = state_attr('light.neviweb130_light_garde_robes_bureau', 'hourly_kwh') | float(0) %}
+           {% set l5 = state_attr('light.neviweb130_light_garde_robes_cuisine', 'hourly_kwh') | float(0) %}
+           {% set l6 = state_attr('light.neviweb130_light_lumiere_atelier', 'hourly_kwh') | float(0) %}
+           {% set l7 = state_attr('light.neviweb130_light_lumiere_chambre_invites', 'hourly_kwh') | float(0) %}
+           {% set l8 = state_attr('light.neviweb130_light_lumiere_huche_cuisine', 'hourly_kwh') | float(0) %}
+           {% set l9 = state_attr('light.neviweb130_light_lumiere_salle_deau', 'hourly_kwh') | float(0) %}
+           {% set l10 = state_attr('ight.neviweb130_lumiere_vestibule_arriere', 'hourly_kwh') | float(0) %}
+           {{ (l1 + l2 + l3 + l4 + l5 + l6 + l7 + l8 + l9 + l10) }}
+           
+      - name: "KWh par heures prises"
+        unique_id: kwh_par_heures_prises
+        unit_of_measurement: kWh
+        device_class: energy
+        state_class: total_increasing
+        state: >
+           {% set p1 = state_attr('switch.neviweb130_switch_prise_echangeur_dair', 'hourly_kwh') | float(0) %}
+           {% set p2 = state_attr('switch.neviweb130_switch_prise_huche_salon', 'hourly_kwh') | float(0) %}
+           {% set p3 = state_attr('switch.neviweb130_switch_prise_ipad_ha', 'hourly_kwh') | float(0) %}
+           {% set p4 = state_attr('switch.neviweb130_switch_prise_lampes_salon', 'hourly_kwh') | float(0) %}
+           {{ (p1 + p2 + p3 + p4) }}
+           
+ 
+
+           
+           
+           
+  

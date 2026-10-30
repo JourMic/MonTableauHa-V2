@@ -1,0 +1,80 @@
+title: Énergie Hydro-Québec
+path: Sous-vue-hydro-quebec
+icon: mdi:graph
+subview: true
+type: sections
+max_columns: 2.
+cards: []
+sections:
+  - type: grid
+    cards:
+      - type: heading
+        heading: Hydro-Québec Production Demande
+        heading_style: title
+        grid_options:
+          columns: full
+          rows: full
+
+      - type: custom:sankey-chart
+        layout: auto
+        height: 330
+        unit_prefix: M
+        round: 1
+        convert_units_to: ""
+        min_box_size: 40
+        min_box_distance: 10
+        show_states: true
+        show_units: true
+        show_names: true
+        wide: true
+        min_state: 0
+        show_icons: true
+        sort_by: state
+        nodes:
+          - id: sensor.hydro_quebec_production_hydraulique
+            section: 0
+            name: Hydrolique
+            color: blue
+            icon: mdi:hydro-power
+          - id: sensor.hydro_quebec_production_autres
+            section: 0
+            name: Autres
+            color: green
+          - id: sensor.hydro_quebec_production_solaire
+            section: 0
+            name: Solaire
+            color: Brown
+            icon: mdi:solar-power-variant-outline
+          - id: sensor.hydro_quebec_production_eolien
+            section: 0
+            name: Éolienne
+            color: red
+            icon: mdi:wind-turbine
+          - id: sensor.hydro_quebec_production_total
+            section: 1
+            name: Production
+            color: Steelblue
+          - id: sensor.hydro_quebec_demande_de_puissance_reseau
+            section: 2
+            name: Demande
+            color: Orange
+        links:
+          - source: sensor.hydro_quebec_production_hydraulique
+            target: sensor.hydro_quebec_production_total
+          - source: sensor.hydro_quebec_production_autres
+            target: sensor.hydro_quebec_production_total
+          - source: sensor.hydro_quebec_production_solaire
+            target: sensor.hydro_quebec_production_total
+          - source: sensor.hydro_quebec_production_eolien
+            target: sensor.hydro_quebec_production_total
+          - source: sensor.hydro_quebec_production_total
+            target: sensor.hydro_quebec_demande_de_puissance_reseau
+        grid_options:
+          columns: full
+          rows: full
+        card_mod:
+          style: |
+            ha-card {
+              box-shadow: rgba(30, 196, 229, 0.5) 1px 13px 27px 0px, rgba(212, 244, 250, 0.5) 0px 8px 16px -8px;
+            }
+    column_span: 2

@@ -1,0 +1,18 @@
+template:
+
+  - sensor:
+  
+      - name: "Collecte Shawinigan Ordures Date"
+        unique_id: collecte_shawinigan_ordures_date
+        state: "{{((as_timestamp(states.calendar.exterieure_collecte_shawinigan_ordures.attributes.start_time)- as_timestamp(now())) /86400+1) | int}}"
+        picture: /local/images/waste.png
+
+      - name: "Collecte Shawinigan Matières Recyclables Date"
+        unique_id: collecte_shawinigan_matieres_recyclables_date
+        state: "{{((as_timestamp(states.calendar.exterieure_collecte_shawinigan_matieres_recyclables.attributes.start_time)- as_timestamp(now())) /86400+1) | int}}"
+        picture: /local/images/recycling.png
+
+      - name: "Collecte Shawinigan Matières Compostables Date"
+        unique_id: collecte_shawinigan_matieres_compostables_date
+        state: "{{((as_timestamp(states.calendar.exterieure_collecte_shawinigan_matieres_compostables.attributes.start_time)- as_timestamp(now())) /86400+1) | int}}"
+        picture: /local/images/organic.png

@@ -1,0 +1,304 @@
+title: Sécurité
+path: Vue-Securites
+icon: mdi:shield-home
+subview: false
+type: sections
+max_columns: 2
+cards: []
+sections:
+  - type: grid
+    cards:
+      - type: heading
+        heading_style: title
+        grid_options:
+          columns: full
+          rows: 0.5
+        heading: Caméras
+        card_mod:
+          style: |
+            .content.title {
+              font-size: 25px;
+            }
+
+      - type: heading
+        icon: mdi:home-account
+        heading_style: title
+        grid_options:
+          columns: 6
+          rows: 0.5
+        heading: Extérieures
+
+      - type: heading
+        icon: mdi:tree
+        heading_style: title
+        grid_options:
+          columns: 6
+          rows: 0.5
+        heading: Intérieures
+        
+      - type: custom:decluttering-card-plus
+        template: alertes
+        variables:
+          - alertes_entity: "alarm_control_panel.blink_ca_exterieures"
+        grid_options:
+          columns: 6
+          rows: auto
+
+      - type: custom:decluttering-card-plus
+        template: alertes
+        variables:
+          - alertes_entity: "alarm_control_panel.blink_ca_interieures"
+        grid_options:
+          columns: 6
+          rows: auto
+
+      - type: heading
+        heading_style: title
+        grid_options:
+          columns: full
+          rows: 0.6
+        heading: Mouvements
+        card_mod:
+          style: |
+            .content.title {
+              font-size: 25px;
+            }
+
+      - type: heading
+        icon: mdi:sofa
+        heading_style: title
+        grid_options:
+          columns: 6
+          rows: 0.8
+        heading: Salon
+
+      - type: heading
+        icon: mdi:home-floor-0
+        heading: Cuisine
+        heading_style: title
+        grid_options:
+          columns: 6
+          rows: 0.8
+
+      - type: custom:decluttering-card-plus
+        template: alertes
+        variables:
+          - alertes_entity: "binary_sensor.camera_salon_mouvement"
+        grid_options:
+          columns: 6
+          rows: auto
+
+      - type: custom:decluttering-card-plus
+        template: alertes
+        variables:
+          - alertes_entity: "binary_sensor.camera_cuisine_mouvement"
+        grid_options:
+          columns: 6
+          rows: auto
+
+      - type: heading
+        icon: mdi:home-floor-0
+        heading: Sous-Sol
+        heading_style: title
+        grid_options:
+          columns: 6
+          rows: 0.8
+
+      - type: heading
+        icon: mdi:home-floor-0
+        heading_style: title
+        grid_options:
+          columns: 6
+          rows: 0.8
+        heading: Allée
+
+      - type: custom:decluttering-card-plus
+        template: alertes
+        variables:
+          - alertes_entity: "binary_sensor.camera_sous_sol_mouvement"
+        grid_options:
+          columns: 6
+          rows: auto
+
+      - type: custom:decluttering-card-plus
+        template: alertes
+        variables:
+          - alertes_entity: "binary_sensor.camera_allee_mouvement"
+        grid_options:
+          columns: 6
+          rows: auto
+
+      - type: heading
+        icon: mdi:gamepad-outline
+        heading_style: title
+        grid_options:
+          columns: 6
+          rows: 0.8
+        heading: Avant
+
+      - type: heading
+        icon: mdi:home-floor-0
+        heading_style: title
+        grid_options:
+          columns: 6
+          rows: 0.8
+        heading: Arrière
+
+      - type: custom:decluttering-card-plus
+        template: alertes
+        variables:
+          - alertes_entity: "binary_sensor.camera_avant_mouvement"
+        grid_options:
+          columns: 6
+          rows: auto
+
+      - type: custom:decluttering-card-plus
+        template: alertes
+        variables:
+          - alertes_entity: "binary_sensor.camera_arriere_mouvement"
+        grid_options:
+          columns: 6
+          rows: auto
+
+  - type: grid
+    cards:
+      - type: heading
+        heading_style: title
+        grid_options:
+          columns: full
+          rows: 0.5
+        heading: Porte Avant
+        card_mod:
+          style: |
+            .content.title {
+              font-size: 25px;
+            }
+
+      - type: heading
+        icon: mdi:lock-outline
+        heading_style: title
+        grid_options:
+          columns: 6
+          rows: 0.5
+        heading: Serrure
+
+      - type: heading
+        icon: mdi:door
+        heading_style: title
+        grid_options:
+          columns: 6
+          rows: 0.5
+        heading: Porte
+
+      - type: custom:decluttering-card-plus
+        template: alertes
+        variables:
+          - alertes_entity: "lock.porte_d_entree"
+        grid_options:
+          columns: 6
+          rows: auto
+
+      - type: custom:decluttering-card-plus
+        template: alertes
+        variables:
+          - alertes_entity: "binary_sensor.porte_d_entree_porte"
+        grid_options:
+          columns: 6
+          rows: auto
+
+      - type: heading
+        heading_style: title
+        grid_options:
+          columns: full
+          rows: 0.6
+        heading: Fuites
+        card_mod:
+          style: |
+            .content.title {
+              font-size: 25px;
+            }
+
+      - type: heading
+        icon: mdi:toilet
+        heading: Salle d’eau
+        heading_style: title
+        grid_options:
+          columns: 6
+          rows: 0.5
+
+      - type: heading
+        icon: mdi:stove
+        heading_style: title
+        grid_options:
+          columns: 6
+          rows: 0.6
+        heading: Cuisine
+
+      - type: custom:decluttering-card
+        template: tuiles_5
+        variables:
+          - tuile5_entity: "sensor.neviweb130_sensor_fuites_salle_deau"
+          - tuile5_name: "Toilette"
+        grid_options:
+          columns: 6
+          rows: auto
+
+      - type: custom:decluttering-card
+        template: tuiles_5
+        variables:
+          - tuile5_entity: "sensor.neviweb130_sensor_fuites_lave_vaiselles"
+          - tuile5_name: "Lave-Vaiselles"
+        grid_options:
+          columns: 6
+          rows: auto
+
+      - type: heading
+        icon: mdi:bathtub
+        heading_style: title
+        grid_options:
+          columns: 6
+          rows: 0.5
+        heading: Salle de Bain
+
+      - type: heading
+        icon: mdi:chair-rolling
+        heading_style: title
+        grid_options:
+          columns: 6
+          rows: 0.4
+        heading: Boudoire
+
+      - type: custom:decluttering-card
+        template: tuiles_5
+        variables:
+          - tuile5_entity: "sensor.neviweb130_sensor_fuites_salle_de_bain"
+          - tuile5_name: "Toilette"
+        grid_options:
+          columns: 6
+          rows: auto
+
+      - type: custom:decluttering-card
+        template: tuiles_5
+        variables:
+          - tuile5_entity: "sensor.neviweb130_sensor_fuites_laveuse"
+          - tuile5_name: "Laveuse"
+        grid_options:
+          columns: 6
+          rows: auto
+
+      - type: heading
+        icon: mdi:leak-off
+        heading_style: title
+        grid_options:
+          columns: 12
+          rows: 0.5
+        heading: Sous-Sol
+
+      - type: custom:decluttering-card
+        template: tuiles_5
+        variables:
+          - tuile5_entity: "sensor.neviweb130_sensor_fuites_reservoir_eau_chaude"
+          - tuile5_name: "Chauffe eau"
+        grid_options:
+          columns: 6
+          rows: auto

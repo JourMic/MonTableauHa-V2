@@ -1,0 +1,4779 @@
+decluttering_templates:
+  statistques:
+    default:
+      - statistques_entity: ''
+      - statistques_color: ''
+    card:
+      type: statistics-graph
+      grid_options:
+        rows: 3
+      entities:
+        - entity: '[[statistques_entity]]'
+          color: '[[statistques_color]]'
+      days_to_show: 1
+      period: hour
+      chart_type: line
+      stat_types:
+        - mean
+      hide_legend: true
+      card_mod:
+        style: |
+          ha-card {
+            box-shadow: var(--couleur_ombre);
+          }
+  collectes:
+    default:
+      - collectes_entity: ''
+    card:
+      type: entity
+      show_name: false
+      show_state: false
+      show_icon: true
+      entity: '[[collectes_entity]]'
+      show_entity_picture: true
+      visibility:
+        - condition: or
+          conditions:
+            - condition: state
+              entity: '[[collectes_entity]]'
+              state: '0'
+            - condition: state
+              entity: '[[collectes_entity]]'
+              state: '1'
+      tap_action:
+        action: none
+  tuiles_1:
+    default:
+      - tuile1_name: Chauffage
+      - tuile1_entity: ''
+    card:
+      type: tile
+      features:
+        - type: target-temperature
+      entity: '[[tuile1_entity]]'
+      name: '[[tuile1_name]]'
+      state_content:
+        - current_temperature
+        - hvac_action
+      vertical: false
+      card_mod:
+        style: |
+          ha-card {
+            box-shadow: var(--couleur_ombre);
+          }
+  tuiles_2:
+    default:
+      - tuile2_name: ''
+      - tuile2_entity: ''
+    card:
+      type: tile
+      name: '[[tuile2_name]]'
+      entity: '[[tuile2_entity]]'
+      hide_state: true
+      vertical: false
+      features:
+        - type: target-temperature
+        - type: climate-hvac-modes
+          hvac_modes:
+            - heat
+            - cool
+            - 'off'
+      card_mod:
+        style: |
+          ha-card {
+            box-shadow: var(--couleur_ombre);
+          }
+  tuiles_3:
+    default:
+      - tuile3_name: ''
+      - tuile3_entity: ''
+      - tuile3_icon: ''
+    card:
+      type: tile
+      entity: '[[tuile3_entity]]'
+      name: '[[tuile3_name]]'
+      icon: '[[tuile3_icon]]'
+      vertical: true
+      tap_action:
+        action: toggle
+      icon_tap_action:
+        action: more-info
+      card_mod:
+        style: |
+          ha-card
+            {
+              box-shadow: var(--couleur_ombre);
+            }
+  tuiles_4:
+    default:
+      - tuile4_entity: ''
+    card:
+      type: tile
+      entity: '[[tuile4_entity]]'
+      icon: mdi:cctv
+      vertical: true
+      hide_state: true
+      tap_action:
+        action: none
+      icon_tap_action:
+        action: none
+      features:
+        - type: alarm-modes
+      features_position: inline
+      card_mod:
+        style: |
+          ha-card {
+            box-shadow: var(--couleur_ombre);
+          }
+  tuiles_5:
+    default:
+      - tuile5_name: ''
+      - tuile5_entity: ''
+      - tuile5_icon: ''
+      - tuile5_color: ''
+    card:
+      type: tile
+      entity: '[[tuile5_entity]]'
+      name: '[[tuile5_name]]'
+      icon: '[[tuile5_icon]]'
+      color: '[[tuile5_color]]'
+      vertical: true
+      tap_action:
+        action: none
+      icon_tap_action:
+        action: none
+      card_mod:
+        style: |
+          ha-card
+            {
+              box-shadow: var(--couleur_ombre);
+            }
+  life360_personnes:
+    default:
+      - life360_nom: ''
+      - life360_personne: ''
+      - life360_pile: ''
+      - life360_charge: ''
+      - life360_deplacement: ''
+      - life360_vitesse: ''
+    card:
+      type: tile
+      card_mod:
+        style: |
+          ha-card {
+            box-shadow: var(--couleur_ombre);
+          }
+      entity: '[[life360_personne]]'
+      show_entity_picture: true
+      vertical: true
+      features_position: bottom
+      tap_action:
+        action: fire-dom-event
+        browser_mod:
+          service: browser_mod.popup
+          data:
+            title: '[[life360_nom]]'
+            content:
+              type: entities
+              entities:
+                - type: custom:stack-in-card
+                  mode: vertical
+                  card_mod:
+                    style: |
+                      ha-card {
+                      box-shadow: 0 0 0 2px gray;
+                      }
+                  cards:
+                    - type: tile
+                      entity: '[[life360_personne]]'
+                      features_position: bottom
+                      vertical: false
+                      show_entity_picture: true
+                    - type: glance
+                      entities:
+                        - entity: '[[life360_pile]]'
+                          name: Pile
+                          icon: mdi:battery
+                        - entity: '[[life360_charge]]'
+                          name: En Charge
+                          icon: mdi:flash
+                        - entity: '[[life360_deplacement]]'
+                          name: En Déplacement
+                          icon: mdi:car
+                        - entity: '[[life360_vitesse]]'
+                          name: Vitesse
+                          icon: mdi:speedometer
+                    - type: map
+                      entities:
+                        - entity: '[[life360_personne]]'
+                      theme_mode: auto
+                      hours_to_show: 72
+                      default_zoom: 11
+  piles:
+    default:
+      - piles_columns: '8'
+    card:
+      type: custom:auto-entities
+      card:
+        type: grid
+        columns: '[[piles_columns]]'
+      card_param: cards
+      filter:
+        include:
+          - options:
+              type: gauge
+              min: 0
+              max: 100
+              severity:
+                green: 66
+                yellow: 33
+                red: 0
+              card_mod:
+                style: |
+                  ha-card {
+                    box-shadow: var(--couleur_ombre);
+                  }
+            attributes:
+              device_class: battery
+            domain: sensor
+        exclude:
+          - entity_id: sensor.st_00032986_tension_de_la_batterie
+      sort:
+        method: state
+        numeric: true
+      show_empty: false
+  defi_hilo_card:
+    card:
+      type: conditional
+      conditions:
+        - condition: numeric_state
+          entity: sensor.defi_hilo_count
+          above: '[[id]]'
+      card:
+        type: custom:stack-in-card
+        mode: vertical
+        card_mod:
+          style: |
+            ha-card {
+              border-radius:0px;
+              border-style: solid none none none;
+            }
+        cards:
+          - type: markdown
+            content: >
+              {% set defi = state_attr('sensor.defi_hilo','next_events')[[[id]]]
+              %}
+
+              {% set date =
+              as_timestamp(defi.phases.preheat_start)|timestamp_custom("%d")|int
+              %} {% set weekday =
+              as_timestamp(defi.phases.preheat_start)|timestamp_custom("%w") %}
+              {% set jour = ['Dimanche', 'Lundi', 'Mardi', 'Mercredi', 'Jeudi',
+              'Vendredi', 'Samedi'][int(weekday)] %} {% set dateToday =
+              as_timestamp(now())|timestamp_custom("%d")|int %}
+
+              {% if dateToday == date %}
+                {% set descriptif = "Aujourd'hui" %}
+              {% elif date - dateToday == 1 %}
+                {% set descriptif = "Demain" %}
+              {% else %}
+                {% set descriptif = jour + " " + date %}
+              {% endif %}
+
+              ## {{descriptif}} {{defi.period.upper()}}
+            card_mod:
+              style: |
+                ha-card {
+                  border-radius:0px;
+                  border-style: none;
+                }
+          - type: custom:stack-in-card
+            mode: horizontal
+            card_mod:
+              style: |
+                ha-card {
+                  border-radius:0px;
+                  border-style: none;
+                }
+            cards:
+              - type: custom:decluttering-card
+                template: defi_hilo_phase_card
+                variables:
+                  - id: '[[id]]'
+                  - phase_state_name: appreciation
+                  - phase_attributes_name: appreciation
+                  - primary: Ancrage
+                  - icon: mdi:lightning-bolt
+              - type: custom:decluttering-card
+                template: defi_hilo_phase_card
+                variables:
+                  - id: '[[id]]'
+                  - phase_state_name: pre_heat
+                  - phase_attributes_name: preheat
+                  - primary: Préchauffage
+                  - icon: mdi:timer-sand
+              - type: custom:decluttering-card
+                template: defi_hilo_phase_card
+                variables:
+                  - id: '[[id]]'
+                  - phase_state_name: reduction
+                  - phase_attributes_name: reduction
+                  - primary: Réduction
+                  - icon: mdi:power-plug-off
+              - type: custom:decluttering-card
+                template: defi_hilo_phase_card
+                variables:
+                  - id: '[[id]]'
+                  - phase_state_name: recovery
+                  - phase_attributes_name: recovery
+                  - primary: Reprise
+                  - icon: mdi:restart
+  defi_hilo_phase_card:
+    default:
+      - id: 0
+      - phase_state_name: appreciation
+      - phase_attributes_name: appreciation
+      - primary: Ancrage
+      - icon: mdi:anchor
+      - entity: sensor.defi_hilo
+    card:
+      type: custom:mushroom-template-card
+      entity: '[[entity]]'
+      icon: '[[icon]]'
+      primary: '[[primary]]'
+      multiline_secondary: true
+      layout: vertical
+      tap_action:
+        action: more-info
+      card_mod:
+        style:
+          .: |
+            ha-card {
+              border-radius:0px;
+              border-style: none;
+            }
+            mushroom-shape-icon {
+              {% if is_state('[[entity]]', '[[phase_state_name]]') %}
+              animation: dropshadow-change 2s linear infinite;
+              {% endif %}
+              test: '[[phase_state_name]]';
+              test2: '[[entity]]';
+            }
+            @keyframes dropshadow-change {
+              0% { filter: drop-shadow(0px 0px 2px rgba(0, 0, 0, 0)); }
+              50% { filter: drop-shadow(0px 0px 8px green); }
+              100% { filter: drop-shadow(0px 0px 2px rgba(0, 0, 0, 0)); }
+            }
+      secondary: >-
+        {%- set phaseStart =
+        as_timestamp(state_attr(entity,'next_events')[[[id]]]['phases']['[[phase_attributes_name]]_start'])
+        -%} {%- set phaseEnd =
+        as_timestamp(state_attr(entity,'next_events')[[[id]]]['phases']['[[phase_attributes_name]]_end'])
+        -%} {%- set remainingTime = phaseStart - as_timestamp(now()) -%}
+
+        {%- if remainingTime > 0 %} {{ phaseStart | timestamp_custom("%-Hh") }}
+        à {{ phaseEnd | timestamp_custom("%-Hh") }}
+
+        ⏱︎ {{ (phaseStart - as_timestamp(now())) | timestamp_custom("%-Hh%M",
+        false) }} {%- elif is_state(entity, '[[phase_state_name]]') %} {{
+        phaseStart | timestamp_custom("%-Hh") }} à {{ phaseEnd |
+        timestamp_custom("%-Hh") }}
+
+        ⏱︎ {{ (phaseEnd - as_timestamp(now())) | timestamp_custom("%-Hh%M",
+        false) }} {%- else %} Complété! {%- endif -%}
+      icon_color: >-
+        {%- set phaseStart =
+        as_timestamp(state_attr(entity,'next_events')[[[id]]]['phases']['[[phase_attributes_name]]_start'])
+        -%} {%- set remainingTime = phaseStart - as_timestamp(now()) -%}
+
+        {%- if is_state(entity, '[[phase_state_name]]') and (remainingTime <= 0)
+        -%}
+          green
+        {%- endif -%}
+      badge_icon: >-
+        {% if
+        as_timestamp(state_attr(entity,'next_events')[[[id]]]['phases']['[[phase_attributes_name]]_end'])
+        - as_timestamp(now()) <= 0 %}
+          mdi:check-bold
+        {% endif %}
+      badge_color: green
+views:
+  - type: sections
+    max_columns: 2
+    title: Vue Principale
+    icon: mdi:home
+    cards: []
+    dense_section_placement: true
+    sections:
+      - type: grid
+        cards:
+          - type: heading
+            heading: Météo
+            icon: mdi:weather-partly-rainy
+            grid_options:
+              columns: full
+              rows: 0.3
+          - type: custom:sun-weather-card
+            entity: weather.forecast_shawinigan_sud
+            current_temp_entity: sensor.st_00032986_temperature
+            sun_entity: sun.sun
+            language: system
+            time_format: '24'
+            forecast_type: hourly
+            forecast_layout: graph
+            forecast_days: 7
+            transparent: false
+            background_overlay: 0
+            show_arc: false
+            details: []
+            show_time: false
+            show_date: false
+            visible_rows: 10
+            show_forecast_toggle: false
+            animated_icons: true
+            location: Shawinigan
+            graph_color_by_temp: true
+            grid_options:
+              columns: 12
+              rows: auto
+            card_mod:
+              style: |
+                ha-card {
+                  box-shadow: var(--couleur_ombre) !important;
+                }
+          - type: heading
+            heading: Personnes
+            icon: mdi:account
+            grid_options:
+              columns: full
+              rows: 0.3
+          - type: custom:decluttering-card-plus
+            template: life360_personnes
+            variables:
+              - life360_nom: Brigitte
+              - life360_personne: person.brigitte
+              - life360_pile: sensor.life360_pile_tel_brigitte
+              - life360_charge: sensor.life360_pile_tel_en_charge_brigitte
+              - life360_deplacement: sensor.life360_en_deplacement_brigitte
+              - life360_vitesse: sensor.life360_vitesse_brigitte
+            grid_options:
+              columns: 3
+              rows: 1.7
+          - type: custom:decluttering-card-plus
+            template: life360_personnes
+            variables:
+              - life360_nom: Valérie
+              - life360_personne: person.valerie
+              - life360_pile: sensor.life360_pile_tel_valerie
+              - life360_charge: sensor.life360_pile_tel_en_charge_valerie
+              - life360_deplacement: sensor.life360_en_deplacement_valerie
+              - life360_vitesse: sensor.life360_vitesse_valerie
+            grid_options:
+              columns: 3
+              rows: 1.7
+          - type: custom:decluttering-card-plus
+            template: life360_personnes
+            variables:
+              - life360_nom: Claude
+              - life360_personne: person.claude
+              - life360_pile: sensor.life360_pile_tel_claude
+              - life360_charge: sensor.life360_pile_tel_en_charge_claude
+              - life360_deplacement: sensor.life360_en_deplacement_claude
+              - life360_vitesse: sensor.life360_vitesse_claude
+            grid_options:
+              columns: 3
+              rows: 1.7
+          - type: custom:decluttering-card-plus
+            template: life360_personnes
+            variables:
+              - life360_nom: Michel
+              - life360_personne: person.nasdemichel
+              - life360_pile: sensor.life360_pile_tel_michel
+              - life360_charge: sensor.life360_pile_tel_en_charge_michel
+              - life360_deplacement: sensor.life360_en_deplacement_michel
+              - life360_vitesse: sensor.life360_vitesse_michel
+            grid_options:
+              columns: 3
+              rows: 1.7
+          - type: heading
+            icon: mdi:lightbulb
+            heading: Éclairages
+            grid_options:
+              columns: full
+              rows: 0.3
+          - type: custom:decluttering-card-plus
+            template: tuiles_3
+            variables:
+              - tuile3_entity: light.salon
+              - tuile3_name: Lampes
+              - tuile3_icon: mdi:lamps
+            grid_options:
+              columns: 3
+              rows: 1.7
+          - type: custom:decluttering-card-plus
+            template: tuiles_3
+            variables:
+              - tuile3_entity: light.lecture
+              - tuile3_name: Lecture
+              - tuile3_icon: mdi:desk-lamp
+            grid_options:
+              columns: 3
+              rows: 1.7
+          - type: custom:decluttering-card-plus
+            template: tuiles_3
+            variables:
+              - tuile3_entity: switch.huche_salon
+              - tuile3_name: Huche
+              - tuile3_icon: hue:bulb-group-recessed-ceiling
+            grid_options:
+              columns: 3
+              rows: 1.7
+          - type: custom:decluttering-card-plus
+            template: tuiles_3
+            variables:
+              - tuile3_entity: light.govee_tele
+              - tuile3_name: Govee
+              - tuile3_icon: mdi:television-ambient-light
+            grid_options:
+              columns: 3
+              rows: 1.7
+          - type: custom:decluttering-card-plus
+            template: tuiles_3
+            variables:
+              - tuile3_entity: light.exterieure_avant
+              - tuile3_name: Avant
+              - tuile3_icon: hue:floor-lantern-group
+            grid_options:
+              columns: 3
+              rows: 1.7
+          - type: custom:decluttering-card-plus
+            template: tuiles_3
+            variables:
+              - tuile3_entity: light.neviweb130_lumiere_exterieurs_arriere
+              - tuile3_name: Arrière
+              - tuile3_icon: hue:ceiling-fugato-two-alt
+            grid_options:
+              columns: 3
+              rows: 1.7
+          - type: custom:decluttering-card-plus
+            template: tuiles_3
+            variables:
+              - tuile3_entity: light.salle_a_diner_table
+              - tuile3_name: Table
+              - tuile3_icon: hue:ensis
+            grid_options:
+              columns: 3
+              rows: 1.7
+          - type: custom:decluttering-card-plus
+            template: tuiles_3
+            variables:
+              - tuile3_entity: switch.vestibule_avant
+              - tuile3_name: Vestibule
+              - tuile3_icon: hue:ceiling-fugato-three-alt
+            grid_options:
+              columns: 3
+              rows: 1.7
+      - type: grid
+        cards:
+          - type: heading
+            heading: Calendrier
+            icon: mdi:calendar-month-outline
+            grid_options:
+              columns: full
+              rows: 0.3
+          - type: custom:calendar-tasks-card
+            calendars:
+              - calendar.agenda_de_michel
+              - calendar.sports_de_michel
+              - calendar.anniversaires_de_michel
+              - calendar.anniversaires
+              - calendar.jours_feries_de_michel
+            todos:
+              - todo.mes_taches
+            title: Agenda de Michel
+            event_progress: line
+            show_current_date: true
+            show_view_switch: true
+            show_add_event: false
+            show_collapse_button: false
+            days: 30
+            allow_complete: true
+            limit_events_visible: true
+            max_events_visible: 2
+            compact_mode: true
+            grid_options:
+              columns: full
+              rows: auto
+            card_mod:
+              style: |
+                ha-card {
+                  box-shadow: var(--couleur_ombre) !important;
+                 }
+          - type: heading
+            icon: mdi:cctv
+            heading: Caméras
+            grid_options:
+              columns: full
+              rows: 0.3
+          - type: custom:decluttering-card-plus
+            template: tuiles_4
+            variables:
+              - tuile4_entity: alarm_control_panel.blink_ca_exterieures
+            grid_options:
+              columns: 6
+              rows: auto
+          - type: custom:decluttering-card-plus
+            template: tuiles_4
+            variables:
+              - tuile4_entity: alarm_control_panel.blink_ca_interieures
+            grid_options:
+              columns: 6
+              rows: auto
+          - type: heading
+            icon: mdi:heat-wave
+            heading: Chauffage
+            entities:
+              - show_state: true
+                show_icon: true
+                entity: sensor.thermopompe_temperature
+            grid_options:
+              columns: full
+              rows: 0.3
+          - type: custom:decluttering-card-plus
+            template: tuiles_2
+            variables:
+              - tuile2_entity: climate.sensibo_cuisine
+              - tuile2_name: Cuisine
+            grid_options:
+              columns: 6
+              rows: auto
+          - type: custom:decluttering-card-plus
+            template: tuiles_2
+            variables:
+              - tuile2_entity: climate.sensibo_salle_de_repos
+              - tuile2_name: Salle de repos
+            grid_options:
+              columns: 6
+              rows: auto
+          - type: heading
+            heading: Environnement Canada Alerte
+            heading_style: title
+          - type: custom:mod-card
+            card_mod:
+              style: >
+                {% set warn = state_attr('sensor.shawinigan_veilles', 'alert_1')
+                | string + " " + state_attr('sensor.sensor.shawinigan_veilles',
+                'alert_2') | string %}  {% set watch =
+                state_attr('sensor.shawinigan_alertes', 'alert_1') | string + "
+                " + state_attr('sensor.shawinigan_alertes', 'alert_2') | string
+                %}  {% set adv = state_attr('sensor.shawinigan_avis', 'alert_1')
+                | string + " " + state_attr('sensor.shawinigan_avis', 'alert_2')
+                | string %}  {% set stat =
+                state_attr('sensor.sensor.shawinigan_bulletins', 'alert_1') |
+                string + " " + state_attr('sensor.sensor.shawinigan_bulletins',
+                'alert_2') | string %}  {% set combined = warn + " " + watch + "
+                " + adv + " " + stat %}
+
+                {% if combined and 'None' not in combined or combined | trim !=
+                "" %}
+                  {% set color = 'red' if 'Red' in combined 
+                            else 'orange' if 'Orange' in combined 
+                            else 'yellow' if 'Yellow' in combined 
+                            else 'grey' if 'Statement' in combined or (stat and 'None' not in stat)
+                            else none %}
+                  {% set pulse_speed = '1s' if 'Red' in combined 
+                                  else '2s' if 'Orange' in combined 
+                                  else '3s' if 'Yellow' in combined
+                                  else '0s' %}
+                  
+                  ha-card {
+                    {% if color and color != 'grey' %} animation: pulse {{ pulse_speed }} infinite; {% endif %}
+                    background: {{ 'rgba(255, 0, 0, 0.2)' if color == 'red' 
+                                   else 'rgba(255, 165, 0, 0.2)' if color == 'orange' 
+                                   else 'rgba(255, 255, 0, 0.2)' if color == 'yellow' 
+                                   else 'rgba(128, 128, 128, 0.2)' if color == 'grey' 
+                                   else 'none' }};
+                    border: 2px solid {{ color if color else 'transparent' }};
+                  }
+                  @keyframes pulse {
+                    0% { box-shadow: 0 0 0 0px {{ color }}; }
+                    70% { box-shadow: 0 0 0 15px rgba(0, 0, 0, 0); }
+                    100% { box-shadow: 0 0 0 0px rgba(0, 0, 0, 0); }
+                  }
+                {% endif %}
+            card:
+              type: custom:auto-entities
+              show_empty: false
+              card:
+                type: entities
+                theme: Dark
+                card_mod:
+                  style: >
+                    ha-card { background: none !important; border: none
+                    !important; box-shadow: none !important; font-size: larger
+                    !important} .card-content { padding: 8px !important; }
+              filter:
+                template: |
+                  {% set sensors = [
+                    'sensor.shawinigan_veilles',
+                    'sensor.shawinigan_alertes',
+                    'sensor.shawinigan_avis',
+                    'sensor.shawinigan_bulletins'
+                  ] %}
+
+                  {% set ns = namespace(rows=[]) %}
+
+                  {% for s in sensors %}
+                    {% for i in range(1, 5) %}
+                      {% set attr = 'alert_' ~ i %}
+                      {% set text = state_attr(s, attr) %}
+                      {% if text and text != 'None' and text | trim != "" %}
+                        
+                        {# Define sorting weights: Color first, then Type #}
+                        {% set color_prio = 10 if 'Red' in text else 20 if 'Orange' in text else 30 if 'Yellow' in text else 40 %}
+                        {% set type_prio = 1 if 'warnings' in s else 2 if 'watches' in s else 3 if 'advisory' in s else 4 %}
+                        {% set sort_score = color_prio + type_prio %}
+
+                        {% set row_color = 'red' if 'Red' in text else 'orange' if 'Orange' in text else 'yellow' if 'Yellow' in text else 'grey' %}
+                        {% set row_icon = 'mdi:alert' if row_color == 'red' else 'mdi:alert-rhombus' if row_color == 'orange' else 'mdi:alert-circle' if row_color == 'yellow' else 'mdi:alert-box' %}
+                        
+                        {% set ns.rows = ns.rows + [{
+                          "sort_by": sort_score,
+                          "type": "attribute",
+                          "attribute": "hide_state",
+                          "entity": s,
+                          "name": text,
+                          "icon": row_icon,
+                          "tap_action": {
+                            "action": "url",
+                            "url_path": "https://weather.gc.ca/warnings/report_e.html?onrm26"
+                          },
+                          "card_mod": {
+                            "style": "state-badge { color: " ~ row_color ~ " !important; } :host { --card-mod-icon-color: " ~ row_color ~ "; }"
+                          }
+                        }] %}
+                      {% endif %}
+                    {% endfor %}
+                  {% endfor %}
+
+                  {# This sorts by the combined color + type score #}
+                  {{ ns.rows | sort(attribute='sort_by') }}
+    badges:
+      - type: entity
+        entity: sensor.st_00032986_vitesse_du_vent
+        name: Vent
+        display_type: complete
+        tap_action: none
+      - type: entity
+        show_name: true
+        show_state: true
+        show_icon: true
+        entity: sensor.shawinigan_sud_sensors_precipitation_today
+        name: Pluie
+        tap_action:
+          action: navigate
+          navigation_path: /mon-tableau/Edi-Sous-Vue-Pluie
+      - type: custom:lunar-phase-badge
+        location_source: default
+        entity: sensor.moon_phase
+        southern_hemisphere: false
+        language: fr
+        number_decimals: 2
+        mile_unit: false
+        12hr_format: false
+        icon_type: image
+        custom_name: false
+        name: phaseName
+        show_name: true
+        show_icon: true
+        show_state: true
+        tap_action: none
+      - type: entity
+        show_name: true
+        show_state: false
+        show_icon: true
+        entity: sensor.defi_hilo_in_progress
+        icon: mdi:progress-alert
+        name: Défi en cour
+        color: red
+        visibility:
+          - condition: state
+            entity: sensor.defi_hilo_in_progress
+            state: 'True'
+        show_entity_picture: true
+        display_type: minimal
+        tap_action: none
+      - type: entity
+        entity: sensor.nombre_de_lumieres_allumees
+        icon: mdi:lightbulb
+        color: yellow
+        visibility:
+          - condition: state
+            entity: sensor.nombre_de_lumieres_allumees
+            state_not: '0'
+        name: Allumées
+        tap_action: none
+      - type: entity
+        entity: sensor.nombre_de_mise_a_jour_total
+        icon: mdi:update
+        color: red
+        visibility:
+          - condition: state
+            entity: sensor.nombre_de_mise_a_jour_total
+            state_not: '0'
+        name: MAJ
+        tap_action:
+          action: none
+      - type: entity
+        show_name: true
+        show_state: true
+        show_icon: true
+        icon: mdi:progress-alert
+        entity: sensor.defi_hilo_nb_defi_planifies
+        name: Défi prévu
+        color: red
+        visibility:
+          - condition: state
+            entity: sensor.defi_hilo_nb_defi_planifies
+            state_not: '0'
+        tap_action: none
+      - type: entity
+        show_name: true
+        show_state: false
+        show_icon: true
+        entity: sensor.shawinigan_resume
+        name: Alerte
+        icon: mdi:alert
+        color: red
+        visibility:
+          - condition: or
+            conditions:
+              - condition: state
+                entity: sensor.shawinigan_avis
+                state_not: '0'
+              - condition: state
+                entity: sensor.shawinigan_terminaisons
+                state_not: '0'
+              - condition: state
+                entity: sensor.shawinigan_bulletins
+                state_not: '0'
+              - condition: state
+                entity: sensor.shawinigan_veilles
+                state_not: '0'
+              - condition: state
+                entity: sensor.shawinigan_alertes
+                state_not: '0'
+        tap_action: none
+      - type: custom:decluttering-card-plus
+        template: collectes
+        variables:
+          - collectes_entity: sensor.collecte_shawinigan_ordures_date
+      - type: custom:decluttering-card-plus
+        template: collectes
+        variables:
+          - collectes_entity: sensor.collecte_shawinigan_matieres_recyclables_date
+      - type: custom:decluttering-card-plus
+        template: collectes
+        variables:
+          - collectes_entity: sensor.collecte_shawinigan_matieres_compostables_date
+  - type: sections
+    max_columns: 2
+    title: Vue Éclairage
+    path: Edi-Vue-Eclairage
+    icon: mdi:lamp
+    dense_section_placement: true
+    sections:
+      - type: grid
+        cards:
+          - type: heading
+            heading_style: title
+            heading: Éclairages
+            grid_options:
+              columns: full
+              rows: 0.5
+            card_mod:
+              style: |
+                .content.title {
+                  font-size: 25px;
+                }
+          - type: heading
+            icon: mdi:sofa
+            heading_style: title
+            grid_options:
+              columns: full
+              rows: 0.4
+            heading: Salon
+          - type: custom:decluttering-card-plus
+            template: tuiles_3
+            variables:
+              - tuile3_entity: light.salon
+              - tuile3_name: Lampes
+              - tuile3_icon: mdi:lamps
+            grid_options:
+              columns: 3
+              rows: auto
+          - type: custom:decluttering-card-plus
+            template: tuiles_3
+            variables:
+              - tuile3_entity: light.lecture
+              - tuile3_name: Lecture
+              - tuile3_icon: mdi:desk-lamp
+            grid_options:
+              columns: 3
+              rows: auto
+          - type: custom:decluttering-card-plus
+            template: tuiles_3
+            variables:
+              - tuile3_entity: switch.huche_salon
+              - tuile3_name: Huche
+              - tuile3_icon: hue:bulb-group-recessed-ceiling
+            grid_options:
+              columns: 3
+              rows: auto
+          - type: custom:decluttering-card-plus
+            template: tuiles_3
+            variables:
+              - tuile3_entity: light.govee_tele
+              - tuile3_name: Govee
+              - tuile3_icon: mdi:television-ambient-light
+            grid_options:
+              columns: 3
+              rows: auto
+          - type: heading
+            icon: mdi:table-chair
+            heading_style: title
+            grid_options:
+              columns: 6
+              rows: 0.4
+            heading: Salle à manger
+          - type: heading
+            icon: mdi:tree
+            heading_style: title
+            grid_options:
+              columns: 6
+              rows: 0.4
+            heading: Extérieure
+          - type: custom:decluttering-card-plus
+            template: tuiles_3
+            variables:
+              - tuile3_entity: light.salle_a_diner_table
+              - tuile3_name: Table
+              - tuile3_icon: hue:ensis
+            grid_options:
+              columns: 3
+              rows: auto
+          - type: custom:decluttering-card-plus
+            template: tuiles_3
+            variables:
+              - tuile3_entity: switch.vestibule_avant
+              - tuile3_name: Vestibule
+              - tuile3_icon: hue:ceiling-fugato-three-alt
+            grid_options:
+              columns: 3
+              rows: auto
+          - type: custom:decluttering-card-plus
+            template: tuiles_3
+            variables:
+              - tuile3_entity: light.exterieure_avant
+              - tuile3_name: Avant
+              - tuile3_icon: hue:floor-lantern-group
+            grid_options:
+              columns: 3
+              rows: auto
+          - type: custom:decluttering-card-plus
+            template: tuiles_3
+            variables:
+              - tuile3_entity: light.neviweb130_lumiere_exterieurs_arriere
+              - tuile3_name: Arrière
+              - tuile3_icon: hue:ceiling-fugato-two-alt
+            grid_options:
+              columns: 3
+              rows: auto
+          - type: heading
+            icon: mdi:desk
+            heading_style: title
+            grid_options:
+              columns: 6
+              rows: 0.4
+            heading: Bureau
+          - type: heading
+            icon: mdi:chair-rolling
+            heading_style: title
+            grid_options:
+              columns: 3
+              rows: 0.4
+            heading: Boudoire
+          - type: heading
+            icon: mdi:tools
+            heading_style: title
+            grid_options:
+              columns: 3
+              rows: 0.4
+            heading: Atlier
+          - type: custom:decluttering-card-plus
+            template: tuiles_3
+            variables:
+              - tuile3_entity: light.neviweb130_light_bureau
+              - tuile3_name: Plafond
+              - tuile3_icon: hue:ceiling-fugato-four-alt
+            grid_options:
+              columns: 3
+              rows: auto
+          - type: custom:decluttering-card-plus
+            template: tuiles_3
+            variables:
+              - tuile3_entity: light.neviweb130_light_garde_robes_bureau
+              - tuile3_name: Placard
+              - tuile3_icon: hue:ceiling-fair-semiflush
+            grid_options:
+              columns: 3
+              rows: auto
+          - type: custom:decluttering-card-plus
+            template: tuiles_3
+            variables:
+              - tuile3_entity: switch.salle_repos_boudoire
+              - tuile3_name: Plafond
+              - tuile3_icon: hue:ceiling-fugato-four-alt
+            grid_options:
+              columns: 3
+              rows: auto
+          - type: custom:decluttering-card-plus
+            template: tuiles_3
+            variables:
+              - tuile3_entity: light.neviweb130_light_lumiere_atelier
+              - tuile3_name: Plafond
+              - tuile3_icon: hue:ceiling-adore
+            grid_options:
+              columns: 3
+              rows: auto
+          - type: heading
+            heading_style: title
+            grid_options:
+              columns: full
+              rows: 0.8
+            heading: Prises
+            card_mod:
+              style: |
+                .content.title {
+                  font-size: 25px;
+                }
+          - type: heading
+            icon: mdi:sofa
+            heading_style: title
+            grid_options:
+              columns: 6
+              rows: 0.4
+            heading: Salon
+          - type: heading
+            icon: mdi:stove
+            heading_style: title
+            grid_options:
+              columns: 5
+              rows: 0.4
+            heading: Cuisine
+            entities:
+              - show_state: true
+                show_icon: true
+                entity: sensor.ipad_de_michel_battery_level
+          - type: custom:decluttering-card-plus
+            template: tuiles_3
+            variables:
+              - tuile3_entity: switch.neviweb130_switch_prise_lampes_salon
+              - tuile3_name: Lampes
+              - tuile3_icon: mdi:power-socket-us
+            grid_options:
+              columns: 3
+              rows: auto
+          - type: custom:decluttering-card-plus
+            template: tuiles_3
+            variables:
+              - tuile3_entity: switch.neviweb130_switch_prise_huche_salon
+              - tuile3_name: Huche
+              - tuile3_icon: mdi:power-socket-us
+            grid_options:
+              columns: 3
+              rows: auto
+          - type: custom:decluttering-card-plus
+            template: tuiles_3
+            variables:
+              - tuile3_entity: switch.neviweb130_switch_prise_ipad_ha
+              - tuile3_name: iPad HA
+              - tuile3_icon: mdi:power-socket-us
+            grid_options:
+              columns: 3
+              rows: auto
+      - type: grid
+        cards:
+          - type: heading
+            heading_style: title
+            grid_options:
+              columns: full
+              rows: 0.5
+            heading: Éclairages
+            card_mod:
+              style: |
+                .content.title {
+                  font-size: 25px;
+                }
+          - type: heading
+            icon: mdi:stove
+            heading_style: title
+            grid_options:
+              columns: full
+              rows: 0.4
+            heading: Cuisine
+          - type: custom:decluttering-card-plus
+            template: tuiles_3
+            variables:
+              - tuile3_entity: light.neviweb130_light_comptoir_cuisine
+              - tuile3_name: Évier
+              - tuile3_icon: hue:ceiling-fugato-two
+            grid_options:
+              columns: 3
+              rows: auto
+          - type: custom:decluttering-card-plus
+            template: tuiles_3
+            variables:
+              - tuile3_entity: light.neviweb130_light_lumiere_huche_cuisine
+              - tuile3_name: Huche
+              - tuile3_icon: hue:single-spot
+            grid_options:
+              columns: 3
+              rows: auto
+          - type: custom:decluttering-card-plus
+            template: tuiles_3
+            variables:
+              - tuile3_entity: light.neviweb130_lumiere_vestibule_arriere
+              - tuile3_name: Vestibule
+              - tuile3_icon: hue:ceiling-buratto-four
+            grid_options:
+              columns: 3
+              rows: auto
+          - type: custom:decluttering-card-plus
+            template: tuiles_3
+            variables:
+              - tuile3_entity: light.neviweb130_light_garde_robes_cuisine
+              - tuile3_name: Placard
+              - tuile3_icon: mdi:ceiling-light-outline
+            grid_options:
+              columns: 3
+              rows: auto
+          - type: heading
+            icon: mdi:bed-king
+            heading_style: title
+            grid_options:
+              columns: 9
+              rows: 0.4
+            heading: Chambre des maîtres
+          - type: heading
+            icon: mdi:bathtub
+            heading_style: title
+            grid_options:
+              columns: 3
+              rows: 0.4
+            heading: Bain
+          - type: custom:decluttering-card-plus
+            template: tuiles_3
+            variables:
+              - tuile3_entity: light.chambre_des_maitres_plafond
+              - tuile3_name: Plafond
+              - tuile3_icon: hue:pendant-cher
+            grid_options:
+              columns: 3
+              rows: auto
+          - type: custom:decluttering-card-plus
+            template: tuiles_3
+            variables:
+              - tuile3_entity: light.chevets
+              - tuile3_name: Chevets
+              - tuile3_icon: hue:beyond-solid-group
+            grid_options:
+              columns: 3
+              rows: auto
+          - type: custom:decluttering-card-plus
+            template: tuiles_3
+            variables:
+              - tuile3_entity: switch.garde_robes_chambre_des_maitres
+              - tuile3_name: Placard
+            grid_options:
+              columns: 3
+              rows: auto
+          - type: custom:decluttering-card-plus
+            template: tuiles_3
+            variables:
+              - tuile3_entity: light.salle_de_bain
+              - tuile3_name: Lavabo
+              - tuile3_icon: hue:ceiling-adore
+            grid_options:
+              columns: 3
+              rows: auto
+          - type: heading
+            icon: mdi:sofa
+            heading_style: title
+            grid_options:
+              columns: 6
+              rows: 0.4
+            heading: Familiale
+          - type: heading
+            icon: mdi:toilet
+            heading_style: title
+            grid_options:
+              columns: 3
+              rows: 0.4
+            heading: Salle eau
+          - type: heading
+            icon: mdi:bed-double
+            heading_style: title
+            grid_options:
+              columns: 3
+              rows: 0.4
+            heading: Invités
+          - type: custom:decluttering-card-plus
+            template: tuiles_3
+            variables:
+              - tuile3_entity: light.salle_familiale_groupe_de_lumieres
+              - tuile3_name: Plafond
+              - tuile3_icon: hue:ceiling-square
+            grid_options:
+              columns: 3
+              rows: auto
+          - type: custom:decluttering-card-plus
+            template: tuiles_3
+            variables:
+              - tuile3_entity: light.echangeur_air
+              - tuile3_name: Air
+              - tuile3_icon: hue:bulb-sultan
+            grid_options:
+              columns: 3
+              rows: auto
+          - type: custom:decluttering-card-plus
+            template: tuiles_3
+            variables:
+              - tuile3_entity: light.neviweb130_light_lumiere_salle_deau
+              - tuile3_name: Huche
+              - tuile3_icon: hue:ceiling-adore
+            grid_options:
+              columns: 3
+              rows: auto
+          - type: custom:decluttering-card-plus
+            template: tuiles_3
+            variables:
+              - tuile3_entity: light.neviweb130_light_lumiere_chambre_invites
+              - tuile3_name: Plafond
+              - tuile3_icon: hue:ceiling-fugato-three-alt
+            grid_options:
+              columns: 3
+              rows: auto
+          - type: heading
+            heading_style: title
+            grid_options:
+              columns: 6
+              rows: 0.8
+            heading: Prises
+            card_mod:
+              style: |
+                .content.title {
+                  font-size: 25px;
+                }
+          - type: heading
+            heading_style: title
+            grid_options:
+              columns: 6
+              rows: 0.8
+            heading: Interrupteurs
+            card_mod:
+              style: |
+                .content.title {
+                  font-size: 25px;
+                }
+          - type: heading
+            icon: mdi:home-floor-0
+            heading_style: title
+            grid_options:
+              columns: 6
+              rows: 0.4
+            heading: Sous-Sol
+            entities:
+              - show_state: true
+                show_icon: true
+                entity: sensor.chauffe_eau_temperature
+          - type: heading
+            heading_style: title
+            icon: hue:room-front-door
+            grid_options:
+              columns: 6
+              rows: 0.4
+            heading: Gal Avant
+          - type: custom:decluttering-card-plus
+            template: tuiles_3
+            variables:
+              - tuile3_entity: switch.neviweb130_switch_prise_echangeur_dair
+              - tuile3_name: Air
+              - tuile3_icon: mdi:power-socket-us
+            grid_options:
+              columns: 3
+              rows: auto
+          - type: custom:decluttering-card-plus
+            template: tuiles_3
+            variables:
+              - tuile3_entity: switch.chauffe_eau
+              - tuile3_name: Chauffe eau
+              - tuile3_icon: mdi:water-boiler
+            grid_options:
+              columns: 3
+              rows: auto
+          - type: custom:decluttering-card-plus
+            template: tuiles_3
+            variables:
+              - tuile3_entity: switch.lumieres_galerie_avant
+              - tuile3_name: Galerie Avant
+            grid_options:
+              columns: 3
+              rows: auto
+    cards: []
+  - type: sections
+    max_columns: 2
+    title: Vue Chauffages
+    path: Edi-Vue-Chauffages
+    icon: mdi:radiator
+    dense_section_placement: true
+    sections:
+      - type: grid
+        cards:
+          - type: heading
+            heading: Salon
+            heading_style: title
+            icon: mdi:thermometer
+            badges:
+              - type: entity
+                show_state: true
+                show_icon: false
+                entity: sensor.maison_temperature
+                state_content: state
+            grid_options:
+              columns: 6
+              rows: 0.5
+          - type: heading
+            heading: Sous-Sol
+            heading_style: title
+            icon: mdi:thermometer
+            grid_options:
+              columns: 6
+              rows: 0.5
+            badges:
+              - type: entity
+                show_state: true
+                show_icon: false
+                entity: sensor.maison_sous_sol_temperature
+                state_content: state
+          - type: custom:decluttering-card-plus
+            template: statistques
+            variables:
+              statistques_entity: sensor.maison_temperature
+              statistques_color: teal
+            grid_options:
+              columns: 6
+              rows: 3
+          - type: custom:decluttering-card-plus
+            template: statistques
+            variables:
+              statistques_entity: sensor.maison_sous_sol_temperature
+              statistques_color: orange
+            grid_options:
+              columns: 6
+              rows: 3
+          - type: heading
+            icon: mdi:sofa
+            heading_style: title
+            heading: Salon
+            grid_options:
+              columns: 6
+              rows: 0.5
+          - type: heading
+            icon: mdi:stove
+            heading_style: title
+            grid_options:
+              columns: 6
+              rows: 0.5
+            heading: Cusine
+          - type: custom:decluttering-card-plus
+            template: tuiles_1
+            variables:
+              - tuile1_entity: climate.neviweb130_climate_salon
+            grid_options:
+              columns: 6
+              rows: auto
+          - type: custom:decluttering-card-plus
+            template: tuiles_1
+            variables:
+              - tuile1_entity: climate.neviweb130_climate_cuisine
+            grid_options:
+              columns: 6
+              rows: auto
+          - type: heading
+            icon: mdi:toilet
+            heading_style: title
+            grid_options:
+              columns: 6
+              rows: 0.5
+            heading: Salle d’eau
+          - type: heading
+            icon: mdi:bed-king
+            heading_style: title
+            heading: Chambre des maîtres
+            grid_options:
+              columns: 6
+              rows: 0.5
+          - type: custom:decluttering-card-plus
+            template: tuiles_1
+            variables:
+              - tuile1_entity: climate.neviweb130_climate_salle_eau
+            grid_options:
+              columns: 6
+              rows: auto
+          - type: custom:decluttering-card-plus
+            template: tuiles_1
+            variables:
+              - tuile1_entity: climate.neviweb130_climate_ch_maitres
+            grid_options:
+              columns: 6
+              rows: auto
+          - type: heading
+            icon: mdi:desk
+            heading_style: title
+            grid_options:
+              columns: 6
+              rows: 0.5
+            heading: Bureau
+          - type: heading
+            icon: mdi:hvac
+            heading_style: title
+            grid_options:
+              columns: 6
+              rows: 0.5
+            heading: Thermopompe
+          - type: custom:decluttering-card-plus
+            template: tuiles_1
+            variables:
+              - tuile1_entity: climate.neviweb130_climate_bureau
+            grid_options:
+              columns: 6
+              rows: auto
+          - type: custom:decluttering-card-plus
+            template: tuiles_1
+            variables:
+              - tuile1_entity: climate.sensibo_cuisine
+              - tuile1_name: Cuisine
+            grid_options:
+              columns: 6
+              rows: auto
+      - type: grid
+        cards:
+          - type: heading
+            heading: Chambre des maîtres
+            heading_style: title
+            icon: mdi:thermometer
+            badges:
+              - type: entity
+                show_state: true
+                show_icon: false
+                entity: sensor.maison_chambre_des_maitres_temperature
+                state_content: state
+            grid_options:
+              columns: 6
+              rows: 0.5
+          - type: heading
+            heading: Bureau
+            heading_style: title
+            icon: mdi:thermometer
+            badges:
+              - type: entity
+                show_state: true
+                show_icon: false
+                entity: sensor.maison_bureau_temperature
+                state_content: state
+            grid_options:
+              columns: 6
+              rows: 0.5
+          - type: custom:decluttering-card-plus
+            template: statistques
+            variables:
+              statistques_entity: sensor.maison_chambre_des_maitres_temperature
+              statistques_color: blue
+            grid_options:
+              columns: 6
+              rows: 3
+          - type: custom:decluttering-card-plus
+            template: statistques
+            variables:
+              statistques_entity: sensor.maison_bureau_temperature
+              statistques_color: red
+            grid_options:
+              columns: 6
+              rows: 3
+          - type: heading
+            icon: mdi:chair-rolling
+            heading_style: title
+            grid_options:
+              columns: 6
+              rows: 0.5
+            heading: Salle de repos
+          - type: heading
+            icon: mdi:bathtub
+            heading_style: title
+            grid_options:
+              columns: 6
+              rows: 0.5
+            heading: Salle de bain
+          - type: custom:decluttering-card-plus
+            template: tuiles_1
+            variables:
+              - tuile1_entity: climate.neviweb130_climate_salle_repos
+            grid_options:
+              columns: 6
+              rows: auto
+          - type: custom:decluttering-card-plus
+            template: tuiles_1
+            variables:
+              - tuile1_entity: climate.neviweb130_climate_salle_bain
+            grid_options:
+              columns: 6
+              rows: auto
+          - type: heading
+            icon: mdi:account-group
+            heading_style: title
+            grid_options:
+              columns: 6
+              rows: 0.5
+            heading: 'Salle familiale '
+          - type: heading
+            icon: mdi:bed-double
+            heading_style: title
+            grid_options:
+              columns: 6
+              rows: 0.5
+            heading: Chambre des invités
+          - type: custom:decluttering-card-plus
+            template: tuiles_1
+            variables:
+              - tuile1_entity: climate.neviweb130_climate_salle_familiale
+            grid_options:
+              columns: 6
+              rows: auto
+          - type: custom:decluttering-card-plus
+            template: tuiles_1
+            variables:
+              - tuile1_entity: climate.neviweb130_climate_ch_invites
+            grid_options:
+              columns: 6
+              rows: auto
+          - type: heading
+            icon: mdi:tools
+            heading_style: title
+            heading: Atelier
+            grid_options:
+              columns: 6
+              rows: 0.5
+          - type: heading
+            icon: mdi:hvac
+            heading_style: title
+            grid_options:
+              columns: 6
+              rows: 0.5
+            heading: Thermopompe
+          - type: custom:decluttering-card-plus
+            template: tuiles_1
+            variables:
+              - tuile1_entity: climate.neviweb130_climate_atelier
+            grid_options:
+              columns: 6
+              rows: auto
+          - type: custom:decluttering-card-plus
+            template: tuiles_1
+            variables:
+              - tuile1_entity: climate.sensibo_salle_de_repos
+              - tuile1_name: Salle de repos
+            grid_options:
+              columns: 6
+              rows: auto
+    cards: []
+  - type: sections
+    max_columns: 2
+    title: Vue Sécurités
+    path: Edi-Vue-Securites
+    icon: mdi:shield-home
+    dense_section_placement: true
+    sections:
+      - type: grid
+        cards:
+          - type: heading
+            heading_style: title
+            grid_options:
+              columns: full
+              rows: 0.5
+            heading: Caméras
+            card_mod:
+              style: |
+                .content.title {
+                  font-size: 25px;
+                }
+          - type: heading
+            icon: mdi:home-account
+            heading_style: title
+            grid_options:
+              columns: 6
+              rows: 0.4
+            heading: Extérieures
+          - type: heading
+            icon: mdi:tree
+            heading_style: title
+            grid_options:
+              columns: 6
+              rows: 0.4
+            heading: Intérieures
+          - type: custom:decluttering-card-plus
+            template: tuiles_4
+            variables:
+              - tuile4_entity: alarm_control_panel.blink_ca_exterieures
+            grid_options:
+              columns: 6
+              rows: auto
+          - type: custom:decluttering-card-plus
+            template: tuiles_4
+            variables:
+              - tuile4_entity: alarm_control_panel.blink_ca_interieures
+            grid_options:
+              columns: 6
+              rows: auto
+          - type: heading
+            heading_style: title
+            grid_options:
+              columns: full
+              rows: 0.5
+            heading: Mouvements
+            card_mod:
+              style: |
+                .content.title {
+                  font-size: 25px;
+                }
+          - type: heading
+            icon: mdi:sofa
+            heading_style: title
+            grid_options:
+              columns: 6
+              rows: 0.4
+            heading: Salon
+          - type: heading
+            icon: mdi:home-floor-0
+            heading: Cuisine
+            heading_style: title
+            grid_options:
+              columns: 6
+              rows: 0.4
+          - type: custom:decluttering-card-plus
+            template: tuiles_5
+            variables:
+              - tuile5_entity: binary_sensor.camera_salon_mouvement
+              - tuile5_name: Salon
+            grid_options:
+              columns: 6
+              rows: auto
+          - type: custom:decluttering-card-plus
+            template: tuiles_5
+            variables:
+              - tuile5_entity: binary_sensor.camera_cuisine_mouvement
+              - tuile5_name: Cuisine
+            grid_options:
+              columns: 6
+              rows: auto
+          - type: heading
+            icon: mdi:home-floor-0
+            heading: Sous-Sol
+            heading_style: title
+            grid_options:
+              columns: 6
+              rows: 0.4
+          - type: heading
+            icon: mdi:home-floor-0
+            heading_style: title
+            grid_options:
+              columns: 6
+              rows: 0.4
+            heading: Allée
+          - type: custom:decluttering-card-plus
+            template: tuiles_5
+            variables:
+              - tuile5_entity: binary_sensor.camera_sous_sol_mouvement
+              - tuile5_name: Sous-sol
+            grid_options:
+              columns: 6
+              rows: auto
+          - type: custom:decluttering-card-plus
+            template: tuiles_5
+            variables:
+              - tuile5_entity: binary_sensor.camera_allee_mouvement
+              - tuile5_name: Allée
+            grid_options:
+              columns: 6
+              rows: auto
+          - type: heading
+            icon: mdi:gamepad-outline
+            heading_style: title
+            grid_options:
+              columns: 6
+              rows: 0.4
+            heading: Avant
+          - type: heading
+            icon: mdi:home-floor-0
+            heading_style: title
+            grid_options:
+              columns: 6
+              rows: 0.4
+            heading: Arrière
+          - type: custom:decluttering-card-plus
+            template: tuiles_5
+            variables:
+              - tuile5_entity: binary_sensor.camera_avant_mouvement
+              - tuile5_name: Galerie avant
+            grid_options:
+              columns: 6
+              rows: auto
+          - type: custom:decluttering-card-plus
+            template: tuiles_5
+            variables:
+              - tuile5_entity: binary_sensor.camera_arriere_mouvement
+              - tuile5_name: Galerie Arrière
+            grid_options:
+              columns: 6
+              rows: auto
+      - type: grid
+        cards:
+          - type: heading
+            heading_style: title
+            grid_options:
+              columns: full
+              rows: 0.5
+            heading: Porte Avant
+            card_mod:
+              style: |
+                .content.title {
+                  font-size: 25px;
+                }
+          - type: heading
+            icon: mdi:lock-outline
+            heading_style: title
+            grid_options:
+              columns: 6
+              rows: 0.5
+            heading: Serrure
+          - type: heading
+            icon: mdi:door
+            heading_style: title
+            grid_options:
+              columns: 6
+              rows: 0.5
+            heading: Porte
+          - type: custom:decluttering-card-plus
+            template: tuiles_5
+            variables:
+              - tuile5_entity: lock.porte_d_entree
+              - tuile5_name: Serrure
+            grid_options:
+              columns: 6
+              rows: auto
+          - type: custom:decluttering-card-plus
+            template: tuiles_5
+            variables:
+              - tuile5_entity: binary_sensor.porte_d_entree_porte
+              - tuile5_name: Porte
+            grid_options:
+              columns: 6
+              rows: auto
+          - type: heading
+            heading_style: title
+            grid_options:
+              columns: full
+              rows: 0.6
+            heading: Fuites
+            card_mod:
+              style: |
+                .content.title {
+                  font-size: 25px;
+                }
+          - type: heading
+            icon: mdi:toilet
+            heading: Salle d’eau
+            heading_style: title
+            grid_options:
+              columns: 6
+              rows: 0.5
+          - type: heading
+            icon: mdi:stove
+            heading_style: title
+            grid_options:
+              columns: 6
+              rows: 0.6
+            heading: Cuisine
+          - type: custom:decluttering-card-plus
+            template: tuiles_5
+            variables:
+              - tuile5_entity: sensor.neviweb130_sensor_fuites_salle_deau
+              - tuile5_name: Toilette
+            grid_options:
+              columns: 6
+              rows: auto
+          - type: custom:decluttering-card-plus
+            template: tuiles_5
+            variables:
+              - tuile5_entity: sensor.neviweb130_sensor_fuites_lave_vaiselles
+              - tuile5_name: Lave-Vaiselles
+            grid_options:
+              columns: 6
+              rows: auto
+          - type: heading
+            icon: mdi:bathtub
+            heading_style: title
+            grid_options:
+              columns: 6
+              rows: 0.5
+            heading: Salle de Bain
+          - type: heading
+            icon: mdi:chair-rolling
+            heading_style: title
+            grid_options:
+              columns: 6
+              rows: 0.4
+            heading: Boudoire
+          - type: custom:decluttering-card-plus
+            template: tuiles_5
+            variables:
+              - tuile5_entity: sensor.neviweb130_sensor_fuites_salle_de_bain
+              - tuile5_name: Toilette
+            grid_options:
+              columns: 6
+              rows: auto
+          - type: custom:decluttering-card-plus
+            template: tuiles_5
+            variables:
+              - tuile5_entity: sensor.neviweb130_sensor_fuites_laveuse
+              - tuile5_name: Laveuse
+            grid_options:
+              columns: 6
+              rows: auto
+          - type: heading
+            icon: mdi:leak-off
+            heading_style: title
+            grid_options:
+              columns: 12
+              rows: 0.5
+            heading: Sous-Sol
+          - type: custom:decluttering-card-plus
+            template: tuiles_5
+            variables:
+              - tuile5_entity: sensor.neviweb130_sensor_fuites_reservoir_eau_chaude
+              - tuile5_name: Chauffe eau
+            grid_options:
+              columns: 6
+              rows: auto
+    cards: []
+  - type: sections
+    max_columns: 2
+    title: Vue Conditions
+    path: Edi-Vue-Conditions
+    icon: mdi:home-thermometer-outline
+    dense_section_placement: true
+    sections:
+      - type: grid
+        cards:
+          - type: heading
+            heading: Salon
+            heading_style: title
+            icon: mdi:home-search
+            grid_options:
+              columns: 12
+              rows: 0.7
+          - type: custom:netatmo-card
+            module_type: indoor
+            entity: sensor.maison_temperature
+            name: Salon
+            humidity_entity: sensor.maison_humidite
+            co2_entity: sensor.maison_dioxyde_de_carbone
+            noise_entity: sensor.maison_bruit
+            pressure_entity: sensor.maison_pression_atmospherique
+            trend_entity: sensor.maison_tendance_de_la_temperature
+            connectivity_entity: binary_sensor.maison_connectivite
+            grid_options:
+              rows: auto
+              columns: 12
+            card_mod:
+              style: |
+                ha-card {
+                  box-shadow: var(--couleur_ombre);
+                }
+          - type: heading
+            heading: Bureau
+            heading_style: title
+            icon: mdi:home-search
+            grid_options:
+              columns: 6
+              rows: 0.3
+            visibility:
+              - condition: screen
+                media_query: '(min-width: 768px)'
+          - type: heading
+            heading: Sous-Sol
+            heading_style: title
+            icon: mdi:home-search
+            grid_options:
+              columns: 6
+              rows: 0.3
+            visibility:
+              - condition: screen
+                media_query: '(min-width: 768px)'
+          - type: custom:netatmo-card
+            module_type: indoor_extra
+            entity: sensor.maison_bureau_temperature
+            name: Bureau
+            humidity_entity: sensor.maison_bureau_humidite
+            co2_entity: sensor.maison_bureau_dioxyde_de_carbone
+            trend_entity: sensor.maison_bureau_tendance_de_la_temperature
+            battery_entity: sensor.maison_bureau_batterie
+            connectivity_entity: binary_sensor.maison_bureau_connectivite
+            grid_options:
+              rows: 2.5
+              columns: 6
+            card_mod:
+              style: |
+                ha-card {
+                  box-shadow: var(--couleur_ombre);
+                }
+            visibility:
+              - condition: screen
+                media_query: '(min-width: 768px)'
+          - type: custom:netatmo-card
+            module_type: indoor_extra
+            entity: sensor.maison_sous_sol_temperature
+            name: Sous-Sol
+            humidity_entity: sensor.maison_sous_sol_humidite
+            co2_entity: sensor.maison_sous_sol_dioxyde_de_carbone
+            trend_entity: sensor.maison_sous_sol_tendance_de_la_temperature
+            battery_entity: sensor.maison_sous_sol_batterie
+            connectivity_entity: binary_sensor.maison_sous_sol_connectivite
+            grid_options:
+              rows: 2.5
+              columns: 6
+            card_mod:
+              style: |
+                ha-card {
+                  box-shadow: var(--couleur_ombre);
+                }
+            visibility:
+              - condition: screen
+                media_query: '(min-width: 768px)'
+          - type: heading
+            heading: Chambre Des Maîtres
+            heading_style: title
+            icon: mdi:home-search
+            grid_options:
+              columns: 6
+              rows: 0.3
+            visibility:
+              - condition: screen
+                media_query: '(min-width: 768px)'
+          - type: heading
+            heading_style: title
+            icon: mdi:home-search
+            grid_options:
+              columns: 6
+              rows: 0.3
+            heading: Thermopompe
+            visibility:
+              - condition: screen
+                media_query: '(min-width: 768px)'
+          - type: custom:netatmo-card
+            module_type: indoor_extra
+            entity: sensor.maison_chambre_des_maitres_temperature
+            name: Chambre Maîtres
+            humidity_entity: sensor.maison_chambre_des_maitres_humidite
+            co2_entity: sensor.maison_chambre_des_maitres_dioxyde_de_carbone
+            trend_entity: sensor.maison_chambre_des_maitres_tendance_de_la_temperature
+            battery_entity: sensor.maison_chambre_des_maitres_batterie
+            connectivity_entity: binary_sensor.maison_chambre_des_maitres_connectivite
+            grid_options:
+              rows: 2.5
+              columns: 6
+            card_mod:
+              style: |
+                ha-card {
+                  box-shadow: var(--couleur_ombre);
+                }
+            visibility:
+              - condition: screen
+                media_query: '(min-width: 768px)'
+          - type: custom:netatmo-card
+            module_type: outdoor
+            entity: sensor.maison_thermopompe_temperature
+            name: Thermopompe
+            color_temperature: true
+            temp_cold: 0
+            temp_hot: 28
+            humidity_entity: sensor.maison_thermopompe_humidite
+            trend_entity: sensor.maison_thermopompe_tendance_de_la_temperature
+            battery_entity: sensor.maison_thermopompe_batterie
+            connectivity_entity: binary_sensor.maison_thermopompe_connectivite
+            grid_options:
+              rows: 0.7
+              columns: 6
+            card_mod:
+              style: |
+                ha-card {
+                  box-shadow: var(--couleur_ombre);
+                }
+            visibility:
+              - condition: screen
+                media_query: '(min-width: 768px)'
+          - type: heading
+            heading: Bureau
+            heading_style: title
+            icon: mdi:home-search
+            grid_options:
+              columns: 12
+              rows: 0.3
+            visibility:
+              - condition: screen
+                media_query: '(min-width: 0px) and (max-width: 767px)'
+          - type: custom:netatmo-card
+            module_type: indoor_extra
+            entity: sensor.maison_bureau_temperature
+            name: Bureau
+            humidity_entity: sensor.maison_bureau_humidite
+            co2_entity: sensor.maison_bureau_dioxyde_de_carbone
+            trend_entity: sensor.maison_bureau_tendance_de_la_temperature
+            battery_entity: sensor.maison_bureau_batterie
+            connectivity_entity: binary_sensor.maison_bureau_connectivite
+            grid_options:
+              rows: auto
+              columns: 12
+            card_mod:
+              style: |
+                ha-card {
+                  box-shadow: var(--couleur_ombre);
+                }
+            visibility:
+              - condition: screen
+                media_query: '(min-width: 0px) and (max-width: 767px)'
+          - type: heading
+            heading: Sous-Sol
+            heading_style: title
+            icon: mdi:home-search
+            grid_options:
+              columns: 12
+              rows: 0.3
+            visibility:
+              - condition: screen
+                media_query: '(min-width: 0px) and (max-width: 767px)'
+          - type: custom:netatmo-card
+            module_type: indoor_extra
+            entity: sensor.maison_sous_sol_temperature
+            name: Sous-Sol
+            humidity_entity: sensor.maison_sous_sol_humidite
+            co2_entity: sensor.maison_sous_sol_dioxyde_de_carbone
+            trend_entity: sensor.maison_sous_sol_tendance_de_la_temperature
+            battery_entity: sensor.maison_sous_sol_batterie
+            connectivity_entity: binary_sensor.maison_sous_sol_connectivite
+            grid_options:
+              rows: auto
+              columns: 12
+            card_mod:
+              style: |
+                ha-card {
+                  box-shadow: var(--couleur_ombre);
+                }
+            visibility:
+              - condition: screen
+                media_query: '(min-width: 0px) and (max-width: 767px)'
+          - type: heading
+            heading: Chambre Des Maîtres
+            heading_style: title
+            icon: mdi:home-search
+            grid_options:
+              columns: 12
+              rows: 0.3
+            visibility:
+              - condition: screen
+                media_query: '(min-width: 0px) and (max-width: 767px)'
+          - type: custom:netatmo-card
+            module_type: indoor_extra
+            entity: sensor.maison_chambre_des_maitres_temperature
+            name: Chambre Maîtres
+            humidity_entity: sensor.maison_chambre_des_maitres_humidite
+            co2_entity: sensor.maison_chambre_des_maitres_dioxyde_de_carbone
+            trend_entity: sensor.maison_chambre_des_maitres_tendance_de_la_temperature
+            battery_entity: sensor.maison_chambre_des_maitres_batterie
+            connectivity_entity: binary_sensor.maison_chambre_des_maitres_connectivite
+            grid_options:
+              rows: auto
+              columns: 12
+            card_mod:
+              style: |
+                ha-card {
+                  box-shadow: var(--couleur_ombre);
+                }
+            visibility:
+              - condition: screen
+                media_query: '(min-width: 0px) and (max-width: 767px)'
+          - type: heading
+            heading_style: title
+            icon: mdi:home-search
+            grid_options:
+              columns: 12
+              rows: 0.3
+            heading: Thermopompe
+            visibility:
+              - condition: screen
+                media_query: '(min-width: 0px) and (max-width: 767px)'
+          - type: custom:netatmo-card
+            module_type: outdoor
+            entity: sensor.maison_thermopompe_temperature
+            name: Thermopompe
+            color_temperature: true
+            temp_cold: 0
+            temp_hot: 28
+            humidity_entity: sensor.maison_thermopompe_humidite
+            trend_entity: sensor.maison_thermopompe_tendance_de_la_temperature
+            battery_entity: sensor.maison_thermopompe_batterie
+            connectivity_entity: binary_sensor.maison_thermopompe_connectivite
+            grid_options:
+              rows: auto
+              columns: 12
+            card_mod:
+              style: |
+                ha-card {
+                  box-shadow: var(--couleur_ombre);
+                }
+            visibility:
+              - condition: screen
+                media_query: '(min-width: 0px) and (max-width: 767px)'
+      - type: grid
+        cards:
+          - type: heading
+            heading_style: title
+            grid_options:
+              columns: 6
+              rows: 0.7
+            heading: Cuisine
+          - type: heading
+            heading: Salle à manger
+            heading_style: title
+            grid_options:
+              columns: 6
+              rows: 0.7
+            badges:
+              - type: entity
+                show_state: true
+                show_icon: true
+                entity: sensor.govee_salle_a_manger_battery
+          - type: custom:decluttering-card-plus
+            template: tuiles_5
+            variables:
+              - tuile5_entity: sensor.sensibo_temperature_courante_cuisine
+              - tuile5_name: Température
+              - tuile5_icon: mdi:thermometer
+            grid_options:
+              columns: 3
+              rows: auto
+          - type: custom:decluttering-card-plus
+            template: tuiles_5
+            variables:
+              - tuile5_entity: sensor.sensibo_humiditee_courante_cuisine
+              - tuile5_name: Humidité
+              - tuile5_icon: mdi:water-percent
+            grid_options:
+              columns: 3
+              rows: auto
+          - type: custom:decluttering-card-plus
+            template: tuiles_5
+            variables:
+              - tuile5_entity: sensor.govee_salle_a_manger_temperature
+              - tuile5_name: Température
+              - tuile5_icon: mdi:thermometer
+            grid_options:
+              columns: 3
+              rows: auto
+          - type: custom:decluttering-card-plus
+            template: tuiles_5
+            variables:
+              - tuile5_entity: sensor.govee_salle_a_manger_humidity
+              - tuile5_name: Humidité
+              - tuile5_icon: mdi:water-percent
+            grid_options:
+              columns: 3
+              rows: auto
+          - type: heading
+            heading_style: title
+            grid_options:
+              columns: 6
+              rows: 0.7
+            heading: Salle d’eau
+            badges:
+              - type: entity
+                show_state: true
+                show_icon: true
+                entity: sensor.govee_salle_deau_battery
+          - type: heading
+            heading_style: title
+            grid_options:
+              columns: 6
+              rows: 0.7
+            heading: Tempest
+            badges:
+              - type: entity
+                show_state: true
+                show_icon: true
+                entity: sensor.st_00032986_batterie
+          - type: custom:decluttering-card-plus
+            template: tuiles_5
+            variables:
+              - tuile5_entity: sensor.govee_salle_deau_temperature
+              - tuile5_name: Température
+              - tuile5_icon: mdi:thermometer
+            grid_options:
+              columns: 3
+              rows: auto
+          - type: custom:decluttering-card-plus
+            template: tuiles_5
+            variables:
+              - tuile5_entity: sensor.govee_salle_deau_humidity
+              - tuile5_name: Humidité
+              - tuile5_icon: mdi:water-percent
+            grid_options:
+              columns: 3
+              rows: auto
+          - type: custom:decluttering-card-plus
+            template: tuiles_5
+            variables:
+              - tuile5_entity: sensor.st_00032986_temperature
+              - tuile5_name: Température
+              - tuile5_icon: mdi:thermometer
+            grid_options:
+              columns: 3
+              rows: auto
+          - type: custom:decluttering-card-plus
+            template: tuiles_5
+            variables:
+              - tuile5_entity: sensor.st_00032986_humidite
+              - tuile5_name: Humidité
+              - tuile5_icon: mdi:water-percent
+            grid_options:
+              columns: 3
+              rows: auto
+          - type: heading
+            heading_style: title
+            grid_options:
+              columns: 6
+              rows: 0.7
+            heading: Salle de bain
+            badges:
+              - type: entity
+                show_state: true
+                show_icon: true
+                entity: sensor.govee_salle_de_bain_battery
+          - type: heading
+            heading_style: title
+            grid_options:
+              columns: 6
+              rows: 0.7
+            heading: Salle de repos
+            badges:
+              - type: entity
+                show_state: true
+                show_icon: true
+                entity: sensor.boudoirte_batterie
+          - type: custom:decluttering-card-plus
+            template: tuiles_5
+            variables:
+              - tuile5_entity: sensor.govee_salle_de_bain_temperature
+              - tuile5_name: Température
+              - tuile5_icon: mdi:thermometer
+            grid_options:
+              columns: 3
+              rows: auto
+          - type: custom:decluttering-card-plus
+            template: tuiles_5
+            variables:
+              - tuile5_entity: sensor.govee_salle_de_bain_humidity
+              - tuile5_name: Humidité
+              - tuile5_icon: mdi:water-percent
+            grid_options:
+              columns: 3
+              rows: auto
+          - type: custom:decluttering-card-plus
+            template: tuiles_5
+            variables:
+              - tuile5_entity: sensor.sensibo_temperature_courante_salle_de_repos
+              - tuile5_name: Température
+              - tuile5_icon: mdi:thermometer
+            grid_options:
+              columns: 3
+              rows: auto
+          - type: custom:decluttering-card-plus
+            template: tuiles_5
+            variables:
+              - tuile5_entity: sensor.sensibo_humiditee_courante_salle_de_repos
+              - tuile5_name: Humidité
+              - tuile5_icon: mdi:water-percent
+            grid_options:
+              columns: 3
+              rows: auto
+          - type: heading
+            heading_style: title
+            grid_options:
+              columns: 6
+              rows: 0.7
+            heading: Chambre des invités
+            badges:
+              - type: entity
+                show_state: true
+                show_icon: true
+                entity: sensor.govee_chambre_invites_battery
+          - type: heading
+            heading_style: title
+            grid_options:
+              columns: 6
+              rows: 0.7
+            heading: Atelier
+            badges:
+              - type: entity
+                show_state: true
+                show_icon: true
+                entity: sensor.govee_atelier_battery
+          - type: custom:decluttering-card-plus
+            template: tuiles_5
+            variables:
+              - tuile5_entity: sensor.govee_chambre_invites_temperature
+              - tuile5_name: Température
+              - tuile5_icon: mdi:thermometer
+            grid_options:
+              columns: 3
+              rows: auto
+          - type: custom:decluttering-card-plus
+            template: tuiles_5
+            variables:
+              - tuile5_entity: sensor.govee_chambre_invites_humidity
+              - tuile5_name: Humidité
+              - tuile5_icon: mdi:water-percent
+            grid_options:
+              columns: 3
+              rows: auto
+          - type: custom:decluttering-card-plus
+            template: tuiles_5
+            variables:
+              - tuile5_entity: sensor.govee_atelier_temperature
+              - tuile5_name: Température
+              - tuile5_icon: mdi:thermometer
+            grid_options:
+              columns: 3
+              rows: auto
+          - type: custom:decluttering-card-plus
+            template: tuiles_5
+            variables:
+              - tuile5_entity: sensor.govee_atelier_humidity
+              - tuile5_name: Humidité
+              - tuile5_icon: mdi:water-percent
+            grid_options:
+              columns: 3
+              rows: auto
+    cards: []
+  - type: sections
+    max_columns: 2
+    title: Vue Hydro-Québec
+    path: Edi-Vue-Hydro-Quebec
+    icon: mdi:flash
+    dense_section_placement: true
+    sections:
+      - type: grid
+        cards:
+          - type: heading
+            icon: mdi:open-in-app
+            heading_style: title
+            heading: Paramètres du compte
+            grid_options:
+              columns: full
+              rows: 0.5
+          - type: custom:decluttering-card-plus
+            template: tuiles_5
+            variables:
+              - tuile5_entity: sensor.hydro_quebec_maison_current_billing_period_rate
+              - tuile5_name: Tarif
+              - tuile5_icon: mdi:playlist-check
+              - tuile5_color: red
+            grid_options:
+              columns: 3
+              rows: auto
+          - type: custom:decluttering-card-plus
+            template: tuiles_5
+            variables:
+              - tuile5_entity: sensor.hydro_quebec_maison_current_billing_period_rate_option
+              - tuile5_name: Option
+              - tuile5_icon: mdi:arrow-all
+              - tuile5_color: yellow
+            grid_options:
+              columns: 3
+              rows: auto
+          - type: custom:decluttering-card-plus
+            template: tuiles_5
+            variables:
+              - tuile5_entity: binary_sensor.hydro_quebec_maison_current_period_epp_enabled
+              - tuile5_name: Égaux
+              - tuile5_icon: mdi:code-equal
+              - tuile5_color: green
+            grid_options:
+              columns: 3
+              rows: auto
+          - type: custom:decluttering-card-plus
+            template: tuiles_5
+            variables:
+              - tuile5_entity: sensor.hydro_quebec_maison_balance
+              - tuile5_name: Paiements
+              - tuile5_icon: mdi:code-equal
+              - tuile5_color: blue
+            grid_options:
+              columns: 3
+              rows: auto
+          - type: heading
+            icon: mdi:open-in-app
+            heading_style: title
+            heading: Données pour la période
+            grid_options:
+              columns: full
+              rows: 0.5
+          - type: custom:decluttering-card-plus
+            template: tuiles_5
+            variables:
+              - tuile5_entity: sensor.hydro_quebec_maison_current_billing_period_duration
+              - tuile5_name: Jours Période
+              - tuile5_icon: mdi:calendar-month
+              - tuile5_color: red
+            grid_options:
+              columns: 3
+              rows: auto
+          - type: custom:decluttering-card-plus
+            template: tuiles_5
+            variables:
+              - tuile5_entity: sensor.hydro_quebec_maison_current_billing_period_current_day
+              - tuile5_name: Jours
+              - tuile5_icon: mdi:calendar-month
+              - tuile5_color: yellow
+            grid_options:
+              columns: 3
+              rows: auto
+          - type: custom:decluttering-card-plus
+            template: tuiles_5
+            variables:
+              - tuile5_entity: sensor.hydro_quebec_maison_current_billing_period_daily_bill_mean
+              - tuile5_name: Paiements
+              - tuile5_icon: mdi:currency-usd
+              - tuile5_color: green
+            grid_options:
+              columns: 3
+              rows: auto
+          - type: custom:decluttering-card-plus
+            template: tuiles_5
+            variables:
+              - tuile5_entity: sensor.hydro_quebec_maison_current_billing_period_daily_consumption_mean
+              - tuile5_name: kWhs
+              - tuile5_icon: mdi:lightning-bolt-circle
+              - tuile5_color: blue
+            grid_options:
+              columns: 3
+              rows: auto
+          - type: heading
+            heading: Coût actuellement et prévisions
+            heading_style: title
+            icon: mdi:currency-usd
+            badges:
+              - type: entity
+                show_state: true
+                show_icon: false
+                entity: sensor.hydro_quebec_maison_current_billing_period_total_to_date
+                state_content: state
+              - type: entity
+                show_state: true
+                show_icon: false
+                entity: sensor.hydro_quebec_maison_current_billing_period_projected_bill
+            grid_options:
+              columns: full
+              rows: 0.5
+          - type: statistics-graph
+            grid_options:
+              columns: 12
+              rows: 5
+            entities:
+              - entity: sensor.hydro_quebec_maison_current_billing_period_projected_bill
+                name: Prévisions
+                color: red
+              - entity: sensor.hydro_quebec_maison_current_billing_period_total_to_date
+                name: Actuellement
+                color: green
+            days_to_show: 30
+            period: week
+            chart_type: line
+            stat_types:
+              - state
+            card_mod:
+              style: |
+                ha-card {
+                  box-shadow: var(--couleur_ombre ) !important;
+                }
+      - type: grid
+        cards:
+          - type: heading
+            heading_style: title
+            heading: kWh actuellement
+            icon: mdi:lightning-bolt-circle
+            grid_options:
+              columns: full
+              rows: 0.4
+            badges:
+              - type: entity
+                show_state: true
+                show_icon: false
+                entity: sensor.hydro_quebec_maison_current_billing_period_total_consumption
+              - type: entity
+                show_state: true
+                show_icon: false
+                entity: sensor.hydro_quebec_maison_current_billing_period_projected_total_consumption
+          - type: statistics-graph
+            entities:
+              - entity: sensor.hydro_quebec_maison_current_billing_period_total_consumption
+                color: teal
+            days_to_show: 30
+            period: day
+            chart_type: bar
+            stat_types:
+              - sum
+            hide_legend: true
+            grid_options:
+              columns: 12
+              rows: 5
+            card_mod:
+              style: |
+                ha-card {
+                  box-shadow: var(--couleur_ombre ) !important;
+                }
+          - type: heading
+            heading_style: title
+            heading: kWh 30 jours
+            icon: mdi:lightning-bolt-circle
+            grid_options:
+              columns: full
+              rows: 0.3
+          - type: statistics-graph
+            entities:
+              - entity: sensor.meter00_power
+                name: Compteur Hydro
+                color: accent
+            days_to_show: 30
+            period: day
+            chart_type: line
+            stat_types:
+              - max
+              - mean
+              - min
+            hide_legend: true
+            card_mod:
+              style: |
+                ha-card {
+                  box-shadow: var(--couleur_ombre ) !important;
+                }
+    badges:
+      - type: entity
+        show_name: false
+        show_state: true
+        show_icon: true
+        entity: sensor.meter00_power
+        tap_action:
+          action: navigate
+          navigation_path: /mon-tableau/Edi-Sous-Vue-Consommation-Maison-Kwh
+      - type: entity
+        show_name: true
+        show_state: true
+        show_icon: true
+        entity: sensor.hq_pannes_nombre_de_pannes_quebec
+        name: Panne en cours
+        icon: mdi:transmission-tower-off
+        visibility:
+          - condition: state
+            entity: sensor.hq_pannes_nombre_de_pannes_quebec
+            state_not: '0'
+        tap_action:
+          action: navigate
+          navigation_path: /mon-tableau/Edi-Sous-Vue-Pannes-En-Cours
+      - type: entity
+        entity: sensor.hydro_peak_probability
+        name: Pointe?
+        show_name: true
+        icon: mdi:transmission-tower
+        tap_action:
+          action: navigate
+          navigation_path: /mon-tableau/Edi-Sous-Vue-Defis-Hilo
+        card_mod:
+          style: |
+            :host {
+              {% set pointe = states('sensor.hydro_peak_probability') | float(0) %}
+              {% if pointe < 50 %} --card-mod-icon-color: var(--couleur_vert) !important;
+              {% else %} --card-mod-icon-color: var(--couleur_rouge) !important;
+              {% endif %}
+            } 
+      - type: entity
+        show_name: true
+        show_state: true
+        show_icon: true
+        entity: sensor.hydro_quebec_production_total
+        name: Production
+        icon: mdi:transmission-tower
+        tap_action:
+          action: navigate
+          navigation_path: /mon-tableau/Edi-Sous-Vue-Production-Hydro
+    cards: []
+  - type: sections
+    max_columns: 2
+    title: Vue Météo
+    path: Edi-Vue-Meteo
+    icon: mdi:weather-lightning-rainy
+    sections:
+      - type: grid
+        cards:
+          - type: heading
+            heading_style: title
+            icon: mdi:weather-partly-snowy-rainy
+            heading: Température 30 derniers jours
+            grid_options:
+              columns: 12
+              rows: 0.3
+          - type: statistics-graph
+            grid_options:
+              rows: 3
+              columns: 12
+            entities:
+              - entity: sensor.st_00032986_temperature
+                name: Station Tempest
+                color: teal
+            days_to_show: 30
+            period: day
+            chart_type: line
+            stat_types:
+              - mean
+              - min
+              - max
+            hide_legend: true
+            card_mod:
+              style: |
+                ha-card {
+                  box-shadow: var(--couleur_ombre);
+                }
+          - type: heading
+            heading_style: title
+            icon: mdi:weather-partly-snowy-rainy
+            heading: Prévisions
+            grid_options:
+              columns: 12
+              rows: 0.3
+          - type: custom:sun-weather-card
+            entity: weather.pirateweather
+            details:
+              - humidity
+              - wind_speed
+              - precipitation_probability
+              - pressure
+              - wind_bearing
+              - precipitation
+              - visibility
+              - dew_point
+              - apparent_temperature
+              - cloud_coverage
+              - sunrise
+              - sunset
+            show_forecast_toggle: false
+            visible_rows: 4
+            transparent: false
+            forecast_layout: bars
+            location: Shawinigan
+            show_time: false
+            show_date: false
+            background_overlay: 0
+            card_mod:
+              style: |
+                ha-card {
+                  box-shadow: var(--couleur_ombre);
+                }
+            grid_options:
+              columns: 12
+              rows: auto
+      - type: grid
+        cards:
+          - type: heading
+            heading_style: title
+            icon: mdi:weather-partly-snowy-rainy
+            heading: Température par mois
+            grid_options:
+              columns: 12
+              rows: 0.3
+          - type: statistics-graph
+            grid_options:
+              rows: 3
+              columns: 12
+            entities:
+              - entity: sensor.st_00032986_temperature
+                name: Station Tempest
+                color: orange
+            days_to_show: 365
+            period: month
+            chart_type: line
+            stat_types:
+              - mean
+              - min
+              - max
+            hide_legend: true
+            card_mod:
+              style: |
+                ha-card {
+                  box-shadow: var(--couleur_ombre);
+                }
+          - type: heading
+            heading_style: title
+            icon: mdi:weather-dust
+            heading: Vent
+            grid_options:
+              columns: 12
+              rows: 0.3
+          - type: custom:windrose-card
+            title: Direction du vent
+            data_period:
+              period_back: -4h
+            refresh_interval: 300
+            windspeed_bar_location: right
+            buttons_config:
+              location: bottom
+              buttons:
+                - type: period_selector
+                  button_text: 1 heure
+                  period_back: -1h
+                - type: period_selector
+                  button_text: 4 heures
+                  period_back: -4h
+            wind_direction_entity:
+              entity: sensor.st_00032986_direction_du_vent
+              use_statistics: false
+              direction_compensation: 0
+            windspeed_entities:
+              - entity: sensor.st_00032986_vitesse_du_vent
+                name: Vitesse
+                speed_unit: auto
+                output_speed_unit: kph
+                speed_range_beaufort: false
+                windspeed_bar_full: true
+                current_speed_arrow: true
+                use_statistics: false
+              - entity: sensor.st_00032986_rafales
+                name: Rafale
+                speed_unit: auto
+                output_speed_unit: kph
+                speed_range_beaufort: false
+                windspeed_bar_full: true
+                current_speed_arrow: true
+                use_statistics: false
+            matching_strategy:
+              name: direction-first
+            rose_config:
+              windrose_draw_north_offset: 0
+              center_calm_percentage: true
+            current_direction:
+              show_arrow: true
+            corner_info:
+              top_left:
+                label: Vitesse
+                unit: null
+                entity: sensor.st_00032986_vitesse_du_vent
+              bottom_left:
+                label: Rafale
+                unit: null
+                entity: sensor.st_00032986_rafales
+              top_right:
+                label: Direction
+                unit: °
+                color: red
+                entity: sensor.st_00032986_direction_du_vent
+              bottom_right:
+                label: Moyenne
+                unit: null
+                entity: sensor.weatherflow_direction_moyenne_du_vent
+            direction_labels:
+              cardinal_direction_letters: NESO
+              show_cardinal_directions: true
+              show_intercardinal_directions: true
+              show_secondary_intercardinal_directions: true
+              cardinal_directions_text_size: 60
+              intercardinal_directions_text_size: 45
+              secondary_intercardinal_directions_text_size: 30
+            grid_options:
+              columns: 12
+              rows: auto
+            card_mod:
+              style: |
+                ha-card {
+                  box-shadow: var(--couleur_ombre);
+                }
+    cards: []
+  - type: sections
+    max_columns: 2
+    title: Vue Piles
+    path: Edi-Vue-Piles
+    icon: mdi:battery
+    dense_section_placement: true
+    sections:
+      - type: grid
+        column_span: 2
+        cards:
+          - type: heading
+            heading: Niveaux des piles
+            heading_style: title
+            icon: mdi:battery
+            grid_options:
+              columns: full
+              rows: 0.3
+          - type: custom:decluttering-card-plus
+            template: piles
+            grid_options:
+              columns: full
+              rows: auto
+            visibility:
+              - condition: screen
+                media_query: '(min-width: 768px)'
+          - type: custom:decluttering-card-plus
+            template: piles
+            variables:
+              - piles_columns: '3'
+            grid_options:
+              columns: full
+              rows: full
+            visibility:
+              - condition: screen
+                media_query: '(min-width: 0px) and (max-width: 767px)'
+      - type: grid
+        column_span: 1
+        cards:
+          - type: heading
+            heading: Piles Caméras Intérieure
+            heading_style: title
+            icon: mdi:cctv
+            grid_options:
+              columns: full
+              rows: 0.3
+          - type: custom:decluttering-card-plus
+            template: tuiles_5
+            variables:
+              - tuile5_entity: binary_sensor.camera_salon_batterie
+              - tuile5_name: Salon
+            grid_options:
+              columns: 3
+              rows: auto
+          - type: custom:decluttering-card-plus
+            template: tuiles_5
+            variables:
+              - tuile5_entity: binary_sensor.camera_cuisine_batterie
+              - tuile5_name: Cuisine
+            grid_options:
+              columns: 3
+              rows: auto
+          - type: custom:decluttering-card-plus
+            template: tuiles_5
+            variables:
+              - tuile5_entity: binary_sensor.camera_sous_sol_batterie
+              - tuile5_name: Sous-Sol
+            grid_options:
+              columns: 3
+              rows: auto
+      - type: grid
+        column_span: 1
+        cards:
+          - type: heading
+            heading: Piles Caméras Extérieure
+            heading_style: title
+            icon: mdi:cctv
+            grid_options:
+              columns: full
+              rows: 0.3
+          - type: custom:decluttering-card-plus
+            template: tuiles_5
+            variables:
+              - tuile5_entity: binary_sensor.camera_avant_batterie
+              - tuile5_name: Avant
+            grid_options:
+              columns: 3
+              rows: auto
+          - type: custom:decluttering-card-plus
+            template: tuiles_5
+            variables:
+              - tuile5_entity: binary_sensor.camera_arriere_batterie
+              - tuile5_name: Arrière
+            grid_options:
+              columns: 3
+              rows: auto
+          - type: custom:decluttering-card-plus
+            template: tuiles_5
+            variables:
+              - tuile5_entity: binary_sensor.camera_allee_batterie
+              - tuile5_name: Allée
+            grid_options:
+              columns: 3
+              rows: auto
+    cards: []
+  - type: sections
+    max_columns: 2
+    title: Vue Formule Un
+    path: Edi-Vue-Formule-Un
+    icon: mdi:flag-checkered
+    dense_section_placement: true
+    sections:
+      - type: grid
+        cards:
+          - type: custom:formulaone-card
+            card_type: countdown
+            countdown_type:
+              - race
+              - qualifying
+            countdown_format: d h m
+            show_raceinfo: true
+            f1_font: true
+            only_show_date: true
+            show_refresh: true
+            translations:
+              days: j
+              hours': h
+              minutes': m
+              seconds': s
+              date: Date
+              practice1: Libres 1
+              practice2: Libres 2
+              practice3: Libres 3
+              round: Course
+              race: Course
+              racename: Nom
+              circuitname: Piste
+              location: Endroit
+              city: Ville
+              racetime: Course
+              sprint: Sprint
+              qualifying: Qualification
+              endofseason: Saison terminée
+              until: Avant la
+            hide_tracklayout: false
+            location_clickable: false
+            hide_racedatetimes: false
+            show_weather: false
+            show_lastyears_result: true
+            grid_options:
+              columns: full
+              rows: full
+            card_mod:
+              style: |
+                ha-card {
+                  box-shadow: var(--couleur_ombre) !important;
+                }
+      - type: grid
+        cards:
+          - type: custom:tabbed-card
+            styles:
+              --mdc-theme-primary: red
+              --mdc-tab-text-label-color-default: var(--couleur_texte)
+            options: {}
+            tabs:
+              - card:
+                  type: custom:formulaone-card
+                  card_type: results
+                  title: Dernière course
+                  f1_font: true
+                  show_refresh: true
+                  hide_tracklayout: true
+                  icons:
+                    results: mdi:trophy
+                    qualifying: mdi:timer-outline
+                    sprint: mdi:flag-checkered
+                  standings:
+                    show_flag: true
+                    show_team: false
+                    show_teamlogo: false
+                  translations:
+                    raceheader: Course
+                    seasonheader: Saison
+                    selectseason: Choisir une saison
+                    selectrace: Choisir une course
+                    noresults: Pas de résultats
+                    driver: Pilote
+                    team: Équipe
+                    grid: Grille
+                    status: Statut
+                    point: Points
+                    nosprint: Pas de résultats
+                    Finished: Fini
+                    +1 Lap: +1 tour
+                    Engine: Moteur
+                    +2 Laps: +2 tours
+                    Accident: Accident
+                    Collision: Collision
+                    Gearbox: Boîte de vitesse
+                    Spun off: Dérivé
+                    +3 Laps: +3 tours
+                    Suspension: Suspension
+                    +4 Laps: +4 tours
+                    Transmission: Transmission
+                    Electrical: Électrique
+                    Brakes: Freins
+                    Withdrew: Retiré
+                    +5 Laps: +5 tours
+                    Clutch: Embrayage
+                    Lapped: 1 tour
+                    Retired: Retiré
+                    Not classified: Non classé
+                    Fuel system: Système de carburant
+                    +6 Laps: +6 tours
+                    Disqualified: Disqualifié
+                    Turbo: Turbo
+                    Hydraulics: Hydraulique
+                    Overheating: Surchauffe
+                    Ignition: Allumage
+                    Oil leak: Fuite d'huile
+                    Throttle: Étrangler
+                    Out of fuel: En panne de carburant
+                  card_mod:
+                    style: |
+                      ha-card {
+                        box-shadow: var(--couleur_ombre) !important;
+                      }
+                attributes:
+                  label: Dernière
+              - card:
+                  type: custom:formulaone-card
+                  card_type: driver_standings
+                  title: Classement des pilotes
+                  f1_font: true
+                  standings:
+                    show_flag: true
+                    show_team: false
+                    show_teamlogo: false
+                  translations:
+                    points: Points
+                    wins: Gagnées
+                    team: Équipe
+                    driver: Pilote
+                  card_mod:
+                    style: |
+                      ha-card {
+                        box-shadow: var(--couleur_ombre) !important;
+                      }
+                attributes:
+                  label: Pilotes
+              - card:
+                  type: custom:formulaone-card
+                  card_type: constructor_standings
+                  title: Classement des équipes
+                  f1_font: true
+                  standings:
+                    show_teamlogo: true
+                  translations:
+                    constructor: Équipe
+                    points: Points
+                    wins: Gagné
+                  card_mod:
+                    style: |
+                      ha-card {
+                        box-shadow: var(--couleur_ombre) !important;
+                      }
+                attributes:
+                  label: Équipes
+              - card:
+                  type: custom:formulaone-card
+                  card_type: schedule
+                  title: Horaire
+                  date_locale: ca
+                  f1_font: true
+                  translations:
+                    date: Date
+                    race: Course
+                    location: Endroit
+                    endofseason: Fin de la saison
+                    time: Heure
+                  standings:
+                    show_team: true
+                    show_teamlogo: true
+                  card_mod:
+                    style: |
+                      ha-card {
+                        box-shadow: var(--couleur_ombre) !important;
+                      }
+                attributes:
+                  label: Horaire
+            grid_options:
+              columns: full
+              rows: full
+    cards: []
+  - type: sections
+    max_columns: 2
+    title: Vue Statut
+    path: Edi-Vue-Statut
+    icon: mdi:list-status
+    dense_section_placement: true
+    sections:
+      - type: grid
+        cards:
+          - type: heading
+            heading_style: title
+            icon: mdi:speedometer
+            heading: Internet
+            grid_options:
+              columns: full
+              rows: 1
+            badges:
+              - type: entity
+                show_state: true
+                show_icon: true
+                entity: sensor.speedtest_download
+                icon: mdi:arrow-down
+              - type: entity
+                show_state: true
+                show_icon: true
+                entity: sensor.speedtest_upload
+                icon: mdi:arrow-up
+          - type: statistics-graph
+            entities:
+              - entity: sensor.speedtest_download
+                name: Téléchargement
+                color: red
+              - entity: sensor.speedtest_upload
+                name: Téléversement
+                color: green
+            days_to_show: 1
+            period: hour
+            chart_type: line
+            stat_types:
+              - mean
+              - min
+              - max
+            min_y_axis: -50
+            max_y_axis: 150
+            card_mod:
+              style: |
+                ha-card {
+                  box-shadow: var(--couleur_ombre) !important;
+                }
+            grid_options:
+              columns: 12
+              rows: 7.5
+      - type: grid
+        cards:
+          - type: heading
+            heading: Imprimante Canon Pro-100
+            heading_style: title
+            icon: mdi:printer
+            badges:
+              - type: entity
+                show_state: true
+                show_icon: true
+                entity: sensor.canon_pro_100_series
+            grid_options:
+              columns: full
+              rows: 1
+          - type: custom:auto-entities
+            card:
+              type: grid
+              columns: 4
+            card_param: cards
+            filter:
+              include:
+                - options:
+                    type: gauge
+                    min: 0
+                    max: 100
+                    severity:
+                      green: 66
+                      yellow: 33
+                      red: 0
+                    card_mod:
+                      style: |
+                        ha-card {
+                          box-shadow: var(--couleur_ombre) !important;
+                        }
+                  attributes:
+                    marker_type: inkCartridge
+                  domain: sensor
+            sort:
+              method: state
+              numeric: true
+            show_empty: false
+            grid_options:
+              columns: full
+              rows: auto
+          - type: heading
+            heading_style: title
+            icon: mdi:flower
+            heading: Plante Lis de la paix
+            badges:
+              - type: entity
+                show_state: true
+                show_icon: true
+                entity: sensor.lis_de_la_paix_jeton_restant
+                icon: mdi:arrow-collapse-up
+            grid_options:
+              columns: full
+              rows: 1
+          - type: custom:better-miflora-card
+            image: images/Lis_de_la_paix.png
+            min_moisture: 15
+            max_moisture: 60
+            min_temperature: 12
+            entities:
+              - entity: sensor.lis_de_la_paix_humidite
+                type: Humidité
+              - entity: sensor.lis_de_la_paix_luminosite
+                type: Éclairage
+              - entity: sensor.lis_de_la_paix_temperature
+                type: Température
+              - entity: sensor.lis_de_la_paix_batterie
+                type: Pile
+            grid_options:
+              columns: full
+              rows: auto
+            card_mod:
+              style: |
+                ha-card {
+                    box-shadow: var(--couleur_ombre) !important;
+                }
+    badges:
+      - type: entity
+        show_name: true
+        show_state: true
+        show_icon: true
+        color: ''
+        entity: sensor.caa_prix_essence_shawinigan_aujourd_hui
+        name: Essence
+        tap_action:
+          action: navigate
+          navigation_path: /mon-tableau/Edi-Sous-Vue-Prix-Essences
+      - type: entity
+        show_name: true
+        show_state: true
+        show_icon: true
+        color: ''
+        entity: sensor.shawinigan_sud_sensors_voltage
+        name: Pile Tempest
+        tap_action: none
+      - type: entity
+        show_name: true
+        show_state: true
+        show_icon: true
+        color: ''
+        entity: binary_sensor.rpi_power_status
+        name: RPI
+        tap_action: none
+    cards: []
+  - type: sections
+    max_columns: 4
+    title: Sous Vue Pluie
+    path: Edi-Sous-Vue-Pluie
+    icon: mdi:weather-lightning-rainy
+    subview: true
+    dense_section_placement: true
+    sections:
+      - type: grid
+        cards:
+          - type: heading
+            icon: mdi:progress-clock
+            heading_style: title
+            heading: "Pluie — Horaire • En-tête\_: Pluie dernière heure, Taux actuel, Pluie Hier et Pluie Aujourd'hui"
+            grid_options:
+              columns: 36
+              rows: 0.5
+          - type: custom:apexcharts-card
+            card_mod:
+              style: |
+                ha-card {
+                  box-shadow: 0 0 0 2px gray;
+                }
+            header:
+              show: true
+              show_states: true
+            graph_span: 24h
+            span:
+              end: day
+            yaxis:
+              - min: 0
+                decimals: 1
+                apex_config:
+                  labels:
+                    formatter: |
+                      EVAL: (v) => `${(v ?? 0).toFixed(0)} mm`
+            apex_config:
+              fill:
+                type: gradient
+                gradient:
+                  type: vertical
+                  shadeIntensity: 0
+                  opacityFrom: 1
+                  opacityTo: 0.5
+                  stops:
+                    - 0
+                    - 100
+              chart:
+                height: 150px
+              grid:
+                show: false
+                borderColor: darkslateblue
+                strokeDashArray: 2
+              dataLabels:
+                background:
+                  borderWidth: 0
+                  opacity: 0
+                  foreColor: white
+                offsetY: -10
+              plotOptions:
+                bar:
+                  borderRadius: 0
+                  dataLabels:
+                    position: top
+            series:
+              - entity: sensor.rain_per_hours_tempest_cumulative
+                name: Dernière heure 2
+                type: line
+                show:
+                  in_chart: false
+                  in_header: true
+              - entity: sensor.st_00032986_intensite_des_precipitations
+                name: Taux
+                type: line
+                show:
+                  in_chart: false
+                  in_header: true
+              - entity: sensor.shawinigan_sud_sensors_precipitation_yesterday
+                name: Hier
+                type: line
+                show:
+                  in_chart: false
+                  in_header: true
+              - entity: sensor.rain_today_tempest_cumulative
+                name: Mois
+                color: deepskyblue
+                type: column
+                statistics:
+                  type: change
+                  period: 5minute
+                  align: start
+                transform: 'return x < 0 ? 0 : x;'
+                group_by:
+                  duration: 1h
+                  func: sum
+                  start_with_last: true
+                show:
+                  in_chart: true
+                  datalabels: true
+                  in_header: false
+              - entity: sensor.rain_today_tempest_cumulative
+                name: Aujourd'hui
+                type: line
+                statistics:
+                  type: change
+                  period: 5minute
+                  align: start
+                transform: 'return x < 0 ? 0 : x;'
+                group_by:
+                  duration: 1d
+                  func: sum
+                  start_with_last: true
+                show:
+                  in_chart: false
+                  in_header: true
+                  name_in_header: true
+            grid_options:
+              columns: 36
+              rows: auto
+          - type: heading
+            icon: mdi:calendar-today
+            heading_style: title
+            heading: >-
+              Pluie — Quotidienne • En-tête - Pluie aujourd'hui et Pluie 30
+              derniers jours
+            grid_options:
+              columns: 36
+              rows: 0.5
+          - type: custom:apexcharts-card
+            card_mod:
+              style: |
+                ha-card {
+                  box-shadow: 0 0 0 2px gray;
+                }
+            header:
+              show: true
+              show_states: true
+            graph_span: 30d
+            span:
+              end: day
+            yaxis:
+              - min: 0
+                max: 30
+                decimals: 1
+                apex_config:
+                  labels:
+                    formatter: |
+                      EVAL: (v) => `${(v ?? 0).toFixed(0)} mm`
+            apex_config:
+              fill:
+                type: gradient
+                gradient:
+                  type: vertical
+                  shadeIntensity: 0
+                  opacityFrom: 1
+                  opacityTo: 0.5
+                  stops:
+                    - 0
+                    - 100
+              chart:
+                height: 150px
+              grid:
+                show: false
+                borderColor: darkslateblue
+                strokeDashArray: 2
+              dataLabels:
+                background:
+                  borderWidth: 0
+                  opacity: 0
+                  foreColor: white
+                offsetY: -10
+              plotOptions:
+                bar:
+                  borderRadius: 0
+                  dataLabels:
+                    position: top
+              tooltip:
+                x:
+                  format: dd MMM yyyy
+            series:
+              - entity: sensor.rain_today_tempest_cumulative
+                name: Aujourd'hui
+                type: line
+                statistics:
+                  type: change
+                  period: 5minute
+                  align: start
+                transform: 'return x < 0 ? 0 : x;'
+                group_by:
+                  duration: 1d
+                  func: sum
+                  start_with_last: true
+                show:
+                  in_chart: false
+                  in_header: true
+                  name_in_header: true
+              - entity: sensor.rain_today_tempest_cumulative
+                name: Aujourd'hui
+                color: deepskyblue
+                type: column
+                group_by:
+                  duration: 1d
+                  func: last
+                  start_with_last: true
+                  fill: zero
+                statistics:
+                  type: state
+                  period: day
+                  align: start
+                show:
+                  in_chart: true
+                  datalabels: true
+                  in_header: false
+                stroke_width: 0
+              - entity: sensor.rain_today_tempest_cumulative
+                name: Derniers 30 jours
+                type: line
+                group_by:
+                  duration: 30d
+                  func: sum
+                  start_with_last: true
+                  fill: zero
+                statistics:
+                  type: state
+                  period: day
+                  align: start
+                show:
+                  in_chart: false
+                  in_header: true
+                  name_in_header: true
+            grid_options:
+              columns: 36
+              rows: auto
+          - type: heading
+            icon: mdi:calendar-month
+            heading_style: title
+            heading: 'Pluie — Mensuelle • En-tête : Pluie ce mois-ci et 12 derniers mois'
+            grid_options:
+              columns: 36
+              rows: 0.5
+          - type: custom:apexcharts-card
+            card_mod:
+              style: |
+                ha-card {
+                  box-shadow: 0 0 0 2px gray;
+                }
+            header:
+              show: true
+              show_states: true
+            graph_span: 12month
+            span:
+              end: month
+            yaxis:
+              - min: 0
+                max: 90
+                decimals: 0
+                apex_config:
+                  labels:
+                    formatter: |
+                      EVAL: (v) => `${(v ?? 0).toFixed(0)} mm`
+            apex_config:
+              fill:
+                type: gradient
+                gradient:
+                  type: vertical
+                  shadeIntensity: 0
+                  opacityFrom: 1
+                  opacityTo: 0.5
+                  stops:
+                    - 0
+                    - 100
+              chart:
+                height: 150px
+              grid:
+                show: false
+                borderColor: darkslateblue
+                strokeDashArray: 2
+              dataLabels:
+                background:
+                  borderWidth: 0
+                  opacity: 0
+                  foreColor: white
+                offsetY: -10
+              plotOptions:
+                bar:
+                  borderRadius: 0
+                  dataLabels:
+                    position: top
+              tooltip:
+                x:
+                  format: MMM yyyy
+            series:
+              - entity: sensor.rain_today_tempest_cumulative
+                name: Ce mois
+                color: deepskyblue
+                type: column
+                statistics:
+                  type: state
+                  period: day
+                  align: start
+                group_by:
+                  duration: 1month
+                  func: sum
+                  fill: zero
+                show:
+                  in_header: true
+                  name_in_header: true
+                  datalabels: true
+                  in_chart: true
+                  legend_value: false
+                  extremas: false
+              - entity: sensor.rain_today_tempest_cumulative
+                name: Derniers 12 mois
+                type: line
+                statistics:
+                  type: state
+                  period: day
+                  align: start
+                group_by:
+                  duration: 12month
+                  func: sum
+                  fill: zero
+                show:
+                  in_header: true
+                  name_in_header: true
+                  datalabels: false
+                  in_chart: false
+                  legend_value: false
+            grid_options:
+              columns: 36
+              rows: auto
+        column_span: 3
+  - type: sections
+    max_columns: 4
+    title: Sous VuenConsommation Maison KWh
+    path: Edi-Sous-Vue-Consommation-Maison-Kwh
+    icon: mdi:home-lightning-bolt
+    subview: true
+    dense_section_placement: true
+    sections:
+      - type: grid
+        cards:
+          - type: heading
+            icon: mdi:progress-clock
+            heading_style: title
+            heading: "kWh  — Horaire • En-tête\_: kWh dernière heure et kWh Aujourd'hui 2"
+            grid_options:
+              columns: 36
+              rows: 0.5
+          - type: custom:apexcharts-card
+            card_mod:
+              style: |
+                ha-card {
+                  box-shadow: 0 0 0 2px gray;
+                }
+            header:
+              show: true
+              show_states: true
+            graph_span: 24h
+            span:
+              end: day
+            yaxis:
+              - decimals: 1
+                max: 2
+                apex_config:
+                  labels:
+                    formatter: |
+                      EVAL: (v) => `${(v ?? 0).toFixed(0)} KWh`
+            apex_config:
+              fill:
+                type: gradient
+                gradient:
+                  type: vertical
+                  shadeIntensity: 0
+                  opacityFrom: 1
+                  opacityTo: 0.5
+                  stops:
+                    - 0
+                    - 100
+              chart:
+                height: 150px
+              grid:
+                show: false
+                borderColor: darkslateblue
+                strokeDashArray: 2
+              dataLabels:
+                background:
+                  borderWidth: 0
+                  opacity: 0
+                  foreColor: white
+                offsetY: -10
+              plotOptions:
+                bar:
+                  borderRadius: 0
+                  dataLabels:
+                    position: top
+            series:
+              - entity: sensor.somme_de_kwh_par_heure_cumul
+                name: Dernière heure
+                type: line
+                show:
+                  in_chart: false
+                  in_header: true
+              - entity: sensor.kwh_par_jour_total
+                name: Mois
+                color: deepskyblue
+                type: column
+                statistics:
+                  type: change
+                  period: 5minute
+                  align: start
+                transform: 'return x < 0 ? 0 : x;'
+                group_by:
+                  duration: 1h
+                  func: sum
+                  start_with_last: true
+                show:
+                  in_chart: true
+                  datalabels: true
+                  in_header: false
+              - entity: sensor.kwh_par_jour_total
+                name: Aujourd'hui
+                type: line
+                statistics:
+                  type: change
+                  period: 5minute
+                  align: start
+                transform: 'return x < 0 ? 0 : x;'
+                group_by:
+                  duration: 1d
+                  func: sum
+                  start_with_last: true
+                show:
+                  in_chart: false
+                  in_header: true
+                  name_in_header: true
+            grid_options:
+              columns: 36
+              rows: auto
+          - type: heading
+            icon: mdi:calendar-today
+            heading_style: title
+            heading: >-
+              kWh — Quotidienne • En-tête - kWh aujourd'hui et kWh 30 derniers
+              jours
+            grid_options:
+              columns: 36
+              rows: 0.5
+          - type: custom:apexcharts-card
+            card_mod:
+              style: |
+                ha-card {
+                  box-shadow: 0 0 0 2px gray;
+                }
+            header:
+              show: true
+              show_states: true
+            graph_span: 30d
+            span:
+              end: day
+            yaxis:
+              - min: 0
+                max: 50
+                decimals: 1
+                apex_config:
+                  labels:
+                    formatter: |
+                      EVAL: (v) => `${(v ?? 0).toFixed(0)} KWh`
+            apex_config:
+              fill:
+                type: gradient
+                gradient:
+                  type: vertical
+                  shadeIntensity: 0
+                  opacityFrom: 1
+                  opacityTo: 0.5
+                  stops:
+                    - 0
+                    - 100
+              chart:
+                height: 150px
+              grid:
+                show: false
+                borderColor: darkslateblue
+                strokeDashArray: 2
+              dataLabels:
+                background:
+                  borderWidth: 0
+                  opacity: 0
+                  foreColor: white
+                offsetY: -10
+              plotOptions:
+                bar:
+                  borderRadius: 0
+                  dataLabels:
+                    position: top
+              tooltip:
+                x:
+                  format: dd MMM yyyy
+            series:
+              - entity: sensor.kwh_par_jour_total
+                name: Aujourd'hui
+                type: line
+                statistics:
+                  type: change
+                  period: 5minute
+                  align: start
+                transform: 'return x < 0 ? 0 : x;'
+                group_by:
+                  duration: 1d
+                  func: sum
+                  start_with_last: true
+                show:
+                  in_chart: false
+                  in_header: true
+                  name_in_header: true
+              - entity: sensor.kwh_par_jour_total
+                name: Aujourd'hui
+                color: deepskyblue
+                type: column
+                group_by:
+                  duration: 1d
+                  func: last
+                  start_with_last: true
+                  fill: zero
+                statistics:
+                  type: state
+                  period: day
+                  align: start
+                show:
+                  in_chart: true
+                  datalabels: true
+                  in_header: false
+                stroke_width: 0
+              - entity: sensor.kwh_par_jour_total
+                name: Derniers 30 jours
+                type: line
+                group_by:
+                  duration: 30d
+                  func: sum
+                  start_with_last: true
+                  fill: zero
+                statistics:
+                  type: state
+                  period: day
+                  align: start
+                show:
+                  in_chart: false
+                  in_header: true
+                  name_in_header: true
+            grid_options:
+              columns: 36
+              rows: auto
+          - type: heading
+            icon: mdi:calendar-month
+            heading_style: title
+            heading: 'kWh — Mensuelle • En-tête : kWh ce mois-ci et kWh 12 derniers mois'
+            grid_options:
+              columns: 36
+              rows: 0.5
+          - type: custom:apexcharts-card
+            card_mod:
+              style: |
+                ha-card {
+                  box-shadow: 0 0 0 2px gray;
+                }
+            header:
+              show: true
+              show_states: true
+            graph_span: 12month
+            span:
+              end: month
+            yaxis:
+              - min: 0
+                decimals: 0
+                apex_config:
+                  labels:
+                    formatter: |
+                      EVAL: (v) => `${(v ?? 0).toFixed(0)} KWh`
+            apex_config:
+              fill:
+                type: gradient
+                gradient:
+                  type: vertical
+                  shadeIntensity: 0
+                  opacityFrom: 1
+                  opacityTo: 0.5
+                  stops:
+                    - 0
+                    - 100
+              chart:
+                height: 150px
+              grid:
+                show: false
+                borderColor: darkslateblue
+                strokeDashArray: 2
+              dataLabels:
+                background:
+                  borderWidth: 0
+                  opacity: 0
+                  foreColor: white
+                offsetY: -10
+              plotOptions:
+                bar:
+                  borderRadius: 0
+                  dataLabels:
+                    position: top
+              tooltip:
+                x:
+                  format: MMM yyyy
+            series:
+              - entity: sensor.kwh_par_jour_total
+                name: Ce mois
+                color: deepskyblue
+                type: column
+                statistics:
+                  type: state
+                  period: day
+                  align: start
+                group_by:
+                  duration: 1month
+                  func: sum
+                  fill: zero
+                show:
+                  in_header: true
+                  name_in_header: true
+                  datalabels: true
+                  in_chart: true
+                  legend_value: false
+                  extremas: false
+              - entity: sensor.kwh_par_jour_total
+                name: Derniers 12 mois
+                type: line
+                statistics:
+                  type: state
+                  period: day
+                  align: start
+                group_by:
+                  duration: 12month
+                  func: sum
+                  fill: zero
+                show:
+                  in_header: true
+                  name_in_header: true
+                  datalabels: false
+                  in_chart: false
+                  legend_value: false
+            grid_options:
+              columns: 36
+              rows: auto
+        column_span: 3
+    cards: []
+  - type: sections
+    max_columns: 2
+    title: Sous Vue Production Hydro
+    path: Edi-Sous-Vue-Production-Hydro
+    icon: mdi:hydro-power
+    subview: true
+    sections:
+      - type: grid
+        cards:
+          - type: heading
+            heading: Hydro-Québec Production Demande
+            heading_style: title
+            grid_options:
+              columns: full
+              rows: full
+          - type: custom:sankey-chart
+            layout: auto
+            height: 330
+            unit_prefix: M
+            round: 1
+            convert_units_to: ''
+            min_box_size: 40
+            min_box_distance: 10
+            show_states: true
+            show_units: true
+            show_names: true
+            wide: true
+            min_state: 0
+            show_icons: true
+            sort_by: state
+            nodes:
+              - id: sensor.hydro_quebec_production_hydraulique
+                section: 0
+                name: Hydrolique 2
+                color: blue
+                icon: mdi:hydro-power
+              - id: sensor.hydro_quebec_production_autres
+                section: 0
+                name: Autres
+                color: green
+              - id: sensor.hydro_quebec_production_solaire
+                section: 0
+                name: Solaire
+                color: Brown
+                icon: mdi:solar-power-variant-outline
+              - id: sensor.hydro_quebec_production_eolien
+                section: 0
+                name: Éolienne
+                color: red
+                icon: mdi:wind-turbine
+              - id: sensor.hydro_quebec_production_total
+                section: 1
+                name: Production
+                color: Steelblue
+              - id: sensor.hydro_quebec_demande_de_puissance_reseau
+                section: 2
+                name: Demande
+                color: Orange
+            links:
+              - source: sensor.hydro_quebec_production_hydraulique
+                target: sensor.hydro_quebec_production_total
+              - source: sensor.hydro_quebec_production_autres
+                target: sensor.hydro_quebec_production_total
+              - source: sensor.hydro_quebec_production_solaire
+                target: sensor.hydro_quebec_production_total
+              - source: sensor.hydro_quebec_production_eolien
+                target: sensor.hydro_quebec_production_total
+              - source: sensor.hydro_quebec_production_total
+                target: sensor.hydro_quebec_demande_de_puissance_reseau
+            grid_options:
+              columns: full
+              rows: full
+            card_mod:
+              style: |
+                ha-card {
+                  box-shadow: rgba(30, 196, 229, 0.5) 1px 13px 27px 0px, rgba(212, 244, 250, 0.5) 0px 8px 16px -8px;
+                }
+        column_span: 2
+    cards: []
+  - type: sections
+    max_columns: 2
+    title: Sous-Vue Défis Hilo
+    path: Edi-Sous-Vue-Defis-Hilo
+    icon: mdi:fleur-de-lis
+    subview: true
+    dense_section_placement: true
+    sections:
+      - type: grid
+        cards:
+          - type: heading
+            heading: Défis prévus
+            heading_style: title
+            icon: mdi:page-next
+            entities:
+              - show_state: true
+                show_icon: true
+                entity: sensor.defi_hilo_nb_defi_planifies
+                color: red
+            grid_options:
+              columns: full
+              rows: 0.4
+          - type: custom:vertical-stack-in-card
+            cards:
+              - type: custom:mushroom-title-card
+                title: Défis Hilo
+                title_tap_action:
+                  action: none
+                subtitle_tap_action:
+                  action: none
+                subtitle: ''
+              - type: horizontal-stack
+                cards:
+                  - type: conditional
+                    conditions:
+                      - condition: or
+                        conditions:
+                          - condition: state
+                            entity: sensor.defi_hilo
+                            state: 'off'
+                          - condition: state
+                            entity: sensor.defi_hilo
+                            state: completed
+                    card:
+                      type: custom:mushroom-entity-card
+                      entity: sensor.defi_hilo
+                      fill_container: false
+                      name: Status Defi Hilo
+                      tap_action:
+                        action: more-info
+                      hold_action:
+                        action: none
+                      double_tap_action:
+                        action: none
+                      icon_color: primary
+                      icon: mdi:flash
+                  - type: conditional
+                    conditions:
+                      - condition: state
+                        entity: sensor.defi_hilo
+                        state: scheduled
+                    card:
+                      type: custom:mushroom-entity-card
+                      entity: sensor.defi_hilo
+                      fill_container: false
+                      name: Status Defi Hilo
+                      tap_action:
+                        action: more-info
+                      hold_action:
+                        action: none
+                      double_tap_action:
+                        action: none
+                      icon_color: yellow
+                      icon: mdi:flash-red-eye
+                  - type: conditional
+                    conditions:
+                      - condition: state
+                        entity: sensor.defi_hilo
+                        state: appreciation
+                    card:
+                      type: custom:mushroom-entity-card
+                      entity: sensor.defi_hilo
+                      fill_container: false
+                      name: Status Defi Hilo
+                      tap_action:
+                        action: more-info
+                      hold_action:
+                        action: none
+                      double_tap_action:
+                        action: none
+                      icon_color: accent
+                      icon: mdi:flash-alert
+                  - type: conditional
+                    conditions:
+                      - condition: state
+                        entity: sensor.defi_hilo
+                        state: pre_heat
+                    card:
+                      type: custom:mushroom-entity-card
+                      entity: sensor.defi_hilo
+                      fill_container: false
+                      name: Status Defi Hilo
+                      tap_action:
+                        action: more-info
+                      hold_action:
+                        action: none
+                      double_tap_action:
+                        action: none
+                      icon_color: deep-orange
+                      icon: mdi:flash-auto
+                  - type: conditional
+                    conditions:
+                      - condition: state
+                        entity: sensor.defi_hilo
+                        state: reduction
+                    card:
+                      type: custom:mushroom-entity-card
+                      entity: sensor.defi_hilo
+                      fill_container: false
+                      name: Status Defi Hilo
+                      tap_action:
+                        action: more-info
+                      hold_action:
+                        action: none
+                      double_tap_action:
+                        action: none
+                      icon_color: red
+                      icon: mdi:flash-off
+                  - type: conditional
+                    conditions:
+                      - condition: state
+                        entity: sensor.defi_hilo
+                        state: recovery
+                    card:
+                      type: custom:mushroom-entity-card
+                      entity: sensor.defi_hilo
+                      fill_container: false
+                      name: Status Defi Hilo
+                      tap_action:
+                        action: more-info
+                      hold_action:
+                        action: none
+                      double_tap_action:
+                        action: none
+                      icon_color: green
+                      icon: mdi:flash-outline
+              - type: horizontal-stack
+                cards:
+                  - type: conditional
+                    conditions:
+                      - condition: or
+                        conditions:
+                          - condition: state
+                            entity: sensor.defi_hilo
+                            state_not: 'off'
+                    card:
+                      graph: line
+                      type: sensor
+                      entity: sensor.defi_hilo_used_kwh
+                      detail: 1
+                  - type: conditional
+                    conditions:
+                      - condition: or
+                        conditions:
+                          - condition: state
+                            entity: sensor.defi_hilo
+                            state_not: 'off'
+                    card:
+                      graph: line
+                      type: sensor
+                      entity: sensor.defi_hilo_allowed_kwh
+                      detail: 1
+              - type: horizontal-stack
+                cards:
+                  - type: custom:mushroom-template-card
+                    primary: Ancrage
+                    secondary: >-
+                      {{
+                      (as_timestamp(state_attr('sensor.defi_hilo','next_events')[0]['phases']['appreciation_start']
+                      ) - as_timestamp(now())) | timestamp_custom("%Hh%Mm",
+                      false) }}
+                    icon: mdi:anchor
+                    icon_color: blue
+                    entity: sensor.defi_hilo
+                    tap_action:
+                      action: more-info
+                  - type: custom:mushroom-template-card
+                    primary: Préchauffage
+                    secondary: >-
+                      {{
+                      (as_timestamp(state_attr('sensor.defi_hilo','next_events')[0]['phases']['preheat_start']
+                      ) - as_timestamp(now())) | timestamp_custom("%Hh%Mm",
+                      false) }}
+                    icon: mdi:radiator
+                    icon_color: blue
+                    entity: sensor.defi_hilo
+                    tap_action:
+                      action: more-info
+              - type: horizontal-stack
+                cards:
+                  - type: custom:mushroom-template-card
+                    primary: Réduction
+                    secondary: >-
+                      {{
+                       (as_timestamp(state_attr('sensor.defi_hilo','next_events')[0]['phases']['reduction_start']
+                      ) - as_timestamp(now())) | timestamp_custom("%Hh%Mm",
+                      false) }}
+                    icon: mdi:radiator-off
+                    icon_color: blue
+                    entity: sensor.defi_hilo
+                    tap_action:
+                      action: more-info
+                  - type: custom:mushroom-template-card
+                    primary: Reprise
+                    secondary: >-
+                      {{
+                      (as_timestamp(state_attr('sensor.defi_hilo','next_events')[0]['phases']['recovery_start']
+                      ) - as_timestamp(now())) | timestamp_custom("%Hh%Mm",
+                      false) }}
+                    icon: mdi:radiator-disabled
+                    icon_color: blue
+                    entity: sensor.defi_hilo
+                    tap_action:
+                      action: more-info
+              - type: horizontal-stack
+                cards:
+                  - type: custom:mushroom-entity-card
+                    fill_container: false
+                    tap_action:
+                      action: more-info
+                    hold_action:
+                      action: none
+                    double_tap_action:
+                      action: none
+                    entity: sensor.hydro_quebec_maison_balance
+                    name: Solde
+                  - type: custom:mushroom-entity-card
+                    fill_container: false
+                    tap_action:
+                      action: more-info
+                    hold_action:
+                      action: none
+                    double_tap_action:
+                      action: none
+                    entity: sensor.recompenses_hilo
+                    name: Récompenses Hilo
+                    icon_color: green
+              - type: history-graph
+                entities:
+                  - entity: sensor.defi_hilo
+                logarithmic_scale: false
+                hours_to_show: 24
+              - type: markdown
+                content: |-
+                  {% 
+
+                  set data = state_attr('sensor.defi_hilo','next_events') %}
+
+                  {% if states('sensor.defi_hilo_nb_defi_planifies') > '0' %}
+                    {%- for ndefi in data -%}
+                        <b>{{as_timestamp(ndefi.phases.preheat_start)|timestamp_custom("%d-%m-%Y")}} - {{ndefi.state}}</b> 
+
+                     <ul>
+                       <li>Ancrage: {{as_timestamp(ndefi.phases.appreciation_start)|timestamp_custom("%H:%M")+ " à " + as_timestamp(ndefi.phases.appreciation_end)|timestamp_custom("%H:%M") }}   
+                       <li>PréChauffage:  {{as_timestamp(ndefi.phases.preheat_start)|timestamp_custom("%H:%M")+ " à " + as_timestamp(ndefi.phases.preheat_end)|timestamp_custom("%H:%M") }}
+                       <li>Defi:  {{as_timestamp(ndefi.phases.reduction_start)|timestamp_custom("%H:%M") + " à " + as_timestamp(ndefi.phases.reduction_end)|timestamp_custom("%H:%M") }}
+                     </ul>
+                    {%- endfor -%}
+
+                  {% else %}
+                    ## Aucun
+                  {% endif %}
+                title: Prochains événements Hilo
+              - type: custom:apexcharts-card
+                header:
+                  show: true
+                  title: Probabilités de Pointe Critique
+                graph_span: 6d
+                span:
+                  start: day
+                  offset: +1d
+                color_list:
+                  - teal
+                  - cyan
+                  - yellow
+                apex_config:
+                  legend:
+                    onItemClick:
+                      toggleDataSeries: false
+                    onItemHover:
+                      highlightDataSeries: false
+                  markers:
+                    size: 0
+                  tooltip:
+                    enabled: false
+                  chart:
+                    height: auto
+                  dataLabels:
+                    dropShadow:
+                      enabled: true
+                      opacity: 0.8
+                  plotOptions:
+                    bar:
+                      columnWidth: 100%
+                      colors:
+                        ranges:
+                          - from: 70
+                            to: 100
+                            color: lightgreen
+                  stroke:
+                    width: 2
+                  xaxis:
+                    type: numeric
+                    tickAmount: 6
+                    tooltip:
+                      enabled: false
+                    axisTicks:
+                      show: true
+                      offsetY: 0
+                      offsetX: -1
+                      height: 7
+                    labels:
+                      show: true
+                      trim: true
+                      rotate: -45
+                      rotateAlways: false
+                      offsetX: 8
+                      offsetY: -4
+                      style:
+                        fontSize: 10px
+                      formatter: |
+                        EVAL:function(value, timestamp) {
+                          var daysOfWeek = ['Dim', 'Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam'];
+                          var date = new Date(timestamp);
+
+                          var diff = date - Date.now();
+                          let diffDays = Math.floor(diff / (1000 * 3600 * 24));
+
+                          return diffDays >= 6 ? '' : `${daysOfWeek[date.getDay()]} ${date.getDate()}`;
+                        }
+                yaxis:
+                  - id: first
+                    min: 0
+                    max: ~80
+                    decimals: 0
+                    apex_config:
+                      title:
+                        text: '%'
+                        rotate: 0
+                  - id: second
+                    min: ~-20
+                    max: ~-10
+                    opposite: true
+                    decimals: 0
+                    apex_config:
+                      title:
+                        text: °C
+                        rotate: 0
+                series:
+                  - entity: sensor.hydro_peak_probability
+                    name: Matin
+                    type: column
+                    unit: '%'
+                    yaxis_id: first
+                    show:
+                      legend_value: false
+                      datalabels: false
+                    time_delta: +4h
+                    data_generator: |
+                      const data = [];
+                      for(let i = 0; i < 12; i++) {
+                        if (entity.attributes.predictions[i].peak != 'AM')
+                          continue;
+
+                        var date = new Date(entity.attributes.predictions[i].datetime);
+                        data.push([date, entity.attributes.predictions[i].critical])
+                      }
+                      return data;
+                  - entity: sensor.hydro_peak_probability
+                    name: Soir
+                    type: column
+                    unit: '%'
+                    yaxis_id: first
+                    show:
+                      legend_value: false
+                      datalabels: false
+                    time_delta: -3h
+                    data_generator: |
+                      const data = [];
+                      for(let i = 0; i < 12; i++) {
+                        if (entity.attributes.predictions[i].peak != 'PM')
+                          continue;
+
+                        var date = new Date(entity.attributes.predictions[i].datetime);
+                        data.push([date, entity.attributes.predictions[i].critical])
+                      }
+                      return data;
+                  - entity: sensor.hydro_peak_probability
+                    name: Température
+                    type: line
+                    unit: °C
+                    opacity: 1
+                    yaxis_id: second
+                    show:
+                      legend_value: false
+                      datalabels: false
+                    data_generator: >
+                      const data = [];
+
+                      for(let i = 0; i < 12; i++) {
+
+
+                      var date = new
+                      Date(entity.attributes.predictions[i].datetime);
+
+                      data.push([date, entity.attributes.predictions[i].temp])
+
+                      }
+
+                      return data;
+            card_mod:
+              style: |
+                ha-card {
+                  box-shadow: rgba(30, 196, 229, 0.5) 1px 13px 27px 0px, rgba(212, 244, 250, 0.5) 0px 8px 16px -8px;
+                }
+      - type: grid
+        cards:
+          - type: heading
+            heading: Défis réalisés
+            heading_style: title
+            icon: mdi:check-circle
+            grid_options:
+              columns: full
+              rows: 0.4
+          - type: custom:vertical-stack-in-card
+            cards:
+              - type: entities
+                entities:
+                  - entity: input_select.historique_hilo
+                    name: Choisir la saison
+                    icon: mdi:history
+                show_header_toggle: false
+                state_color: false
+                title: Saison
+              - type: markdown
+                content: >
+                  {%
+                    set data = state_attr('sensor.recompenses_hilo','history')[state_attr('input_select.historique_hilo', 'options').index(states('input_select.historique_hilo'))] 
+                  %}
+
+
+                  <h2><center>Saison  {{data.season}}-{{data.season +
+                  1}}</center></h2>  
+
+                  <ha-alert alert-type="success"><h3>
+                    Nb de défis: {{data.events | count}}<br>
+                    Récompense totale: {{"%.2f" | format(data.totalReward) }}$<br>
+                    Récompense moyenne: {{"%.2f" | format(data.totalReward /(data.events | count)) }}$
+                  </h3></ha-alert>      
+
+                  <br>
+
+                  <table width=100%>
+                    <tr>
+                      <th>#</th>
+                      <th>Date</th>
+                      <th>Plage</th>
+                      <th>Alloué</th>
+                      <th>Utilisé</th>
+                      <th>Prime</th>
+                    </tr>  
+                    {%- for event in data.events | sort(attribute='phases.reduction_start') -%}    
+                      <tr>
+                      <td align=center>{{ "%.0f"|format(loop.index) }}</td>
+                      <td align=center>{{ event.phases.reduction_start.timestamp() | timestamp_custom('%d/%m/%Y') }}</td>
+                      <td align=center>{{ "Matin" if (event.period == "am" or event.period == "AM") else "Soir" }}</td>
+                      <td align=center>{{ "%.2f"|format(event.allowed_kWh) }}</td> 
+                      <td align=center>{{ "%.2f"|format(event.used_kWh) }}</td>
+                      <td align=center>{{ "%.2f"|format([0, (event.allowed_kWh - event.used_kWh)] | max * 0.56786) }}$</td>
+                      </tr>
+                    {%- endfor -%}
+                  </table>
+            card_mod:
+              style: |
+                ha-card {
+                  box-shadow: rgba(30, 196, 229, 0.5) 1px 13px 27px 0px, rgba(212, 244, 250, 0.5) 0px 8px 16px -8px;
+                }
+  - type: sections
+    max_columns: 2
+    title: Sous Vue Prix Essences
+    path: Edi-Sous-Vue-Prix-Essences
+    icon: mdi:gas-station
+    dense_section_placement: true
+    subview: true
+    sections:
+      - type: grid
+        cards:
+          - type: entities
+            entities:
+              - entity: sensor.caa_prix_essence_shawinigan_aujourd_hui
+                type: custom:multiple-entity-row
+                show_state: false
+                name: Shawinigan
+                secondary_info: last-changed
+                entities:
+                  - entity: sensor.caa_prix_essence_shawinigan_aujourd_hui
+                    name: Actuel
+                    unit: $
+                  - entity: sensor.caa_prix_essence_shawinigan_un_mois
+                    name: 1 Mois
+                    unit: $
+                  - entity: sensor.caa_prix_essence_shawinigan_un_an
+                    name: 1 An
+                    unit: $
+              - type: section
+              - entity: sensor.caa_prix_essence_montreal_aujourd_hui
+                type: custom:multiple-entity-row
+                show_state: false
+                name: Montréal
+                secondary_info: last-changed
+                entities:
+                  - entity: sensor.caa_prix_essence_montreal_aujourd_hui
+                    name: Actuel
+                    unit: $
+                  - entity: sensor.caa_prix_essence_montreal_un_mois
+                    name: 1 Mois
+                    unit: $
+                  - entity: sensor.caa_prix_essence_montreal_un_an
+                    name: 1 An
+                    unit: $
+              - type: section
+              - entity: sensor.caa_prix_essence_quebec_aujourd_hui
+                type: custom:multiple-entity-row
+                show_state: false
+                name: Québec
+                secondary_info: last-changed
+                entities:
+                  - entity: sensor.caa_prix_essence_quebec_aujourd_hui
+                    name: Actuel
+                    unit: $
+                  - entity: sensor.caa_prix_essence_quebec_un_mois
+                    name: 1 Mois
+                    unit: $
+                  - entity: sensor.caa_prix_essence_quebec_un_an
+                    name: 1 An
+                    unit: $
+              - type: section
+              - entity: sensor.caa_prix_essence_trois_rivieres_aujourd_hui
+                type: custom:multiple-entity-row
+                show_state: false
+                name: Trois-Rivières
+                secondary_info: last-changed
+                entities:
+                  - entity: sensor.caa_prix_essence_trois_rivieres_aujourd_hui
+                    name: Actuel
+                    unit: $
+                  - entity: sensor.caa_prix_essence_trois_rivieres_un_mois
+                    name: 1 Mois
+                    unit: $
+                  - entity: sensor.caa_prix_essence_trois_rivieres_un_an
+                    name: 1 An
+                    unit: $
+              - type: section
+          - type: custom:mini-graph-card
+            hours_to_show: 720
+            name: Prix quotidien sur 1 mois
+            entities:
+              - entity: sensor.caa_prix_essence_shawinigan_aujourd_hui
+                aggregate_func: max
+                name: Max
+                color: '#e74c3c'
+              - entity: sensor.caa_prix_essence_shawinigan_aujourd_hui
+                aggregate_func: min
+                name: Min
+              - entity: sensor.caa_prix_essence_shawinigan_aujourd_hui
+                aggregate_func: avg
+                name: Moy
+                color: green
+  - type: sections
+    max_columns: 2
+    title: Sous Vue Pannes En Cours
+    path: Edi-Sous-Vue-Pannes-En-Cours
+    icon: mdi:flash-alert-outline
+    subview: true
+    dense_section_placement: true
+    sections:
+      - type: grid
+        cards:
+          - type: entities
+            entities:
+              - type: custom:vertical-stack-in-card
+                cards:
+                  - type: heading
+                    icon: mdi:transmission-tower-off
+                    heading_style: title
+                    heading: Pannes au Québec
+                  - type: custom:mini-graph-card
+                    entities:
+                      - entity: sensor.hq_pannes_nombre_de_client_touche_quebec
+                        unit: clients affectés
+                        show_graph: true
+                        show_state: true
+                      - entity: sensor.hq_pannes_nombre_de_pannes_quebec
+                        name: Interruptions
+                        unit: pannes
+                        show_graph: false
+                        show_state: true
+                      - entity: sensor.hq_pannes_nombre_de_client_raccorde_quebec
+                        name: Clients
+                        unit: Clients
+                        show_graph: false
+                        show_state: true
+                      - entity: sun.sun
+                        show_line: false
+                        show_points: false
+                        show_legend: false
+                        color: gray
+                        y_axis: secondary
+                    state_map:
+                      - value: below_horizon
+                        label: Nuit
+                      - value: above_horizon
+                        label: Jour
+                    hours_to_show: 24
+                    points_per_hour: 4
+                    animate: true
+                    line_width: 3
+                    show:
+                      name: false
+                      icon: false
+                      extrema: true
+                      fill: fade
+                    hour24: true
+                  - type: markdown
+                    content: ---
+                  - type: heading
+                    icon: mdi:transmission-tower-off
+                    heading_style: title
+                    heading: Pannes en Mauricie
+                  - type: horizontal-stack
+                    cards:
+                      - type: custom:mushroom-template-card
+                        primary: Nombres de clients
+                        secondary: '{{states(''sensor.hq_pannes_nombre_de_client_raccorde_mauricie'')}}'
+                        icon: mdi:account-group
+                        icon_color: lightblue
+                        fill_container: true
+                        layout: vertical
+                        tap_action:
+                          action: none
+                        hold_action:
+                          action: none
+                        double_tap_action:
+                          action: none
+                        card_mod:
+                          style:
+                            ha-tile-info$: |
+                              .secondary {
+                                 font-size: 18px !important;
+                              }
+                      - type: custom:mushroom-template-card
+                        primary: Nombres de pannes
+                        secondary: '{{states(''sensor.hq_pannes_nombre_de_pannes_mauricie'')}}'
+                        icon: mdi:transmission-tower-off
+                        icon_color: red
+                        fill_container: true
+                        layout: vertical
+                        tap_action:
+                          action: none
+                        hold_action:
+                          action: none
+                        double_tap_action:
+                          action: none
+                        card_mod:
+                          style:
+                            ha-tile-info$: |
+                              .secondary {
+                                 font-size: 18px !important;
+                              }
+                      - type: custom:mushroom-template-card
+                        primary: Clients affectés
+                        secondary: '{{states(''sensor.hq_pannes_nombre_de_client_touche_mauricie'')}}'
+                        icon: mdi:home-account
+                        icon_color: yellow
+                        fill_container: true
+                        layout: vertical
+                        tap_action:
+                          action: none
+                        hold_action:
+                          action: none
+                        double_tap_action:
+                          action: none
+                        card_mod:
+                          style:
+                            ha-tile-info$: |
+                              .secondary {
+                                 font-size: 18px !important;
+                              }
+                  - type: markdown
+                    content: ---
+                  - type: heading
+                    icon: mdi:transmission-tower-off
+                    heading_style: title
+                    heading: Pannes pour la ville de Shawinigan-sud
+                  - type: horizontal-stack
+                    cards:
+                      - type: custom:mushroom-template-card
+                        primary: Nombres de clients
+                        secondary: '{{states(''sensor.hq_pannes_nombre_de_client_raccorde_shawinigan_sud'')}}'
+                        icon: mdi:account-group
+                        icon_color: lightblue
+                        fill_container: true
+                        layout: vertical
+                        tap_action:
+                          action: none
+                        hold_action:
+                          action: none
+                        double_tap_action:
+                          action: none
+                        card_mod:
+                          style:
+                            ha-tile-info$: |
+                              .secondary {
+                                 font-size: 18px !important;
+                              }
+                      - type: custom:mushroom-template-card
+                        primary: Nombres de pannes
+                        secondary: '{{states(''sensor.hq_pannes_nombre_de_pannes_shawinigan_sud'')}}'
+                        icon: mdi:transmission-tower-off
+                        icon_color: red
+                        fill_container: true
+                        layout: vertical
+                        tap_action:
+                          action: none
+                        hold_action:
+                          action: none
+                        double_tap_action:
+                          action: none
+                        card_mod:
+                          style:
+                            ha-tile-info$: |
+                              .secondary {
+                                 font-size: 18px !important;
+                              }
+                      - type: custom:mushroom-template-card
+                        primary: Clients affectés
+                        secondary: '{{states(''sensor.hq_pannes_nombre_de_client_touche_shawinigan_sud'')}}'
+                        icon: mdi:home-account
+                        icon_color: yellow
+                        fill_container: true
+                        layout: vertical
+                        tap_action:
+                          action: none
+                        hold_action:
+                          action: none
+                        double_tap_action:
+                          action: none
+                        card_mod:
+                          style:
+                            ha-tile-info$: |
+                              .secondary {
+                                 font-size: 18px !important;
+                              }
+                card_mod:
+                  style: |
+                    ha-card {
+                      box-shadow: 0 0 0 2px gray;
+                    }
+    cards: []

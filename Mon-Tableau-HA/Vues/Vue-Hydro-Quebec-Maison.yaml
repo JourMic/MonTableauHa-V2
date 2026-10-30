@@ -1,0 +1,268 @@
+title: Hydro-Québec
+path: Vue-Hydro-Quebec-Maison
+icon: mdi:flash
+subview: false
+type: sections
+max_columns: 2
+cards: []
+sections:
+  - type: grid
+    cards:
+      - type: heading
+        icon: mdi:open-in-app
+        heading_style: title
+        heading: Paramètres du compte
+        grid_options:
+          columns: full
+          rows: 0.5
+
+      - type: custom:decluttering-card-plus
+        template: tuiles_5
+        variables:
+          - tuile5_entity: "sensor.hydro_quebec_maison_current_billing_period_rate"
+          - tuile5_name: "Tarif"
+          - tuile5_icon: "mdi:playlist-check"
+          - tuile5_color: "red"
+        grid_options:
+          columns: 3
+          rows: auto
+
+      - type: custom:decluttering-card-plus
+        template: tuiles_5
+        variables:
+          - tuile5_entity: "sensor.hydro_quebec_maison_current_billing_period_rate_option"
+          - tuile5_name: "Option"
+          - tuile5_icon: "mdi:arrow-all"
+          - tuile5_color: "yellow"
+        grid_options:
+          columns: 3
+          rows: auto
+
+      - type: custom:decluttering-card-plus
+        template: tuiles_5
+        variables:
+          - tuile5_entity: "binary_sensor.hydro_quebec_maison_current_period_epp_enabled"
+          - tuile5_name: "Égaux"
+          - tuile5_icon: "mdi:code-equal"
+          - tuile5_color: "green"
+        grid_options:
+          columns: 3
+          rows: auto
+
+      - type: custom:decluttering-card-plus
+        template: tuiles_5
+        variables:
+          - tuile5_entity: "sensor.hydro_quebec_maison_balance"
+          - tuile5_name: "Paiements"
+          - tuile5_icon: "mdi:code-equal"
+          - tuile5_color: "blue"
+        grid_options:
+          columns: 3
+          rows: auto
+
+      - type: heading
+        icon: mdi:open-in-app
+        heading_style: title
+        heading: Données pour la période
+        grid_options:
+          columns: full
+          rows: 0.5
+
+      - type: custom:decluttering-card-plus
+        template: tuiles_5
+        variables:
+          - tuile5_entity: "sensor.hydro_quebec_maison_current_billing_period_duration"
+          - tuile5_name: "Jours Période"
+          - tuile5_icon: "mdi:calendar-month"
+          - tuile5_color: "red"
+        grid_options:
+          columns: 3
+          rows: auto
+
+      - type: custom:decluttering-card-plus
+        template: tuiles_5
+        variables:
+          - tuile5_entity: "sensor.hydro_quebec_maison_current_billing_period_current_day"
+          - tuile5_name: "Jours"
+          - tuile5_icon: "mdi:calendar-month"
+          - tuile5_color: "yellow"
+        grid_options:
+          columns: 3
+          rows: auto
+
+      - type: custom:decluttering-card-plus
+        template: tuiles_5
+        variables:
+          - tuile5_entity: "sensor.hydro_quebec_maison_current_billing_period_daily_bill_mean"
+          - tuile5_name: "Paiements"
+          - tuile5_icon: "mdi:currency-usd"
+          - tuile5_color: "green"
+        grid_options:
+          columns: 3
+          rows: auto
+
+      - type: custom:decluttering-card-plus
+        template: tuiles_5
+        variables:
+          - tuile5_entity: "sensor.hydro_quebec_maison_current_billing_period_daily_consumption_mean"
+          - tuile5_name: "kWhs"
+          - tuile5_icon: "mdi:lightning-bolt-circle"
+          - tuile5_color: "blue"
+        grid_options:
+          columns: 3
+          rows: auto
+
+      - type: heading
+        heading: Coût actuellement et prévisions
+        heading_style: title
+        icon: mdi:currency-usd
+        badges:
+          - type: entity
+            show_state: true
+            show_icon: false
+            entity: sensor.hydro_quebec_maison_current_billing_period_total_to_date
+            state_content: state
+          - type: entity
+            show_state: true
+            show_icon: false
+            entity: sensor.hydro_quebec_maison_current_billing_period_projected_bill
+        grid_options:
+          columns: full
+          rows: 0.5
+
+      - type: statistics-graph
+        grid_options:
+          columns: 12
+          rows: 5
+        entities:
+          - entity: sensor.hydro_quebec_maison_current_billing_period_projected_bill
+            name: Prévisions
+            color: red
+          - entity: sensor.hydro_quebec_maison_current_billing_period_total_to_date
+            name: Actuellement
+            color: green
+        days_to_show: 30
+        period: week
+        chart_type: line
+        stat_types:
+          - state
+        card_mod:
+          style: |
+            ha-card {
+              box-shadow: var(--couleur_ombre ) !important;
+            }
+
+  - type: grid
+    cards:
+      - type: heading
+        heading_style: title
+        heading: kWh actuellement
+        icon: mdi:lightning-bolt-circle
+        grid_options:
+          columns: full
+          rows: 0.4
+        badges:
+          - type: entity
+            show_state: true
+            show_icon: false
+            entity: sensor.hydro_quebec_maison_current_billing_period_total_consumption
+          - type: entity
+            show_state: true
+            show_icon: false
+            entity: >-
+              sensor.hydro_quebec_maison_current_billing_period_projected_total_consumption
+
+      - type: statistics-graph
+        entities:
+          - entity: sensor.hydro_quebec_maison_current_billing_period_total_consumption
+            color: teal
+        days_to_show: 30
+        period: day
+        chart_type: bar
+        stat_types:
+          - sum
+        hide_legend: true
+        grid_options:
+          columns: 12
+          rows: 5
+        card_mod:
+          style: |
+            ha-card {
+              box-shadow: var(--couleur_ombre ) !important;
+            }
+
+      - type: heading
+        heading_style: title
+        heading: kWh 30 jours
+        icon: mdi:lightning-bolt-circle
+        grid_options:
+          columns: full
+          rows: 0.3
+
+      - type: statistics-graph
+        entities:
+          - entity: sensor.meter00_power
+            name: Compteur Hydro
+            color: accent
+        days_to_show: 30
+        period: day
+        chart_type: line
+        stat_types:
+          - max
+          - mean
+          - min
+        hide_legend: true
+        card_mod:
+          style: |
+            ha-card {
+              box-shadow: var(--couleur_ombre ) !important;
+            }
+
+badges:
+  - type: entity
+    entity: sensor.meter00_power
+    show_name: false
+    show_state: true
+    show_icon: true
+    tap_action:
+      action: navigate
+      navigation_path: /tableau-ha/Sous-Vue-Consommation-Maison
+
+  - type: entity
+    entity: sensor.hq_pannes_nombre_de_pannes_quebec
+    display_type: complete
+    name: Panne en cours
+    icon: mdi:transmission-tower-off
+    visibility:
+      - condition: state
+        entity: sensor.hq_pannes_nombre_de_pannes_quebec
+        state_not: "0"
+    tap_action:
+      action: navigate
+      navigation_path: /tableau-ha/Sous-Vue-Pannes-En-Cours
+
+  - type: entity
+    entity: sensor.hydro_peak_probability
+    name: Pointe?
+    show_name: true
+    icon: mdi:transmission-tower
+    tap_action:
+      action: navigate
+      navigation_path: /tableau-ha/Sous-Vue-Defis
+    card_mod:
+      style: |
+        :host {
+          {% set pointe = states('sensor.hydro_peak_probability') | float(0) %}
+          {% if pointe < 50 %} --card-mod-icon-color: var(--couleur_vert) !important;
+          {% else %} --card-mod-icon-color: var(--couleur_rouge) !important;
+          {% endif %}
+        }
+
+  - type: entity
+    entity: sensor.hydro_quebec_production_total
+    name: Production
+    show_name: true
+    icon: mdi:transmission-tower
+    tap_action:
+      action: navigate
+      navigation_path: /tableau-ha/Sous-vue-hydro-quebec

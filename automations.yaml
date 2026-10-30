@@ -1,0 +1,399 @@
+- id: '1684259377718'
+  alias: Notification Récupération Demain
+  description: Notification de collecte de la récupération demain
+  triggers:
+  - at: '20:00:00'
+    trigger: time
+  conditions:
+  - condition: state
+    entity_id: calendar.exterieure_collecte_shawinigan_matieres_recyclables
+    state:
+    - '1'
+    for:
+      hours: 0
+      minutes: 0
+      seconds: 10
+  actions:
+  - action: notify.mobile_app_iphone
+    data:
+      message: 'Collecte de la récupération demain '
+      title: Collecte
+  mode: single
+- id: '1684259595296'
+  alias: Notification Ordures Demain
+  description: Notification de collecte des ordures demain
+  triggers:
+  - at: '20:00:00'
+    trigger: time
+  conditions:
+  - condition: state
+    entity_id: calendar.exterieure_collecte_shawinigan_ordures
+    state:
+    - '1'
+    for:
+      hours: 0
+      minutes: 0
+      seconds: 10
+  actions:
+  - action: notify.mobile_app_iphone
+    data:
+      message: Collecte des ordures demain
+      title: 'Collecte '
+  mode: single
+- id: '1691450956712'
+  alias: Allumer les lumières avants lorsque je reviens chez moi
+  description: Allumer les lumières avants lorsque je reviens chez moi
+  trigger:
+  - platform: zone
+    entity_id: device_tracker.life360_michel
+    zone: zone.home
+    event: enter
+  condition:
+  - condition: sun
+    before: sunrise
+    after: sunset
+  action:
+  - service: scene.turn_on
+    target:
+      entity_id: scene.exterieure_avant_concentration
+    metadata: {}
+  mode: single
+- id: '1698099646283'
+  alias: Contrôle des caméras lors de mes déplacements
+  description: ''
+  triggers:
+  - entity_id: device_tracker.life360_michel
+    zone: zone.home
+    event: enter
+    id: Je reviens chez moi
+    trigger: zone
+  - entity_id: device_tracker.life360_michel
+    zone: zone.home
+    event: leave
+    trigger: zone
+  conditions: []
+  actions:
+  - if:
+    - condition: trigger
+      id:
+      - Je reviens chez moi
+    then:
+    - data:
+        code: '2107'
+      action: alarm_control_panel.alarm_disarm
+      target:
+        entity_id: alarm_control_panel.blink_ca_exterieures
+    - delay:
+        hours: 0
+        minutes: 0
+        seconds: 15
+        milliseconds: 0
+    - data: {}
+      action: alarm_control_panel.alarm_disarm
+      target:
+        entity_id: alarm_control_panel.blink_ca_interieures
+    else:
+    - data:
+        code: '2107'
+      action: alarm_control_panel.alarm_arm_away
+      target:
+        entity_id: alarm_control_panel.blink_ca_exterieures
+    - delay:
+        hours: 0
+        minutes: 1
+        seconds: 0
+        milliseconds: 0
+    - data:
+        code: '2107'
+      action: alarm_control_panel.alarm_arm_away
+      target:
+        entity_id: alarm_control_panel.blink_ca_interieures
+  mode: single
+- id: '1698187066085'
+  alias: Contrôle des caméras
+  description: Activer les caméras à 23h00 et désactiver les caméras intérieures à
+    06h30
+  triggers:
+  - at: '23:00:00'
+    id: Activer les caméras le soir
+    trigger: time
+  - at: 06:30:00
+    trigger: time
+  conditions: []
+  actions:
+  - if:
+    - condition: trigger
+      id:
+      - Activer les caméras le soir
+    then:
+    - data:
+        code: '2107'
+      action: alarm_control_panel.alarm_arm_away
+      target:
+        entity_id: alarm_control_panel.blink_ca_exterieures
+    - delay:
+        hours: 0
+        minutes: 1
+        seconds: 0
+        milliseconds: 0
+    - data:
+        code: '2107'
+      action: alarm_control_panel.alarm_arm_away
+      target:
+        entity_id: alarm_control_panel.blink_ca_interieures
+    else:
+    - data:
+        code: '2107'
+      action: alarm_control_panel.alarm_disarm
+      target:
+        entity_id: alarm_control_panel.blink_ca_interieures
+  mode: single
+- id: '1701020240452'
+  alias: Allumer les lumières de Noël
+  description: ''
+  triggers:
+  - event: sunset
+    offset: 00:15:00
+    id: Noel Coucher du soleil
+    trigger: sun
+  - at: '23:58:00'
+    trigger: time
+  conditions: []
+  actions:
+  - if:
+    - condition: trigger
+      id:
+      - Noel Coucher du soleil
+    then:
+    - target:
+        entity_id: scene.exterieure_avant_noel
+      metadata: {}
+      action: scene.turn_on
+      data: {}
+    else:
+    - data: {}
+      target:
+        entity_id: light.exterieure_avant
+      action: light.turn_off
+  mode: single
+- id: '1704311487567'
+  alias: Contrôle de la serrure lorsque je reviens chez moi
+  description: ''
+  triggers:
+  - entity_id: device_tracker.life360_michel
+    zone: zone.home
+    event: enter
+    trigger: zone
+  conditions: []
+  actions:
+  - data: {}
+    action: lock.unlock
+    target:
+      entity_id: lock.porte_d_entree
+  mode: single
+- id: '1708289608438'
+  alias: Contrôle de la lumière de la salle de bain
+  description: Allumer la lumière lors d’un mouvement dans le boudoire
+  trigger:
+  - platform: state
+    entity_id:
+    - binary_sensor.boudoirte_mouvement
+    to: 'on'
+    id: Mouvements dans le boudoire
+  - platform: state
+    entity_id:
+    - binary_sensor.boudoirte_mouvement
+    to: 'off'
+    for:
+      hours: 0
+      minutes: 2
+      seconds: 0
+  condition:
+  - condition: sun
+    after: sunset
+    before: sunrise
+  action:
+  - if:
+    - condition: trigger
+      id:
+      - Mouvements dans le boudoire
+    then:
+    - service: light.turn_on
+      target:
+        entity_id: light.salle_de_bain
+      data: {}
+    else:
+    - service: light.turn_off
+      target:
+        entity_id: light.salle_de_bain
+      data: {}
+  mode: single
+- id: '1708474015336'
+  alias: Contrôle de la charge du iPad HA
+  description: ''
+  triggers:
+  - entity_id:
+    - sensor.ipad_de_michel_battery_level
+    to: '10'
+    id: Rechager le iPad HA
+    trigger: state
+  - entity_id:
+    - sensor.ipad_de_michel_battery_level
+    to: '100'
+    trigger: state
+  conditions: []
+  actions:
+  - if:
+    - condition: trigger
+      id:
+      - Rechager le iPad HA
+    then:
+    - data: {}
+      action: switch.turn_on
+      target:
+        entity_id: switch.neviweb130_switch_prise_ipad_ha
+    else:
+    - data: {}
+      action: switch.turn_off
+      target:
+        entity_id: switch.neviweb130_switch_prise_ipad_ha
+  mode: single
+- id: '202966252317'
+  alias: Life360 - Mise à jour de la position de Michel
+  description: Augmenter la fréquence de mise à jour quand Michel est proche de la
+    maison
+  trigger:
+  - platform: template
+    value_template: '{% set state = states.device_tracker.life360_michel %}
+
+      {{ state is not none and state.attributes.driving and distance(state) < 1 }}'
+  condition: []
+  action:
+  - repeat:
+      sequence:
+      - service: life360.update_location
+        metadata: {}
+        data: {}
+        target:
+          entity_id: device_tracker.life360_michel
+      - delay:
+          hours: 0
+          minutes: 1
+          seconds: 0
+          milliseconds: 0
+      while:
+      - condition: template
+        value_template: '{% set state = states.device_tracker.life360_michel %}
+
+          {{ state is not none and state.attributes.driving and distance(state) <
+          1 }}'
+  mode: restart
+- id: '1732054779542'
+  alias: Contrôles des défis Hilo
+  description: Mettre les appareils dans le bon états selon le statut Hilo
+  triggers:
+  - trigger: state
+    entity_id:
+    - sensor.defi_hilo
+    to: pre_heat
+    id: Défi Hilo pre_heat
+  - trigger: state
+    entity_id:
+    - sensor.defi_hilo
+    to: reduction
+    id: Défi Hilo reduction
+  - trigger: state
+    entity_id:
+    - sensor.defi_hilo
+    to: recovery
+  conditions: []
+  actions:
+  - if:
+    - condition: trigger
+      id:
+      - Défi Hilo pre_heat
+    then:
+    - action: climate.set_temperature
+      metadata: {}
+      data:
+        temperature: 23
+      target:
+        entity_id:
+        - climate.sensibo_cuisine
+        - climate.sensibo_salle_de_repos
+    - action: notify.mobile_app_iphone
+      metadata: {}
+      data:
+        message: 'Hilo - Début de la période de pré-chauffage '
+        title: Événement Hilo
+    else:
+    - if:
+      - condition: trigger
+        id:
+        - Défi Hilo reduction
+      then:
+      - action: climate.turn_off
+        metadata: {}
+        data: {}
+        target:
+          entity_id:
+          - climate.sensibo_cuisine
+          - climate.sensibo_salle_de_repos
+      - action: switch.turn_off
+        metadata: {}
+        target:
+          entity_id: switch.neviweb130_switch_prise_echangeur_dair
+        data: {}
+      - action: notify.mobile_app_iphone
+        metadata: {}
+        data:
+          message: Hilo - Début de la période de réduction
+          title: Événement Hilo
+      else:
+      - action: climate.turn_on
+        metadata: {}
+        data: {}
+        target:
+          entity_id:
+          - climate.sensibo_cuisine
+          - climate.sensibo_salle_de_repos
+      - action: climate.set_temperature
+        metadata: {}
+        data:
+          temperature: 21
+        target:
+          entity_id:
+          - climate.sensibo_cuisine
+          - climate.sensibo_salle_de_repos
+      - action: switch.turn_on
+        metadata: {}
+        target:
+          entity_id: switch.neviweb130_switch_prise_echangeur_dair
+        data: {}
+      - action: notify.mobile_app_iphone
+        metadata: {}
+        data:
+          message: Hilo - Début de la période de reprise
+          title: Événement Hilo
+  mode: single
+- id: '1792094205070'
+  alias: Notification compostage demain
+  description: Notification de collecte de compostage demain
+  triggers:
+  - at: '20:00:00'
+    trigger: time
+  conditions:
+  - condition: state
+    entity_id: calendar.exterieure_collecte_shawinigan_matieres_compostables
+    state:
+    - '1'
+    for:
+      hours: 0
+      minutes: 0
+      seconds: 10
+  actions:
+  - action: notify.mobile_app_iphone
+    data:
+      message: 'Collecte du compostage demain '
+      title: Collecte
+  mode: single

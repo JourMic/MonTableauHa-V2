@@ -1,0 +1,326 @@
+blueprint:
+  name: 'Hydro-Québec: 3-Stage Dynamic Peak Manager (Preheat, Shed, Recovery)'
+  description: 'Automate Hydro-Québec winter dynamic pricing events (Tarif Flex D,
+    Crédit hivernal, or Hilo) in three distinct stages:
+
+    1. **Preheat Phase ($T-2\\text{h}$)**: Boosts thermostat setpoints, charges the
+    domestic water heater, and pre-ventilates indoor air. 2. **Peak Event (Shedding)**:
+    Lowers thermostats to setback, turns off the water heater (50A breaker/switch),
+    turns off or idles the HRV/air exchanger, engages optional hardware button lockouts,
+    and sheds non-essential lights. 3. **Recovery Phase**: Restores comfort setpoints,
+    reactivates the water heater, resumes standard ventilation, releases hardware
+    lockouts, and conditionally restores evening lights if the sun is below the horizon.
+
+    '
+  domain: automation
+  author: alainmic
+  input:
+    peak_calendar:
+      name: Hydro-Québec Peak Calendar
+      description: Calendar providing Hydro-Québec peak event start and end times
+        (e.g., from ics_calendar or hydroqc).
+      default: ''
+      selector:
+        entity:
+          domain:
+          - calendar
+          multiple: false
+          reorder: false
+    peak_binary_sensor:
+      name: Peak Active Binary Sensor
+      description: Binary sensor that is 'on' during a critical peak event (e.g.,
+        binary_sensor.hydro_quebec_*_critical_peak_active).
+      default: ''
+      selector:
+        entity:
+          domain:
+          - binary_sensor
+          multiple: false
+          reorder: false
+    preheat_offset:
+      name: Preheat Offset Duration
+      description: Negative time offset before calendar peak start to begin pre-heating
+        (e.g. -02:00:00 for 2 hours before).
+      default: -02:00:00
+      selector:
+        text:
+          multiline: false
+          multiple: false
+    climate_targets:
+      name: Heating Thermostats
+      description: Line-voltage or central thermostats to control (Sinopé, Zigbee,
+        Z-Wave, etc.).
+      selector:
+        target:
+          entity:
+          - domain:
+            - climate
+    temp_preheat:
+      name: Preheat Temperature Setpoint
+      description: Target temperature during the preheat phase to store thermal energy
+        in walls and floors.
+      default: 23.0
+      selector:
+        number:
+          min: 15.0
+          max: 30.0
+          step: 0.5
+          unit_of_measurement: °C
+          mode: box
+    temp_peak:
+      name: Peak Setback Temperature
+      description: Setback target temperature during the peak window to minimize heating
+        load.
+      default: 18.5
+      selector:
+        number:
+          min: 10.0
+          max: 25.0
+          step: 0.5
+          unit_of_measurement: °C
+          mode: box
+    temp_normal:
+      name: Normal Comfort Temperature
+      description: Standard comfortable setpoint restored after the peak period ends.
+      default: 21.5
+      selector:
+        number:
+          min: 15.0
+          max: 26.0
+          step: 0.5
+          unit_of_measurement: °C
+          mode: box
+    water_heater_target:
+      name: Water Heater Load Controller (Optional)
+      description: High-draw 240V water heater controller (e.g., Sinopé RM3500WF or
+        Calypso) to shed during peak.
+      default: {}
+      selector:
+        target:
+          entity:
+          - domain:
+            - switch
+            - climate
+    hrv_target:
+      name: Air Exchanger / HRV Entity (Optional)
+      description: Heat Recovery Ventilator or ventilation fan to pre-ventilate and
+        pause during peak (stops cold outdoor air infiltration).
+      default: {}
+      selector:
+        target:
+          entity:
+          - domain:
+            - fan
+            - switch
+    hrv_lockout_target:
+      name: HRV / Air Exchanger Hardware Lockout Relays (Optional)
+      description: Relays wired inline (Normally Closed) with manual wall/bathroom
+        switches to physically disable button triggers during the peak event.
+      default: {}
+      selector:
+        target:
+          entity:
+          - domain:
+            - switch
+    non_essential_loads:
+      name: Non-Essential Lighting & Loads to Shed (Optional)
+      description: Decorative lights, shed lights, smart plugs, or pool equipment
+        to turn off during peak hours.
+      default: {}
+      selector:
+        target:
+          entity:
+          - domain:
+            - light
+            - switch
+    solar_restore_lights:
+      name: Lights to Resume Post-Peak If Dark (Optional)
+      description: Subset of lights that should turn back on after an afternoon/evening
+        peak ONLY if the sun is below the horizon.
+      default: {}
+      selector:
+        target:
+          entity:
+          - domain:
+            - light
+            - switch
+    notify_device:
+      name: Mobile App Notification Device (Optional)
+      description: Companion app device to alert when peak stages start and end.
+      default: ''
+      selector:
+        device:
+          integration: mobile_app
+          multiple: false
+  source_url: https://gist.github.com/alainmic/f068cdba8c30ed3d837227e1542d80df
+mode: restart
+triggers:
+- trigger: calendar
+  id: preheat_calendar
+  event: start
+  entity_id: !input peak_calendar
+  offset: !input preheat_offset
+- trigger: calendar
+  id: peak_start_calendar
+  event: start
+  entity_id: !input peak_calendar
+- trigger: calendar
+  id: peak_end_calendar
+  event: end
+  entity_id: !input peak_calendar
+- trigger: state
+  id: peak_start_sensor
+  entity_id: !input peak_binary_sensor
+  from: 'off'
+  to: 'on'
+- trigger: state
+  id: peak_end_sensor
+  entity_id: !input peak_binary_sensor
+  from: 'on'
+  to: 'off'
+actions:
+- choose:
+  - conditions:
+    - condition: trigger
+      id: preheat_calendar
+    sequence:
+    - action: climate.set_temperature
+      target: !input climate_targets
+      data:
+        temperature: !input temp_preheat
+    - if:
+      - condition: template
+        value_template: '{{ input_water_heater != {} }}'
+      then:
+      - action: homeassistant.turn_on
+        target: !input water_heater_target
+    - if:
+      - condition: template
+        value_template: '{{ input_hrv_lockout != {} }}'
+      then:
+      - action: homeassistant.turn_off
+        target: !input hrv_lockout_target
+    - if:
+      - condition: template
+        value_template: '{{ input_hrv != {} }}'
+      then:
+      - action: homeassistant.turn_on
+        target: !input hrv_target
+    - if:
+      - condition: template
+        value_template: '{{ notify_dev != '''' }}'
+      then:
+      - domain: mobile_app
+        type: notify
+        device_id: !input notify_device
+        title: '⚡ Hydro-Québec: Pre-heating Started'
+        message: Pre-heating active ({{ temp_preheat_val }}°C). Water heater charging
+          and indoor air pre-ventilating before peak.
+  - conditions:
+    - condition: or
+      conditions:
+      - condition: trigger
+        id: peak_start_calendar
+      - condition: trigger
+        id: peak_start_sensor
+    sequence:
+    - action: climate.set_temperature
+      target: !input climate_targets
+      data:
+        temperature: !input temp_peak
+    - if:
+      - condition: template
+        value_template: '{{ input_water_heater != {} }}'
+      then:
+      - action: homeassistant.turn_off
+        target: !input water_heater_target
+    - if:
+      - condition: template
+        value_template: '{{ input_hrv != {} }}'
+      then:
+      - action: homeassistant.turn_off
+        target: !input hrv_target
+    - if:
+      - condition: template
+        value_template: '{{ input_hrv_lockout != {} }}'
+      then:
+      - action: homeassistant.turn_on
+        target: !input hrv_lockout_target
+    - if:
+      - condition: template
+        value_template: '{{ input_non_essential != {} }}'
+      then:
+      - action: homeassistant.turn_off
+        target: !input non_essential_loads
+    - if:
+      - condition: template
+        value_template: '{{ notify_dev != '''' }}'
+      then:
+      - domain: mobile_app
+        type: notify
+        device_id: !input notify_device
+        title: "\U0001F525 Hydro-Québec: Peak Event Active"
+        message: Critical peak period active. Thermostats set to {{ temp_peak_val
+          }}°C, water heater shed, ventilation paused/locked, and non-essential lights
+          turned off.
+  - conditions:
+    - condition: or
+      conditions:
+      - condition: trigger
+        id: peak_end_calendar
+      - condition: trigger
+        id: peak_end_sensor
+    sequence:
+    - action: climate.set_temperature
+      target: !input climate_targets
+      data:
+        temperature: !input temp_normal
+    - if:
+      - condition: template
+        value_template: '{{ input_water_heater != {} }}'
+      then:
+      - action: homeassistant.turn_on
+        target: !input water_heater_target
+    - if:
+      - condition: template
+        value_template: '{{ input_hrv_lockout != {} }}'
+      then:
+      - action: homeassistant.turn_off
+        target: !input hrv_lockout_target
+    - if:
+      - condition: template
+        value_template: '{{ input_hrv != {} }}'
+      then:
+      - action: homeassistant.turn_on
+        target: !input hrv_target
+    - if:
+      - condition: template
+        value_template: '{{ input_solar_restore != {} }}'
+      - condition: state
+        entity_id: sun.sun
+        state: below_horizon
+      - condition: time
+        before: '22:30:00'
+      then:
+      - action: homeassistant.turn_on
+        target: !input solar_restore_lights
+    - if:
+      - condition: template
+        value_template: '{{ notify_dev != '''' }}'
+      then:
+      - domain: mobile_app
+        type: notify
+        device_id: !input notify_device
+        title: '✅ Hydro-Québec: Peak Event Ended'
+        message: Peak period concluded. Restored comfort heating ({{ temp_normal_val
+          }}°C), water heater resumed, and evening lighting restored.
+variables:
+  input_water_heater: !input water_heater_target
+  input_hrv: !input hrv_target
+  input_hrv_lockout: !input hrv_lockout_target
+  input_non_essential: !input non_essential_loads
+  input_solar_restore: !input solar_restore_lights
+  notify_dev: !input notify_device
+  temp_preheat_val: !input temp_preheat
+  temp_peak_val: !input temp_peak
+  temp_normal_val: !input temp_normal

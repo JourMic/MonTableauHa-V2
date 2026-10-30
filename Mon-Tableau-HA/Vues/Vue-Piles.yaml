@@ -1,0 +1,118 @@
+title: Piles
+path: Vue-Piles
+icon: mdi:battery
+subview: false
+type: sections
+max_columns: 2
+cards: []
+sections:
+  - type: grid
+    column_span: 2
+    cards:
+      - type: heading
+        heading: Niveaux des piles
+        heading_style: title
+        icon: mdi:battery
+        grid_options:
+          columns: full
+          rows: 0.3
+
+      # Affichage pour les tablettes
+
+      - type: custom:decluttering-card-plus
+        template: piles
+        grid_options:
+          columns: full
+          rows: auto
+        visibility:
+          - condition: screen
+            media_query: "(min-width: 768px)"
+
+      # Affichage pour le téléphone
+
+      - type: custom:decluttering-card-plus
+        template: piles
+        variables:
+          - piles_columns: "3"
+        grid_options:
+          columns: full
+          rows: full
+        visibility:
+          - condition: screen
+            media_query: "(min-width: 0px) and (max-width: 767px)"
+
+  - type: grid
+    column_span: 1
+    cards:
+      - type: heading
+        heading: Piles Caméras Intérieure
+        heading_style: title
+        icon: mdi:cctv
+        grid_options:
+          columns: full
+          rows: 0.3
+
+      - type: custom:decluttering-card-plus
+        template: tuiles_5
+        variables:
+          - tuile5_entity: "binary_sensor.camera_salon_batterie"
+          - tuile5_name: "Salon"
+        grid_options:
+          columns: 3
+          rows: auto
+
+      - type: custom:decluttering-card-plus
+        template: tuiles_5
+        variables:
+          - tuile5_entity: "binary_sensor.camera_cuisine_batterie"
+          - tuile5_name: "Cuisine"
+        grid_options:
+          columns: 3
+          rows: auto
+
+      - type: custom:decluttering-card-plus
+        template: tuiles_5
+        variables:
+          - tuile5_entity: "binary_sensor.camera_sous_sol_batterie"
+          - tuile5_name: "Sous-Sol"
+        grid_options:
+          columns: 3
+          rows: auto
+
+  - type: grid
+    column_span: 1
+    cards:
+      - type: heading
+        heading: Piles Caméras Extérieure
+        heading_style: title
+        icon: mdi:cctv
+        grid_options:
+          columns: full
+          rows: 0.3
+
+      - type: custom:decluttering-card-plus
+        template: tuiles_5
+        variables:
+          - tuile5_entity: "binary_sensor.camera_avant_batterie"
+          - tuile5_name: "Avant"
+        grid_options:
+          columns: 3
+          rows: auto
+
+      - type: custom:decluttering-card-plus
+        template: tuiles_5
+        variables:
+          - tuile5_entity: "binary_sensor.camera_arriere_batterie"
+          - tuile5_name: "Arrière"
+        grid_options:
+          columns: 3
+          rows: auto
+
+      - type: custom:decluttering-card-plus
+        template: tuiles_5
+        variables:
+          - tuile5_entity: "binary_sensor.camera_allee_batterie"
+          - tuile5_name: "Allée"
+        grid_options:
+          columns: 3
+          rows: auto

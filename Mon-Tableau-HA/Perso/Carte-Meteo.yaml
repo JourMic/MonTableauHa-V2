@@ -1,0 +1,302 @@
+title: Météo
+path: Vue-Meteos
+icon: mdi:weather-partly-lightning
+subview: false
+type: sections
+max_columns: 2
+cards: []
+sections:
+  - type: grid
+    cards:
+    
+      - type: heading
+        heading_style: title
+        icon: mdi:weather-partly-snowy-rainy
+        heading: Température 30 derniers jours
+        grid_options:
+          columns: 12
+          rows: 0.3
+    
+      - type: statistics-graph
+        grid_options:
+          rows: 3
+          columns: 12
+        entities:
+          - entity: sensor.st_00032986_temperature
+            name: Station Tempest
+            color: teal
+        days_to_show: 30
+        period: day
+        chart_type: line
+        stat_types:
+          - mean
+          - min
+          - max
+        hide_legend: true
+        card_mod:
+          style: |
+            ha-card {
+              box-shadow: var(--couleur_ombre);
+            }
+
+      - type: heading
+        heading_style: title
+        icon: mdi:weather-partly-snowy-rainy
+        heading: Prévisions
+        grid_options:
+          columns: 12
+          rows: 0.3
+
+      - type: custom:meteo-card
+        title: Shawinigan
+        entity: weather.forecast_shawinigan_sud
+        ec_alerts:
+          - sensor.shawinigan_alertes
+          - sensor.shawinigan_veilles
+          - sensor.shawinigan_avis
+          - sensor.shawinigan_bulletins
+        days: 5
+        show_details: false
+        show_rain_hour: true
+        show_sky: false
+        layout: warc0zes
+        theme: ha
+        forecasts:
+          - daily
+        card_mod:
+          style: |
+            ha-card {
+              box-shadow: var(--couleur_ombre);
+            }
+        grid_options:
+          columns: 12
+          rows: auto
+          
+      - type: heading
+        heading_style: title
+        icon: mdi:alert-outline
+        heading: Alertes
+        grid_options:
+          columns: 12
+          rows: 0.3
+
+      - type: custom:mod-card
+        card_mod:
+          style: >
+            {% set warn = state_attr('sensor.shawinigan_veilles', 'alert_1') |
+            string + " " + state_attr('sensor.shawinigan_veilles', 'alert_2') |
+            string %}  {% set watch = state_attr('sensor.shawinigan_alertes',
+            'alert_1') | string + " " + state_attr('sensor.shawinigan_alertes',
+            'alert_2') | string %}  {% set adv =
+            state_attr('sensor.shawinigan_bulletins', 'alert_1') | string + " "
+            + state_attr('sensor.shawinigan_bulletins', 'alert_2') | string %} 
+            {% set stat = state_attr('sensor.shawinigan_avis', 'alert_1') |
+            string + " " + state_attr('sensor.shawinigan_avis', 'alert_2') |
+            string %}  {% set combined = warn + " " + watch + " " + adv + " " +
+            stat %}
+
+            {% if combined and 'None' not in combined or combined | trim != ""
+            %}
+              {% set color = 'red' if 'Red' in combined 
+                        else 'orange' if 'Orange' in combined 
+                        else 'yellow' if 'Yellow' in combined 
+                        else 'grey' if 'Statement' in combined or (stat and 'None' not in stat)
+                        else none %}
+              {% set pulse_speed = '1s' if 'Red' in combined 
+                              else '2s' if 'Orange' in combined 
+                              else '3s' if 'Yellow' in combined
+                              else '0s' %}
+              
+              ha-card {
+                {% if color and color != 'grey' %} animation: pulse {{ pulse_speed }} infinite; {% endif %}
+                background: {{ 'rgba(255, 0, 0, 0.2)' if color == 'red' 
+                               else 'rgba(255, 165, 0, 0.2)' if color == 'orange' 
+                               else 'rgba(255, 255, 0, 0.2)' if color == 'yellow' 
+                               else 'rgba(128, 128, 128, 0.2)' if color == 'grey' 
+                               else 'none' }};
+                border: 2px solid {{ color if color else 'transparent' }};
+              }
+              @keyframes pulse {
+                0% { box-shadow: 0 0 0 0px {{ color }}; }
+                70% { box-shadow: 0 0 0 15px rgba(0, 0, 0, 0); }
+                100% { box-shadow: 0 0 0 0px rgba(0, 0, 0, 0); }
+              }
+            {% endif %}
+        card:
+          type: custom:auto-entities
+          show_empty: false
+          card:
+            type: entities
+            theme: Dark
+            card_mod:
+              style: >
+                ha-card { background: none !important; border: none !important;
+                box-shadow: none !important; font-size: larger !important}
+                .card-content { padding: 8px !important; }
+          filter:
+            template: |
+              {% set sensors = [
+                'sensor.shawinigan_veilles',
+                'sensor.shawinigan_alertes',
+                'sensor.shawinigan_bulletins',
+                'sensor.shawinigan_avis'
+              ] %}
+
+              {% set ns = namespace(rows=[]) %}
+
+              {% for s in sensors %}
+                {% for i in range(1, 5) %}
+                  {% set attr = 'alert_' ~ i %}
+                  {% set text = state_attr(s, attr) %}
+                  {% if text and text != 'None' and text | trim != "" %}
+                    
+                    {# Define sorting weights: Color first, then Type #}
+                    {% set color_prio = 10 if 'Red' in text else 20 if 'Orange' in text else 30 if 'Yellow' in text else 40 %}
+                    {% set type_prio = 1 if 'warnings' in s else 2 if 'watches' in s else 3 if 'advisory' in s else 4 %}
+                    {% set sort_score = color_prio + type_prio %}
+
+                    {% set row_color = 'red' if 'Red' in text else 'orange' if 'Orange' in text else 'yellow' if 'Yellow' in text else 'grey' %}
+                    {% set row_icon = 'mdi:alert' if row_color == 'red' else 'mdi:alert-rhombus' if row_color == 'orange' else 'mdi:alert-circle' if row_color == 'yellow' else 'mdi:alert-box' %}
+                    
+                    {% set ns.rows = ns.rows + [{
+                      "sort_by": sort_score,
+                      "type": "attribute",
+                      "attribute": "hide_state",
+                      "entity": s,
+                      "name": text,
+                      "icon": row_icon,
+                      "tap_action": {
+                        "action": "url",
+                        "url_path": "https://weather.gc.ca/warnings/report_e.html?onrm26"
+                      },
+                      "card_mod": {
+                        "style": "state-badge { color: " ~ row_color ~ " !important; } :host { --card-mod-icon-color: " ~ row_color ~ "; }"
+                      }
+                    }] %}
+                  {% endif %}
+                {% endfor %}
+              {% endfor %}
+
+              {# This sorts by the combined color + type score #}
+              {{ ns.rows | sort(attribute='sort_by') }}
+
+
+  - type: grid
+    cards:
+
+      - type: heading
+        heading_style: title
+        icon: mdi:weather-partly-snowy-rainy
+        heading: Température par mois
+        grid_options:
+          columns: 12
+          rows: 0.3
+
+      - type: statistics-graph
+        grid_options:
+          rows: 3
+          columns: 12
+        entities:
+          - entity: sensor.st_00032986_temperature
+            name: Station Tempest
+            color: orange
+        days_to_show: 365
+        period: month
+        chart_type: line
+        stat_types:
+          - mean
+          - min
+          - max
+        hide_legend: true
+        card_mod:
+          style: |
+            ha-card {
+              box-shadow: var(--couleur_ombre);
+            }
+
+      - type: heading
+        heading_style: title
+        icon: mdi:weather-dust
+        heading: Vent
+        grid_options:
+          columns: 12
+          rows: 0.3
+
+      - type: custom:windrose-card
+        title: Direction du vent
+        data_period:
+          period_back: "-4h"
+        refresh_interval: 300
+        windspeed_bar_location: right
+        buttons_config:
+          location: bottom
+          buttons:
+            - type: period_selector
+              button_text: 1 heure
+              period_back: "-1h"
+            - type: period_selector
+              button_text: 4 heures
+              period_back: "-4h"
+        wind_direction_entity:
+          entity: sensor.st_00032986_direction_du_vent
+          use_statistics: false
+          direction_compensation: 0
+        windspeed_entities:
+          - entity: sensor.st_00032986_vitesse_du_vent
+            name: Vitesse
+            speed_unit: auto
+            output_speed_unit: kph
+            speed_range_beaufort: false
+            windspeed_bar_full: true
+            current_speed_arrow: true
+            use_statistics: false
+          - entity: sensor.st_00032986_rafales
+            name: Rafale
+            speed_unit: auto
+            output_speed_unit: kph
+            speed_range_beaufort: false
+            windspeed_bar_full: true
+            current_speed_arrow: true
+            use_statistics: false
+        matching_strategy:
+          name: direction-first
+        rose_config:
+          windrose_draw_north_offset: 0
+          center_calm_percentage: true
+        current_direction:
+          show_arrow: true
+        corner_info:
+          top_left:
+            label: Vitesse
+            unit: null
+            entity: sensor.st_00032986_vitesse_du_vent
+          bottom_left:
+            label: Rafale
+            unit: null
+            entity: sensor.st_00032986_rafales
+          top_right:
+            label: Direction
+            unit: °
+            color: red
+            entity: sensor.st_00032986_direction_du_vent
+          bottom_right:
+            label: Moyenne
+            unit: null
+            entity: sensor.weatherflow_direction_moyenne_du_vent
+        direction_labels:
+          cardinal_direction_letters: NESO
+          show_cardinal_directions: true
+          show_intercardinal_directions: true
+          show_secondary_intercardinal_directions: true
+          cardinal_directions_text_size: 60
+          intercardinal_directions_text_size: 45
+          secondary_intercardinal_directions_text_size: 30
+        grid_options:
+          columns: 12
+          rows: auto
+        card_mod:
+          style: |
+            ha-card {
+              box-shadow: var(--couleur_ombre);
+            }
+  

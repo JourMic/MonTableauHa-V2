@@ -1,0 +1,52 @@
+template:
+  - sensor:
+  
+      - name: "Weatherflow direction moyenne du vent"
+        unique_id: "weatherflow_direction_moyenne_du_vent"
+        icon: mdi:weather-dust
+        state:  |
+          {% set direction = ['N','NNE','NE','ENE','E','ESE','SE','SSE','S','SSO','SO','OSO','O','ONO','NO','NNO','N'] %}
+          {% set degree = states('sensor.st_00032986_direction_du_vent_moyenne')|float %}
+          {{ direction[((degree+11.25)/22.5)|int] }}
+
+      - name: "Weatherflow nombre eclaires mois"
+        unique_id: "weatherflow_nombre_eclaires_mois_deux"
+        icon: mdi:weather-lightning
+        state: "{{ state_attr('sensor.shawinigan_sud_sensors_lightnings_strikesy', 'max_month') | round(0) }}"
+
+      - name: "Rain Today (Tempest, cumulative)"
+        unique_id: tempest_rain_today_cumulative
+        unit_of_measurement: "mm"
+        device_class: precipitation
+        state_class: total_increasing
+        state: "{{ states('sensor.shawinigan_sud_sensors_precipitation_today')|float(0) }}"
+        availability: >
+          {{ states('sensor.shawinigan_sud_sensors_precipitation_today') not in ['unknown','unavailable','none'] }}
+          
+      - name: "Rain per hours (Tempest, cumulative)"
+        unique_id: tempest_rain_per_hours_cumulative
+        unit_of_measurement: "mm"
+        device_class: precipitation
+        state_class: total_increasing
+        state: "{{ states('sensor.pluie_par_heure')|float(0) }}"
+        availability: >
+          {{ states('sensor.pluie_par_heure') not in ['unknown','unavailable','none'] }}
+          
+      - name: "Weatherflow mode descption"
+        unique_id: "weatherflow_mode_descption_deux"
+        icon: mdi:tailwind
+        state: |
+          {% if states.sensor.shawinigan_sud_sensors_power_save_mode.state | int == 0 %}
+              Tous les capteurs sont activés et fonctionnant à pleine puissance.
+              Intervalle d'échantillonnage du vent toutes les 3 secondes
+          {% elif states.sensor.shawinigan_sud_sensors_power_save_mode.state | int == 1 %}
+              Intervalle d'échantillonnage du vent réglé sur 6 secondes.
+          {% elif states.sensor.shawinigan_sud_sensors_power_save_mode.state | int == 2 %}
+              Intervalle d'échantillonnage du vent réglé sur une minute.
+          {% elif states.sensor.shawinigan_sud_sensors_power_save_mode.state | int == 3 %}
+              Intervalle d'échantillonnage du vent réglé sur 5 minutes.
+              Intervalle d'échantillonnage de tous les autres capteurs réglé sur 5 minutes.
+              Le capteur de pluie haptique est désactivé de l'écoute active.
+          {% else %}
+              Indéterminé
+          {% endif %}

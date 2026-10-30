@@ -1,0 +1,301 @@
+title: Chauffage
+path: Vue-Chauffages
+icon: mdi:radiator
+subview: false
+type: sections
+max_columns: 2
+cards: []
+sections:
+  - type: grid
+    cards:
+      - type: heading
+        heading: Salon
+        heading_style: title
+        icon: mdi:thermometer
+        badges:
+          - type: entity
+            show_state: true
+            show_icon: false
+            entity: sensor.maison_temperature
+            state_content: state
+        grid_options:
+          columns: 6
+          rows: 0.5
+
+      - type: heading
+        heading: Sous-Sol
+        heading_style: title
+        icon: mdi:thermometer
+        grid_options:
+          columns: 6
+          rows: 0.5
+        badges:
+          - type: entity
+            show_state: true
+            show_icon: false
+            entity: sensor.maison_sous_sol_temperature
+            state_content: state
+
+      - type: custom:decluttering-card-plus
+        template: statistques
+        variables:
+          statistques_entity: "sensor.maison_temperature"
+          statistques_color: "teal"
+          statistques_row: 3
+        grid_options:
+          columns: 6
+          rows: 3
+
+      - type: custom:decluttering-card-plus
+        template: statistques
+        variables:
+          statistques_entity: "sensor.maison_sous_sol_temperature"
+          statistques_color: "orange"
+          statistques_row: 3
+        grid_options:
+          columns: 6
+          rows: 3
+
+      - type: heading
+        icon: mdi:sofa
+        heading_style: title
+        heading: Salon
+        grid_options:
+          columns: 6
+          rows: 0.5
+
+      - type: heading
+        icon: mdi:stove
+        heading_style: title
+        grid_options:
+          columns: 6
+          rows: 0.5
+        heading: Cusine
+
+      - type: custom:decluttering-card-plus
+        template: tuiles_1
+        variables:
+          - tuile1_entity: "climate.neviweb130_climate_salon"
+        grid_options:
+          columns: 6
+          rows: auto
+
+      - type: custom:decluttering-card-plus
+        template: tuiles_1
+        variables:
+          - tuile1_entity: "climate.neviweb130_climate_cuisine"
+        grid_options:
+          columns: 6
+          rows: auto
+
+      - type: heading
+        icon: mdi:toilet
+        heading_style: title
+        grid_options:
+          columns: 6
+          rows: 0.5
+        heading: Salle d’eau
+
+      - type: heading
+        icon: mdi:bed-king
+        heading_style: title
+        heading: Chambre des maîtres
+        grid_options:
+          columns: 6
+          rows: 0.5
+
+      - type: custom:decluttering-card-plus
+        template: tuiles_1
+        variables:
+          - tuile1_entity: "climate.neviweb130_climate_salle_eau"
+        grid_options:
+          columns: 6
+          rows: auto
+
+      - type: custom:decluttering-card-plus
+        template: tuiles_1
+        variables:
+          - tuile1_entity: "climate.neviweb130_climate_ch_maitres"
+        grid_options:
+          columns: 6
+          rows: auto
+
+      - type: heading
+        icon: mdi:desk
+        heading_style: title
+        grid_options:
+          columns: 6
+          rows: 0.5
+        heading: Bureau
+
+      - type: heading
+        icon: mdi:hvac
+        heading_style: title
+        grid_options:
+          columns: 6
+          rows: 0.5
+        heading: Thermopompe
+
+      - type: custom:decluttering-card-plus
+        template: tuiles_1
+        variables:
+          - tuile1_entity: "climate.neviweb130_climate_bureau"
+        grid_options:
+          columns: 6
+          rows: auto
+
+      - type: custom:decluttering-card-plus
+        template: tuiles_1
+        variables:
+          - tuile1_entity: "climate.sensibo_cuisine"
+          - tuile1_name: "Cuisine"
+        grid_options:
+          columns: 6
+          rows: auto
+
+  - type: grid
+    cards:
+      - type: heading
+        heading: Chambre des maîtres
+        heading_style: title
+        icon: mdi:thermometer
+        badges:
+          - type: entity
+            show_state: true
+            show_icon: false
+            entity: sensor.maison_chambre_des_maitres_temperature
+            state_content: state
+        grid_options:
+          columns: 6
+          rows: 0.5
+
+      - type: heading
+        heading: Bureau
+        heading_style: title
+        icon: mdi:thermometer
+        badges:
+          - type: entity
+            show_state: true
+            show_icon: false
+            entity: sensor.maison_bureau_temperature
+            state_content: state
+        grid_options:
+          columns: 6
+          rows: 0.5
+
+      - type: custom:decluttering-card-plus
+        template: statistques
+        variables:
+          statistques_entity: "sensor.maison_chambre_des_maitres_temperature"
+          statistques_color: "blue"
+          statistques_row: 3
+        grid_options:
+          columns: 6
+          rows: 3
+
+      - type: custom:decluttering-card-plus
+        template: statistques
+        variables:
+          statistques_entity: "sensor.maison_bureau_temperature"
+          statistques_color: "red"
+          statistques_row: 3
+        grid_options:
+          columns: 6
+          rows: 3
+
+      - type: heading
+        icon: mdi:chair-rolling
+        heading_style: title
+        grid_options:
+          columns: 6
+          rows: 0.5
+        heading: Salle de repos
+
+      - type: heading
+        icon: mdi:bathtub
+        heading_style: title
+        grid_options:
+          columns: 6
+          rows: 0.5
+        heading: Salle de bain
+
+      - type: custom:decluttering-card-plus
+        template: tuiles_1
+        variables:
+          - tuile1_entity: "climate.neviweb130_climate_salle_repos"
+        grid_options:
+          columns: 6
+          rows: auto
+
+      - type: custom:decluttering-card-plus
+        template: tuiles_1
+        variables:
+          - tuile1_entity: "climate.neviweb130_climate_salle_bain"
+        grid_options:
+          columns: 6
+          rows: auto
+
+      - type: heading
+        icon: mdi:account-group
+        heading_style: title
+        grid_options:
+          columns: 6
+          rows: 0.5
+        heading: "Salle familiale "
+
+      - type: heading
+        icon: mdi:bed-double
+        heading_style: title
+        grid_options:
+          columns: 6
+          rows: 0.5
+        heading: Chambre des invités
+
+      - type: custom:decluttering-card-plus
+        template: tuiles_1
+        variables:
+          - tuile1_entity: "climate.neviweb130_climate_salle_familiale"
+        grid_options:
+          columns: 6
+          rows: auto
+
+      - type: custom:decluttering-card-plus
+        template: tuiles_1
+        variables:
+          - tuile1_entity: "climate.neviweb130_climate_ch_invites"
+        grid_options:
+          columns: 6
+          rows: auto
+
+      - type: heading
+        icon: mdi:tools
+        heading_style: title
+        heading: Atelier
+        grid_options:
+          columns: 6
+          rows: 0.5
+
+      - type: heading
+        icon: mdi:hvac
+        heading_style: title
+        grid_options:
+          columns: 6
+          rows: 0.5
+        heading: Thermopompe
+
+      - type: custom:decluttering-card-plus
+        template: tuiles_1
+        variables:
+          - tuile1_entity: "climate.neviweb130_climate_atelier"
+        grid_options:
+          columns: 6
+          rows: auto
+
+      - type: custom:decluttering-card-plus
+        template: tuiles_1
+        variables:
+          - tuile1_entity: "climate.sensibo_salle_de_repos"
+          - tuile1_name: "Salle de repos"
+        grid_options:
+          columns: 6
+          rows: auto
